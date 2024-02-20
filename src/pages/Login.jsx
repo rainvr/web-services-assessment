@@ -44,7 +44,7 @@ export default function Login() {
                 {/* <div className="card-actions justify-center "> */}
                     <button className="btn btn-primary">Login</button>
                     <p className="mt-1 mx-auto">Not a member yet? <a href="/register" className="link font-semibold">Register</a></p>
-                    {/* <p className="my-auto">Not a member yet? <Link to={`/register`}>Sign Up</Link></p> */}
+                    <p className="my-auto">Not a member yet? <Link to={`/register`}>Sign Up</Link></p>
                 {/* </div> */}
             </form>
         </section>
