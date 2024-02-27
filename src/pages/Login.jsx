@@ -46,11 +46,8 @@ export default function Login() {
                             required />
                         <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid password</span>
                     </label>
-                    {/* <div className="card-actions justify-center "> */}
-                        <button className="btn btn-primary">Login</button>
-                        {/* <p className="mt-1 mx-auto">Not a member yet? <a href="/register" className="link font-semibold">Register</a></p> */}
-                        <p className="my-auto">Not a member yet? <Link to="/register">Sign Up</Link></p>
-                    {/* </div> */}
+                    <button className="btn btn-primary">Login</button>
+                    <p className="mx-auto">Not a member yet? <Link to="/register">Sign Up</Link></p>
                 </form>
             </section>
             <Footer />
