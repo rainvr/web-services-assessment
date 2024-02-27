@@ -19,9 +19,9 @@ export default function Register() {
     }
 
     return (
-        <main className="flex flex-col gap-4 h-screen">
+        <main className="flex flex-col gap-4 h-screen overflow-hidden">
             <Header />
-            <section className="flex-1 mx-auto">
+            <section className="flex-1 mx-auto overflow-y-scroll">
                 <form onSubmit={handleSubmit} className="card-body card w-96 bg-base-100 shadow-xl">
                     <h2 className="card-title justify-center mb-4">Sign Up</h2>
                     <label className="form-control w-full max-w-xs">
@@ -73,7 +73,7 @@ export default function Register() {
                         <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid password</span>
                     </label>
                     <button className="btn btn-primary">Login</button>
-                    <p className="mx-auto">Already a member? <Link to="/login">Login</Link></p>
+                    <p className="mx-auto">Already a member? <Link to="/login">Login</Link></p>  {/* TODO: get link underline on hover */}
                 </form>
             </section>
             <Footer />
