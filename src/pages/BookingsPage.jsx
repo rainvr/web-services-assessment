@@ -2,7 +2,7 @@
 import Header from "../assets/Header"
 import Footer from "../assets/Footer"
 
-function Bookings() {
+function BookingsPage() {
     return (
         <main className="flex flex-col gap-4 h-screen overflow-hidden">
             <Header />
@@ -14,4 +14,4 @@ function Bookings() {
     )
 }
 
-export default Bookings
+export default BookingsPage

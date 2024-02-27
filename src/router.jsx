@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
-import Calendar from "./pages/Calendar.jsx";
-import Bookings from "./pages/Bookings.jsx";
-import Blog from "./pages/Blog.jsx";
-import Profile from "./pages/Profile.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import CalendarPage from "./pages/CalendarPage.jsx";
+import BookingsPage from "./pages/BookingsPage.jsx";
+import BlogPage from "./pages/BlogPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 // Declaring a router to map URL paths to react components
 // When a user visits a path a different component will render
@@ -16,27 +16,27 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <Login />
+        element: <LoginPage />
     },
     {
         path: "/register",
-        element: <Register />
+        element: <RegisterPage />
     },
     {
         path: "/calendar",
-        element: <Calendar />
+        element: <CalendarPage />
     },
     {
         path: "/bookings",
-        element: <Bookings />
+        element: <BookingsPage />
     },
     {
         path: "/blog",
-        element: <Blog />
+        element: <BlogPage />
     },
     {
         path: "/profile",
-        element: <Profile />
+        element: <ProfilePage />
     }
 ])
 
