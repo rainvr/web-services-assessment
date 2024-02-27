@@ -1,0 +1,27 @@
+.instagram-logo {
+    background-position: 0 -130px;
+    height: 51px;
+    width: 175px;
+    background-image: url(https://bit.ly/3v2LT17);
+}
+
+/* ---- FORM VALIDATION ---- */
+
+/* input:user-invalid {
+  background-color: rgb(238, 107, 107);
+}
+
+input:user-valid {
+  border: 1.5px solid rgb(107, 176, 219);
+} 
+
+input + span {
+  color: rgb(223, 7, 115);
+  visibility: hidden;
+  margin: 0.2rem;
+  font-size: 0.75rem;
+}
+
+input:user-invalid + span {
+  visibility: visible;
+} */

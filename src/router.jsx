@@ -1,14 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
-import App from "./App";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./pages/HomePage.jsx"
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 
 // Declaring a router to map URL paths to react components
 // When a user visits a path a different component will render
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />
+        element: <HomePage />
     },
     {
         path: "/login",
@@ -19,3 +19,11 @@ export const router = createBrowserRouter([
         element: <Register />
     }
 ])
+
+function Router() {
+    return (
+    <RouterProvider router={router}/>
+    )
+  }
+
+export default Router
