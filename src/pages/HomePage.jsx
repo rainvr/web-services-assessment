@@ -4,9 +4,9 @@ import Footer from "../assets/Footer"
 
 function HomePage() {
     return (
-        <main className="flex flex-col gap-4 h-screen overflow-hidden">
+        <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
             <Header />
-            <section className="flex-1 mx-auto overflow-y-scroll">
+            <section className="flex-1 mx-auto p-4 overflow-y-scroll">
                 <h1>Home Page</h1>
             </section>
             <Footer />

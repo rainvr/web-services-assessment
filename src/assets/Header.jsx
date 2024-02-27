@@ -5,7 +5,7 @@ function Header() {
     return (
         // <header className="flex flex-col bg-slate-500">This is the Header</header>
 
-        <div className="navbar bg-slate-100">
+        <div className="navbar bg-slate-200">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">

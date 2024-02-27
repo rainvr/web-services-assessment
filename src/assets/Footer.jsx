@@ -6,7 +6,7 @@ function Footer() {
     return (
         // <footer className="flex flex-col bg-slate-500">This is the footer</footer>
         // <footer className="footer items-center p-4 bg-neutral text-neutral-content">
-        <footer className="navbar px-6 bg-slate-100">
+        <footer className="navbar px-6 bg-slate-200">
             <aside className="navbar-start">
                 <p>Copyright © {currentYear}</p>
             </aside>
