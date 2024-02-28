@@ -1,6 +1,6 @@
 // --- The Login Page of the Application --- //
-import Header from "../assets/Header"
-import Footer from "../assets/Footer"
+import Header from "../common/components/Header"
+import Footer from "../common/components/Footer"
 import { useState } from "react";
 import { Link } from "react-router-dom";
 

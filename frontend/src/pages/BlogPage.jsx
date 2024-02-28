@@ -1,7 +1,7 @@
 // --- The Blog Page of the Application --- //
-import Header from "../assets/Header"
-import Footer from "../assets/Footer"
-import Blog from "../assets/Blog"
+import Header from "../common/components/Header"
+import Footer from "../common/components/Footer"
+import Blog from "../common/components/Blog"
 
 function BlogPage() {
     return (

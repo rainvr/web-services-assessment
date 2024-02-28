@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// TODO: import Restricted Routes (wk6 files)
+// import { RestrictedRoute } from "./common/RestrictedRoute";  
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
@@ -37,7 +39,13 @@ const router = createBrowserRouter([
     {
         path: "/profile",
         element: <ProfilePage />
-    }
+    }  //,  TODO: Restricted Routes on menu items
+    // {
+    //     path: "/logout",
+    //     element: <RestrictedRoute allowedRoles={["user", "admin", "moderator"]}>
+    //         <AnimalListPage />
+    //     </RestrictedRoute>
+    // }
 ])
 
 function Router() {
