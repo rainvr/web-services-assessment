@@ -1,13 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // TODO: import Restricted Routes (wk6 files)
 // import { RestrictedRoute } from "./common/RestrictedRoute";  
-import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import RegisterPage from "./pages/RegisterPage.jsx";
-import CalendarPage from "./pages/CalendarPage.jsx";
-import BookingsPage from "./pages/BookingsPage.jsx";
-import BlogPage from "./pages/BlogPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
+import HomePage from "./features/HomePage.jsx";
+import LoginPage from "./features/LoginPage.jsx";
+import RegisterPage from "./features/RegisterPage.jsx";
+import CalendarPage from "./features/CalendarPage.jsx";
+import BookingsPage from "./features/BookingsPage.jsx";
+import BlogPage from "./features/BlogPage.jsx";
+import ProfilePage from "./features/ProfilePage.jsx";
 
 // Declaring a router to map URL paths to react components
 // When a user visits a path a different component will render
