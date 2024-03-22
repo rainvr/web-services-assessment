@@ -1,19 +1,31 @@
 // --- The Login Page of the Application --- //
 import Header from "../common/components/Header"
 import Footer from "../common/components/Footer"
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
+// import { useAuthentication } from "./authentication.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
     const [emailInput, setEmailInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
+    // const [authenticatedUser, login, logout, refresh] = useAuthentication()
 
-    console.log(emailInput, passwordInput)
+    const navigate = useNavigate()
+
+    // console.log(emailInput, passwordInput)
 
     function handleSubmit(event) {
         event.preventDefault()
-
         alert(`The form has been submitted with email: ${emailInput} and password: ${passwordInput}`)
+        // TODO: email validation (regex or other?) in an if statement then return
+        // TODO: login authentication
+        // login(emailInput, passwordInput)
+        //     .then(result => {
+        //         alert("Login Successful!")
+        //         Navigate("/profile")
+        //     })
+        navigate('/profile', {state: {"email": emailInput, "password": passwordInput}})
     }
 
     return (
@@ -42,7 +54,7 @@ export default function LoginPage() {
                             onChange={(event) => setPasswordInput(event.target.value)}
                             placeholder="Password"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"  // Checks that a password has a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces.
+                            // pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"  // TOTO: Checks that a password has a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces.
                             required />
                         <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid password</span>
                     </label>
