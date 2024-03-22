@@ -16,6 +16,8 @@ app.use(express.json())
 
 // Import and use routes defined by the controllers
 app.use("/users", userController)
+// Need to use navigate for the profile page
+// app.use("/profile", userController)
 
 // TODO: Catch errors raised by endpoints
 

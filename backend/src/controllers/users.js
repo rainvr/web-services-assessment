@@ -1,9 +1,9 @@
 import { Router } from "express"
 import * as Users from "../models/users.js"
 
-// TODO: need input validation
-
 const userController = Router()
+
+// ---------- READ ---------- //
 
 // userController.post("/login", (req, res) => {  // TODO: reinstate this over next line when frontend is ready for login
 userController.post("/login", getLogin)
