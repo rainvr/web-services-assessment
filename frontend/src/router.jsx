@@ -8,6 +8,7 @@ import CalendarPage from "./features/CalendarPage.jsx";
 import BookingsPage from "./features/BookingsPage.jsx";
 import BlogPage from "./features/BlogPage.jsx";
 import ProfilePage from "./features/ProfilePage.jsx";
+import UsersListPage from "./features/UsersListPage.jsx";
 
 // Declaring a router to map URL paths to react components
 // When a user visits a path a different component will render
@@ -39,7 +40,12 @@ const router = createBrowserRouter([
     {
         path: "/profile",
         element: <ProfilePage />
-    }  //,  TODO: Restricted Routes on menu items
+    },
+    {
+        path: "/users",
+        element: <UsersListPage />
+    }
+      //,  TODO: Restricted Routes on menu items
     // {
     //     path: "/logout",
     //     element: <RestrictedRoute allowedRoles={["user", "admin", "moderator"]}>
