@@ -8,10 +8,16 @@ export default function LoginPage() {
     const [emailInput, setEmailInput] = useState("")
     const [passwordInput, setPasswordInput] = useState("")
 
-    console.log(emailInput, passwordInput)
+    console.log(emailInput, passwordInput)  // TODO: remove test
 
     function handleSubmit(event) {
         event.preventDefault()
+
+        // Validate email
+        if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$/.test(formData.email)) {
+            setStatusMessage("Invalid email address")
+            return
+        }
 
         alert(`The form has been submitted with email: ${emailInput} and password: ${passwordInput}`)
     }
