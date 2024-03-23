@@ -17,7 +17,14 @@ app.use(express.json())
 // Import and use routes defined by the controllers
 app.use("/users", userController)
 
-// TODO: Catch errors raised by endpoints
+// Catch errors raised by endpoints and respond with JSON error object
+app.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+        status: err.status,
+        message: err.message,
+        errors: err.errors,
+    })
+})
 
 // Start listening for API requests
 app.listen(port, ()=>{
