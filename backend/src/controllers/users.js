@@ -1,9 +1,11 @@
 import { Router } from "express"
 import * as Users from "../models/users.js"
-
-// TODO: need input validation
+import pkg from 'lodash'
+const { isEmpty } = pkg
 
 const userController = Router()
+
+// ---------- READ ---------- //
 
 // userController.post("/login", (req, res) => {  // TODO: reinstate this over next line when frontend is ready for login
 userController.post("/login", getLogin)
@@ -11,22 +13,37 @@ userController.post("/login", getLogin)
 export function getLogin(req, res) {    
     let loginData = req.body
 
-    // TODO: need input validation
-
-    Users.getUserByEmail(loginData.email).then(user => {
-        // TODO: need bcrypt compare.Sync (in if then structure)
-        res.status(200).json({
-            status: 200,
-            message: "The user information has been returned!",
-            user
-        })
-    }).catch(error => {
+    if (isEmpty(loginData)) {  // If the request body is empty
         res.status(400).json({
             status: 400,
-            message: "login failed"
+            message: "Missing request body"
         })
-    })
+    } else {  // If there is a request body
 
+        Users.getUserByEmail(loginData.email).then(user => {
+
+            // TODO: need bcrypt compare.Sync (in if then structure)
+            // TODO: compare passwords
+            
+            if (user) {  // If a matching user object is found
+            res.status(200).json({
+                status: 200,
+                message: "The user information has been returned",
+                user
+                })
+            } else {  // If no matching user object is found
+                res.status(404).json({
+                    status: 404,
+                    message: "The user was not found"
+                })
+            }
+        }).catch(error => {
+            res.status(400).json({
+                status: 400,
+                message: "login failed"
+            })
+        })
+    } 
 }
 // )
 

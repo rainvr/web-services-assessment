@@ -69,25 +69,30 @@ export async function getUserByEmail(userEmail) {
     try {
         const [queryResult] = await db.query("SELECT * FROM users WHERE user_email = ?", userEmail)
         if (queryResult.length > 0) {
-            return queryResult.map(
-                result => newUser(
-                    result.user_id,
-                    result.user_email,
-                    result.user_password,
-                    result.user_role,    
-                    result.user_phone,
-                    result.user_firstname,
-                    result.user_lastname,
-                    result.user_address
+            const userResult = queryResult[0]
+            // console.log(userResult)  // TODO: remove test
+            return Promise.resolve(
+                newUser(
+                    userResult.user_id.toString(),
+                    userResult.user_email,
+                    userResult.user_password,
+                    userResult.user_role,    
+                    userResult.user_phone,
+                    userResult.user_firstname,
+                    userResult.user_lastname,
+                    userResult.user_address
                 )
             )
         } else {
-            return console.log(`Error - No users with user_email: ${userEmail}`)
+            return Promise.resolve(null)
+            // return Promise.reject("No user found")
+            // console.log(`Error - No users with user_email: ${userEmail}`)
         }
     } catch {
-        (error) => {
-            console.log(`Error getting the user: ${error}`)
-        }
+        return Promise.reject("Error getting the user")
+        // (error) => {
+        //     console.log(`Error getting the user: ${error}`)
+        // }
     }
 }
 
