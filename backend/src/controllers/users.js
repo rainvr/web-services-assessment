@@ -20,7 +20,7 @@ export function getLogin(req, res) {
         })
     } else {  // If there is a request body
 
-        Users.getUserByEmail(loginData.email).then(user => {
+        Users.getByEmail(loginData.email).then(user => {
 
             // TODO: need bcrypt compare.Sync (in if then structure)
             // TODO: compare passwords
@@ -50,7 +50,7 @@ export function getLogin(req, res) {
 
 // Get all users
 userController.get("/", async (req, res) => {
-    const users = await Users.getAllUsers()
+    const users = await Users.getAll()
 
     res.status(200).json({
         status: 200,
@@ -62,7 +62,7 @@ userController.get("/", async (req, res) => {
 // Get the user by their email
 userController.get("/profile/:email", async (req, res) => {
     const userEmail = req.params.email
-    const user = await Users.getUserByEmail(userEmail)
+    const user = await Users.getByEmail(userEmail)
 
     res.status(200).json({
         status: 200,

@@ -6,7 +6,7 @@ import { API_URL } from "./api.js";
  * 
  * @returns {Promise<Array<Users>>}
  */
-export async function getAllUsers() {
+export async function getAll() {
     const apiResponse = await fetch(API_URL + "/users/", {
         method: "GET",
         header: {

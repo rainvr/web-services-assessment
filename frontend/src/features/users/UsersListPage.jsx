@@ -8,7 +8,7 @@ function UsersListPage() {
     const [userId, setUserId] = useState()
 
     useEffect(() => {
-        const users = Users.getAllUsers()
+        const users = Users.getAll()
             .then(users => {
                 setUsers(users)
             })
