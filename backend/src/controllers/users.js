@@ -71,4 +71,57 @@ userController.get("/profile/:email", async (req, res) => {
     })
 })
 
+
+// ---------- CREATE ---------- //
+
+userController.post("/register", (req, res) => {
+    let registerData = req.body 
+    
+    if (isEmpty(registerData)) {  // If the request body is empty
+        res.status(400).json({
+            status: 400,
+            message: "Missing request body"
+        })
+    } else {  // If there is a request body
+
+        // Convert the user data into an User model object
+        const userObject = Users.newUser(
+            null,
+            registerData.email,
+            registerData.password,  // TODO: bcrypt the password when inputting
+            registerData.role,
+            registerData.phone,
+            registerData.firstname,
+            registerData.lastname,
+            registerData.address,
+            null
+        )
+
+        // Check if a user with that email exists
+        Users.getByEmail(userObject.email).then(user => {
+            
+            if (user) {  // If a matching user object is found
+            res.status(400).json({
+                status: 400,
+                message: "A user with this email alread exists",
+                user
+                })
+            } else {  // If no matching user object is found
+                Users.create(userObject).then(user => {
+                    res.status(200).json({
+                        status: 200,
+                        message: "User has been registered",
+                        user: user
+                    })
+                })
+            }
+        }).catch(error => {
+            res.status(400).json({
+                status: 400,
+                message: "Registration failed"
+            })
+        })
+    }
+})
+
 export default userController
