@@ -8,10 +8,8 @@ const userController = Router()
 
 // ---------- READ ---------- //
 
-// userController.post("/login", (req, res) => {  // TODO: reinstate this over next line when frontend is ready for login
-userController.post("/login", getLogin)
-
-export function getLogin(req, res) {    
+// POST /login
+userController.post("/login", (req, res) => {  
     let loginData = req.body
 
     if (isEmpty(loginData)) {  // If the request body is empty
@@ -55,8 +53,7 @@ export function getLogin(req, res) {
             })
         })
     } 
-}
-// )
+})
 
 
 // Get all users
@@ -85,6 +82,7 @@ userController.get("/profile/:email", async (req, res) => {
 
 // ---------- CREATE ---------- //
 
+// POST /register
 userController.post("/register", (req, res) => {
     let registerData = req.body 
     
