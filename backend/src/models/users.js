@@ -1,5 +1,7 @@
 import { db } from "../database.js";
 
+// --------- CONSTRUCTOR ---------- //
+
 // Construct a new user object
 export function newUser(id, email, password, role, phone, firstname, lastname, address) {
     return {
@@ -13,6 +15,8 @@ export function newUser(id, email, password, role, phone, firstname, lastname, a
         address
     }
 }
+
+// --------- READ ---------- //
 
 // Get all the users from the database
 export function getAllUsers() {
@@ -99,3 +103,40 @@ export async function getUserByEmail(userEmail) {
 // getUserByEmail("manager@email.com").then(result => {
 //     return console.log(result)
 // })
+
+// --------- CREATE ---------- //
+
+export async function create(user) {
+    return db.query(
+        "INSERT INTO users (user_email, user_password, user_role, user_phone, user_firstname, user_lastname, user_address)" +
+        "VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [
+            user.email,
+            user.password,
+            user.role,
+            user.phone,
+            user.firstname,
+            user.lastname,
+            user.address
+        ]
+    )
+    .then(([result]) => {
+        return { ...user, id: result.insertId }  // return an object with the user fields plus the inserted ID as the id
+    })
+}
+
+// --- TESTING --- //
+
+// create(
+//     {
+//         email: "Joe@email.com",
+//         password: "123",
+//         role: "trainer",
+//         phone: "12345",
+//         firstname: "Joe",
+//         lastname: "Blogs",
+//         address: "Someplace"
+//     }
+// )
+
+// --- END TESTING --- //
