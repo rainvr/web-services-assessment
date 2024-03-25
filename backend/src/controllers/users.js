@@ -55,6 +55,43 @@ userController.post("/login", (req, res) => {
     } 
 })
 
+// GET /Logout
+userController.post("/logout", (req, res) => {
+    // Get the authentication key from the header
+    const authKey = req.get("X-AUTH-KEY")
+
+    // TODO: validate auth key header (not empty and in the appropriate uuid style)
+
+    Users.getByAuthKey(authKey).then(user => {
+        
+        // If no matching user object is found
+        if (!user) {
+            return res.status(404).json({
+                status: 404,
+                message: "The user was not found"
+            })
+        }
+
+        // Clear the authKey from the returned user object
+        user.authKey = null  
+
+        // Update the user object in the db with the cleared authKey
+        Users.updateById(user).then(response => {
+            res.status(200).json({
+                status: 200,
+                message: "User is logged out",
+                response  // TODO: do I really want to return the full user object here?
+            })
+        })
+    }).catch(error => {
+        res.status(400).json({
+            status: 400,
+            message: "logout failed",
+            error
+        })
+    })
+})
+
 
 // Get all users
 userController.get("/", async (req, res) => {
