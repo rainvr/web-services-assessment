@@ -9,48 +9,51 @@ const userController = Router()
 // ---------- READ ---------- //
 
 // POST /login
-userController.post("/login", (req, res) => {  
+userController.post("/login", async (req, res) => {  
     let loginData = req.body
-
-    if (isEmpty(loginData)) {  // If the request body is empty
-        res.status(400).json({
-            status: 400,
-            message: "Missing request body"
-        })
-    } else {  // If there is a request body
+    try {
+        if (isEmpty(loginData)) {  // If the request body is empty
+            return res.status(400).json({
+                status: 400,
+                message: "Missing request body"
+            })
+        } 
 
         // TODO: Validate request body
-
-        Users.getByEmail(loginData.email).then(user => {
-
-            // If no matching user object is found
-            if (!user) {
-                return res.status(404).json({
-                    status: 404,
-                    message: "The user was not found"
-                })
-            }
-
-            // If a matching user object is found check the passwords match
-            if (loginData.email == user.email) {  // TODO: bcrypt hashsync this
-                user.authKey = uuid4().toString()  // create a unique auth key
-
-                // console.log("user" + JSON.stringify(user, null, 2)) // TODO: remove this test
-
-                Users.updateById(user).then(result => {
-                    res.status(200).json({
-                        status: 200,
-                        message: "The user is logged in",
-                        authenticationKey: user.authKey,
-                    })
-                })
-            }
-        }).catch(error => {
-            res.status(400).json({
-                status: 400,
-                message: "login failed",
-                error
+        const user = await Users.getByEmail(loginData.email)
+        // If no matching user object is found
+        if (!user) {
+            return res.status(404).json({
+                status: 404,
+                message: "The user was not found"
             })
+        }
+
+        // If a matching user object is found check the passwords match
+        if (loginData.password != user.password) {  // TODO: bcrypt hashsync this
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid credentials"
+            })
+        }
+        
+        // create a unique auth key
+        user.authKey = uuid4().toString()  
+
+        // console.log("user" + JSON.stringify(user, null, 2)) // TODO: remove this test
+
+        Users.updateById(user).then(result => {
+            res.status(200).json({
+                status: 200,
+                message: "The user is logged in",
+                authenticationKey: user.authKey,
+            })
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "login failed",
+            error
         })
     } 
 })
