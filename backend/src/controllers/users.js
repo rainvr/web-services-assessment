@@ -6,8 +6,6 @@ import { v4 as uuid4 } from "uuid"
 
 const userController = Router()
 
-// ---------- READ ---------- //
-
 // POST /login
 userController.post("/login", async (req, res) => {  
     let loginData = req.body
@@ -20,7 +18,10 @@ userController.post("/login", async (req, res) => {
         } 
 
         // TODO: Validate request body
+
+        // Get the user from the db by their email
         const user = await Users.getByEmail(loginData.email)
+
         // If no matching user object is found
         if (!user) {
             return res.status(404).json({
@@ -37,11 +38,10 @@ userController.post("/login", async (req, res) => {
             })
         }
         
-        // create a unique auth key
+        // Create a unique auth key for the returned user
         user.authKey = uuid4().toString()  
 
-        // console.log("user" + JSON.stringify(user, null, 2)) // TODO: remove this test
-
+        // Update the user in the db with the one with the new authKey
         Users.updateById(user).then(result => {
             res.status(200).json({
                 status: 200,
@@ -58,7 +58,7 @@ userController.post("/login", async (req, res) => {
     } 
 })
 
-// GET /Logout
+// POST /Logout
 userController.post("/logout", (req, res) => {
     // Get the authentication key from the header
     const authKey = req.get("X-AUTH-KEY")
@@ -94,33 +94,6 @@ userController.post("/logout", (req, res) => {
         })
     })
 })
-
-
-// Get all users
-userController.get("/", async (req, res) => {
-    const users = await Users.getAll()
-
-    res.status(200).json({
-        status: 200,
-        message: "All Users List",
-        users
-    })
-})
-
-// Get the user by their email
-userController.get("/profile/:email", async (req, res) => {
-    const userEmail = req.params.email
-    const user = await Users.getByEmail(userEmail)
-
-    res.status(200).json({
-        status: 200,
-        message: "The user has been returned!",
-        user
-    })
-})
-
-
-// ---------- CREATE ---------- //
 
 // POST /register
 userController.post("/register", (req, res) => {
@@ -169,10 +142,77 @@ userController.post("/register", (req, res) => {
         }).catch(error => {
             res.status(400).json({
                 status: 400,
-                message: "Registration failed"
+                message: "Registration failed",
+                error
             })
         })
     }
+})
+
+// POST /profile
+userController.post("/profile", async (req, res) => {
+    const authKey = req.get("X-AUTH-KEY")
+
+    try {
+        // If no X-AUTH-KEY in the header
+        if (!authKey) {
+            return res.status(400).json({
+                status: 400,
+                message: "Missing Authentication Key"
+            })
+        }
+        
+        // TODO: Validate authKey
+
+        const user = await Users.getByAuthKey(authKey)
+        
+        // If no matching user object is found
+        if (!user) {
+            return res.status(404).json({
+                status: 404,
+                message: "The user was not found"
+            })
+        }
+        
+        return res.status(200).json({
+            status: 200,
+            message: "The user profile has been returned",
+            user
+        })
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        message: "Error getting the user profile",
+        error
+      })
+    }
+})
+
+
+// ---- PRACTICE CONTROLLERS ---- //
+// TODO: remove practice controllers?
+
+// Get all users
+userController.get("/", async (req, res) => {
+    const users = await Users.getAll()
+
+    res.status(200).json({
+        status: 200,
+        message: "All Users List",
+        users
+    })
+})
+
+// Get the user by their email
+userController.get("/profile/:email", async (req, res) => {
+    const userEmail = req.params.email
+    const user = await Users.getByEmail(userEmail)
+
+    res.status(200).json({
+        status: 200,
+        message: "The user has been returned!",
+        user
+    })
 })
 
 export default userController
