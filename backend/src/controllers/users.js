@@ -188,6 +188,39 @@ userController.post("/profile", async (req, res) => {
     }
 })
 
+// Get user by Auth Key
+userController.get("/", async (req, res) => {
+    
+    const authKey = req.get("X-AUTH-KEY")
+    
+    try {
+        
+        // If no X-AUTH-KEY in the header
+        if (!authKey) {
+            return res.status(400).json({
+                status: 400,
+                message: "Missing Authentication Key"
+            })
+        }
+
+        // TODO: Validate authKey
+
+        const user = await Users.getByAuthKey(authKey)
+        
+        return res.status(200).json({
+            status: 200,
+            message: "Retrieved the user by the Authentication Key",
+            user
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Error getting the user",
+            error
+        })
+    }
+})
+
 
 // ---- PRACTICE CONTROLLERS ---- //
 // TODO: remove practice controllers?
