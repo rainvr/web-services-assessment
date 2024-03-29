@@ -93,7 +93,7 @@ export async function getByEmail(userEmail) {
             return Promise.resolve(null)
         }
     } catch {
-        return Promise.reject("Error getting the user")
+        return Promise.reject("Error getting the user from their email")
     }
 }
 

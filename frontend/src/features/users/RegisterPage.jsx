@@ -3,19 +3,42 @@ import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import * as Users from "../../api/users"
 
 export default function RegisterPage() {
-    const [firstNameInput, setFirstNameInput] = useState("")
-    const [lastNameInput, setLastNameInput] = useState("")
-    const [emailInput, setEmailInput] = useState("")
-    const [passwordInput, setPasswordInput] = useState("")
+    // const navigate = useNavigate()  // TODO: remove this?
 
-    console.log(emailInput, passwordInput)
+    const [statusMessage, setStatusMessage] = useState("")
 
-    function handleSubmit(event) {
-        event.preventDefault()
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        role: "member", 
+        phone: "",
+        firstname: "",
+        lastname: "",
+        address: ""
+    })
 
-        alert(`The form has been submitted with email: ${emailInput} and password: ${passwordInput}`)
+    async function handleSubmit(event) {
+        try {
+            event.preventDefault()
+
+            // TODO: loading/registering spinner
+
+            // alert(`The form has been submitted with details: ${formData}`)  // TODO: remove this?
+            
+            // TODO: add validation for all fields
+            
+            // Register the user
+            const result = await Users.registerUser(formData)
+
+            // If the regisration is successful try to login the user
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -27,9 +50,9 @@ export default function RegisterPage() {
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="text"
-                            name="first-name"
-                            value={firstNameInput}
-                            onChange={(event) => setFirstNameInput(event.target.value)}
+                            //name="first-name"
+                            value={formData.firstname}
+                            onChange={(event) => setFormData(existingData => { return { ...existingData, firstname: event.target.value } } )}
                             placeholder="First Name"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
                             // TODO: pattern ...  Checks the first name pattern
@@ -39,9 +62,9 @@ export default function RegisterPage() {
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="text"
-                            name="last-name"
-                            value={lastNameInput}
-                            onChange={(event) => setLastNameInput(event.target.value)}
+                            //name="last-name"
+                            value={formData.lastname}
+                            onChange={(event) => setFormData({ ...formData, lastname: event.target.value } )}
                             placeholder="Last Name"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
                             // TODO: pattern ...  Checks the last name pattern
@@ -51,9 +74,9 @@ export default function RegisterPage() {
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="email"
-                            name="email"
-                            value={emailInput}
-                            onChange={(event) => setEmailInput(event.target.value)}
+                            //name="email"
+                            value={formData.email}
+                            onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}
                             placeholder="Email"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
                             pattern="^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"  // Checks the email pattern
@@ -63,16 +86,40 @@ export default function RegisterPage() {
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="password"
-                            name="password"
-                            value={passwordInput}
-                            onChange={(event) => setPasswordInput(event.target.value)}
+                            //name="password"
+                            value={formData.password}
+                            onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}
                             placeholder="Password"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
                             pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"  // Checks that a password has a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces.
                             required />
                         <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid password</span>
                     </label>
-                    <button className="btn btn-primary">Login</button>
+                    <label className="form-control w-full max-w-xs">
+                        <input
+                            type="text"
+                            //name="phone"
+                            value={formData.phone}
+                            onChange={(event) => setFormData({ ...formData, phone: event.target.value } )}
+                            placeholder="Phone Number"
+                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            // TODO: pattern ...  Checks the phone number pattern
+                        />
+                        <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid phone number</span>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                        <input
+                            type="text"
+                            //name="address"
+                            value={formData.address}
+                            onChange={(event) => setFormData({ ...formData, address: event.target.value } )}
+                            placeholder="Address"
+                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            // TODO: pattern ...  Checks the address pattern
+                        />
+                        <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid Address</span>
+                    </label>
+                     <button className="btn btn-primary">Register</button>
                     <p className="mx-auto">Already a member? <Link to="/login">Login</Link></p>  {/* TODO: get link underline on hover */}
                 </form>
             </section>
