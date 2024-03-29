@@ -32,7 +32,7 @@ export default function RegisterPage() {
             // TODO: add validation for all fields
             
             // Register the user
-            const result = await Users.registerUser(formData)
+            const result = await Users.register(formData)
 
             // If the regisration is successful try to login the user
 
