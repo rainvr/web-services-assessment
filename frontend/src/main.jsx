@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { RouterProvider } from 'react-router-dom'
 import './index.css'
-import Router from "./router.jsx"
-// import { AuthenticationProvider } from './features/authentication.jsx'
+import router from "./router.jsx"
+import { AuthenticationProvider } from './features/authentication.jsx'
 
-// TODO: enable the AuthenticationProvider below
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <AuthenticationProvider router={router}> */}
-      <Router />
-    {/* </AuthenticationProvider> */}
+    <AuthenticationProvider router={router}>
+      <RouterProvider router={router}/>
+    </AuthenticationProvider>
   </React.StrictMode>,
 )
