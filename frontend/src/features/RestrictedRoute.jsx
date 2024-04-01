@@ -3,10 +3,10 @@ import { useAuthentication } from "../features/authentication"
 // import { Header } from "./components/Header.jsx"  // TODO: reinstate this, and below <Header /> ?
 
 export function RestrictedRoute({ allowedRoles = [], children }) {
-    const [user, login, logout] = useAuthentication()
+    const [userObject, login, logout] = useAuthentication()
     const navigate = useNavigate()
 
-    const userIsAuthorised = user && allowedRoles.includes(user.role)
+    const userIsAuthorised = userObject && allowedRoles.includes(userObject.user.role)
 
     return userIsAuthorised
         ? children
