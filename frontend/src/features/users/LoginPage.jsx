@@ -2,10 +2,11 @@
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "../authentication";
 
 export default function LoginPage() {
+    const navigate = useNavigate()
 
     const [user, login, logout, refresh] = useAuthentication() // import the authentication functions and auth user object
 
@@ -15,8 +16,6 @@ export default function LoginPage() {
         email: "",
         password: ""
     })
-
-    // console.log(emailInput, passwordInput) // TODO: remove this test
 
     async function handleSubmit(event) {
         event.preventDefault()  // prevents the browser from refreshing/reloading
@@ -31,7 +30,7 @@ export default function LoginPage() {
         // Call the login function from the useAuthentication module
         const loginResult = await login(formData.email, formData.password)
             setStatusMessage("Login Successful!")
-            // TODO: Navigate to where?
+            navigate("/")  // Navigate to home
         } catch (error) {
             setStatusMessage("Login failed: " + error)
         }

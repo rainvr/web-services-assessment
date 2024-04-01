@@ -1,7 +1,16 @@
 // --- The header element for the application --- \\
 import { Link } from "react-router-dom"
+import { useAuthentication } from "../../features/authentication"
 
 function Header() {
+    // import the authenticated user and related functions
+    const [authenticatedObject, login, logout, refresh] = useAuthentication()
+
+    // Add a null check to make sure that authenticatedUser is not null
+    // if (authenticatedUser === null) {
+    //     return <div>Loading...</div>
+    // }
+
     return (
         // <header className="flex flex-col bg-slate-500">This is the Header</header>
 
@@ -26,9 +35,11 @@ function Header() {
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             {/* <img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" /> */}
-                            <img alt="Login Icon" src="/src/assets/icon/login.png" />  {/* TODO: make this image a bit nicer */}
+                            <img alt="Login Icon" src="/src/common/icon/login.png" />  {/* TODO: make this image a bit nicer */}
                         </div>
                     </div>
+                    {/* If authenticated user exists show their firstname, if not (i.e. during loading, or if none logged in) return nothing */}
+                    { authenticatedObject ? ( <div className="justify-self-center">{authenticatedObject.user.firstname}</div> ) : null }
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link to="/register">Register</Link></li>
                         <li><Link to="/login">Login</Link></li>
