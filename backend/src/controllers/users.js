@@ -189,9 +189,9 @@ userController.post("/profile", async (req, res) => {
 })
 
 // Get user by Auth Key
-userController.get("/", async (req, res) => {
+userController.get("/authentication/:authenticationKey", async (req, res) => {
     
-    const authKey = req.get("X-AUTH-KEY")
+    const authKey = req.params.authenticationKey
     
     try {
         

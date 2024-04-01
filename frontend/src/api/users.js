@@ -113,12 +113,11 @@ export async function logout(authenticationKey) {
  * @returns {Promise<Object>}
  */
 export async function getByAuthKey(authenticationKey) {
-    const response = await fetch(API_URL + "/users/", 
+    const response = await fetch(API_URL + "/users/authentication/" + authenticationKey, 
         {
             method: "GET",
             headers: {
-                'Content-Type': "application/json",
-                'X-AUTH-KEY': authenticationKey
+                'Content-Type': "application/json"
             }
         })
         
