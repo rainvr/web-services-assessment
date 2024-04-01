@@ -3,6 +3,7 @@ import * as Users from "../models/users.js"
 import pkg from 'lodash'
 const { isEmpty } = pkg
 import { v4 as uuid4 } from "uuid"
+import auth from "../middleware/auth.js"
 
 const userController = Router()
 
@@ -188,6 +189,17 @@ userController.post("/profile", async (req, res) => {
     }
 })
 
+// Get all users
+userController.get("/", auth(["manager"]), async (req, res) => {
+    const users = await Users.getAll()
+
+    res.status(200).json({
+        status: 200,
+        message: "All Users List",
+        users
+    })
+})
+
 // Get user by Auth Key
 userController.get("/authentication/:authenticationKey", async (req, res) => {
     
@@ -224,17 +236,6 @@ userController.get("/authentication/:authenticationKey", async (req, res) => {
 
 // ---- PRACTICE CONTROLLERS ---- //
 // TODO: remove practice controllers?
-
-// Get all users
-userController.get("/", async (req, res) => {
-    const users = await Users.getAll()
-
-    res.status(200).json({
-        status: 200,
-        message: "All Users List",
-        users
-    })
-})
 
 // Get the user by their email
 userController.get("/profile/:email", async (req, res) => {

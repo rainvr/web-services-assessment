@@ -3,23 +3,23 @@ import { API_URL } from "./api.js";
 
 // TODO: remove or change this as it conflicts with GET /users by authKey below
 /**
- *  GET /users/
- * 
+ * GET /users
+ * Gets all the users from the database (only for a logged in user)
  * @returns {Promise<Array<Users>>}
  */
-// export async function getAll() {
-//     const apiResponse = await fetch(API_URL + "/users/", {
-//         method: "GET",
-//         headers: {
-//             'Content-Type': "application/json"
-//             // TODO: include the X-AUTH-KEY
-//         }
-//     })
+export async function getAll(authenticationKey) {
+    const apiResponse = await fetch(API_URL + "/users", {
+        method: "GET",
+        headers: {
+            'Content-Type': "application/json",
+            'X-AUTH-KEY': authenticationKey
+        }
+    })
 
-//     const APIResponseObject = await apiResponse.json()
+    const APIResponseObject = await apiResponse.json()
 
-//     return APIResponseObject.users
-// }
+    return APIResponseObject.users
+}
 
 /**
  *  POST /users  // TODO: do I need this api?
