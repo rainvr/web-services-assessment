@@ -4,12 +4,7 @@ import { useAuthentication } from "../../features/authentication"
 
 function Header() {
     // import the authenticated user and related functions
-    const [authenticatedObject, login, logout, refresh] = useAuthentication()
-
-    // Add a null check to make sure that authenticatedUser is not null
-    // if (authenticatedUser === null) {
-    //     return <div>Loading...</div>
-    // }
+    const [authObject, login, logout, refresh] = useAuthentication()
 
     return (
         // <header className="flex flex-col bg-slate-500">This is the Header</header>
@@ -22,8 +17,11 @@ function Header() {
                     </div>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link to="/calendar">Calendar</Link></li>
-                        <li><Link to="/bookings">Bookings</Link></li>
                         <li><Link to="/blog">Blog</Link></li>
+                        { authObject && authObject.user.role === "member" ? <li><Link to="/bookings">Bookings</Link></li> : null }
+                        { authObject && authObject.user.role === "trainer" ? <li><Link to="/classes">Classes</Link></li> : null }
+                        { authObject && authObject.user.role === "manager" ? <li><Link to="/users-list">Users</Link></li> : null }
+                        { authObject && (authObject.user.role === "trainer" | authObject.user.role === "manager") ? <li><Link to="/import">Import</Link></li> : null }
                     </ul>
                 </div>
             </div>
@@ -39,12 +37,12 @@ function Header() {
                         </div>
                     </div>
                     {/* If authenticated user exists show their firstname, if not (i.e. during loading, or if none logged in) return nothing */}
-                    { authenticatedObject ? ( <div className="justify-self-center">{authenticatedObject.user.firstname}</div> ) : null }
+                    { authObject ? ( <div className="justify-self-center">{authObject.user.firstname}</div> ) : null }
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><Link to="/register">Register</Link></li>
-                        <li><Link to="/login">Login</Link></li>
-                        <li><Link to="/profile">Profile</Link></li>
-                        <li><Link to="/">Logout</Link></li>
+                        { !authObject ? <li><Link to="/register">Register</Link></li> : null }
+                        { !authObject ? <li><Link to="/login">Login</Link></li> : null }
+                        { authObject ? <li><Link to="/profile">Profile</Link></li> : null }
+                        { authObject ? <li><button onClick={() => logout()}>Logout</button></li> : null }
                     </ul>
                 </div>
             </div>
