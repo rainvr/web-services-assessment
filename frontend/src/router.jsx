@@ -41,7 +41,9 @@ const router = createBrowserRouter([
     },
     {
         path: "/profile",
-        element: <ProfilePage />
+        element: <RestrictedRoute allowedRoles={["manager", "trainer", "member"]}>
+            <ProfilePage />
+        </RestrictedRoute>
     },
     {
         path: "/error",
