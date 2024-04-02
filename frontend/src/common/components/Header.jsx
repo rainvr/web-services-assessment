@@ -1,10 +1,11 @@
 // --- The header element for the application --- \\
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuthentication } from "../../features/authentication"
 
 function Header() {
     // import the authenticated user and related functions
     const [authObject, login, logout, refresh] = useAuthentication()
+    const navigate = useNavigate()
 
     return (
         // <header className="flex flex-col bg-slate-500">This is the Header</header>
@@ -42,7 +43,7 @@ function Header() {
                         { !authObject ? <li><Link to="/register">Register</Link></li> : null }
                         { !authObject ? <li><Link to="/login">Login</Link></li> : null }
                         { authObject ? <li><Link to="/profile">Profile</Link></li> : null }
-                        { authObject ? <li><button onClick={() => logout()}>Logout</button></li> : null }
+                        { authObject ? <li><button onClick={() => logout().finally(() => navigate("/"))}>Logout</button></li> : null }
                     </ul>
                 </div>
             </div>
