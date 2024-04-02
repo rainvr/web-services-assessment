@@ -18,11 +18,11 @@ function Header() {
                     </div>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link to="/calendar">Calendar</Link></li>
-                        <li><Link to="/blog">Blog</Link></li>
                         { authObject && authObject.user.role === "member" ? <li><Link to="/bookings">Bookings</Link></li> : null }
                         { authObject && authObject.user.role === "trainer" ? <li><Link to="/classes">Classes</Link></li> : null }
                         { authObject && authObject.user.role === "manager" ? <li><Link to="/users-list">Users</Link></li> : null }
                         { authObject && (authObject.user.role === "trainer" | authObject.user.role === "manager") ? <li><Link to="/import">Import</Link></li> : null }
+                        <li><Link to="/blog">Blog</Link></li>
                     </ul>
                 </div>
             </div>

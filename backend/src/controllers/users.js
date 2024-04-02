@@ -129,7 +129,7 @@ userController.post("/register", (req, res) => {
         if (user) {  // If a matching user object is found
         res.status(400).json({
             status: 400,
-            message: "A user with this email alread exists",
+            message: "A user with this email already exists",
             user
             })
         } else {  // If no matching user object is found

@@ -5,11 +5,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import * as Users from "../../api/users"
+import { useAuthentication } from "../authentication";
 
 export default function RegisterPage() {
-    // const navigate = useNavigate()  // TODO: remove this?
+    const navigate = useNavigate()  // TODO: remove this?
 
     const [statusMessage, setStatusMessage] = useState("")
+    const [authObject, login, logout, refresh] = useAuthentication()
 
     const [formData, setFormData] = useState({
         email: "",
@@ -24,6 +26,7 @@ export default function RegisterPage() {
     async function handleSubmit(event) {
         try {
             event.preventDefault()
+            setStatusMessage("Registering...")
 
             // TODO: loading/registering spinner
 
@@ -33,8 +36,15 @@ export default function RegisterPage() {
             
             // Register the user
             const result = await Users.register(formData)
+            setStatusMessage(result.message)
 
-            // If the regisration is successful try to login the user
+            // If the email doesn't already exist in the database
+            if (result.status != 400) {
+                // Try to login the user and navigate home
+                const nextResult = await login(formData.email, formData.password)
+                setStatusMessage(nextResult.message)
+                navigate("/")
+            }
 
         } catch (error) {
             console.log(error)
@@ -121,6 +131,9 @@ export default function RegisterPage() {
                     </label>
                      <button className="btn btn-primary">Register</button>
                     <p className="mx-auto">Already a member? <Link to="/login">Login</Link></p>  {/* TODO: get link underline on hover */}
+                    <label className="label">
+                        <span className="label-text-alt">{statusMessage}</span>
+                    </label>
                 </form>
             </section>
             <Footer />
