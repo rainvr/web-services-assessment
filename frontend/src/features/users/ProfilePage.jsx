@@ -11,15 +11,7 @@ function ProfilePage() {
     const [statusMessage, setStatusMessage] = useState()
     const navigate = useNavigate()
     const [view, setView] = useState("profile")
-    // const [formData, setFormData] = useState(
-    //     {firstname: authObject.user.firstname},
-    //     {lastname: authObject.user.lastname},
-    //     {email: authObject.user.email},
-    //     {password: authObject.user.password},
-    //     {role: authObject.user.role},
-    //     {phone: authObject.user.phone},
-    //     {address: authObject.user.address}
-    // )
+    
     const [formData, setFormData] = useState({
         id: authObject.user.id,
         firstname: authObject.user.firstname,
@@ -99,10 +91,12 @@ function ProfilePage() {
                             value={formData.lastname} 
                             onChange={(event) => setFormData(existingData => { return { ...existingData, lastname: event.target.value } } )}/>
                         <label className="text-lg font-bold">Email</label> 
-                        <input className="bg-slate-100 p-4 rounded-lg" 
+                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.email}</p>
+                        {/* TODO: should I ever allow email to be edited? */}
+                        {/* <input className="bg-slate-100 p-4 rounded-lg" 
                             type="email"
                             value={formData.email} 
-                            onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}/>
+                            onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}/> */}
                         <label className="text-lg font-bold">Password</label> 
                         <input className="bg-slate-100 p-4 rounded-lg"
                             type="text"
@@ -136,7 +130,15 @@ function ProfilePage() {
                         {/* --- Edit Button --- */}
                         { view === "profile" ? <button type="button" onClick={() => setView("edit")} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Edit</button> : null }
                         {/* --- Refresh Button --- */}
-                        { view === "edit" ? <button type="button" onClick={() => refresh()} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Refresh</button> : null }
+                        { view === "edit" ? <button type="button" onClick={
+                            () => {
+                                // if (!authObject) {
+                                // setStatusMessage("Loading...")
+                                // } 
+                                alert(`refresh clicked. authObject: ${JSON.stringify(authObject, null, 2)}`)
+                                refresh()
+                            }
+                        } className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Refresh</button> : null }
                         {/* --- Save Button --- */}
                         { view === "edit" ? <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200  active:bg-blue-200">Save</button> : null } 
                         {/* --- Delete Button --- */}
