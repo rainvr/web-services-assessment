@@ -108,6 +108,28 @@ export async function logout(authenticationKey) {
 }
 
 /**
+ *  POST /users/update
+ * @param { Object } user 
+ * @returns {Promise<Object>}
+ */
+export async function update(user, authenticationKey) {
+    console.log(user)
+    const response = await fetch(API_URL + "/users/update", 
+        {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json",
+                'X-AUTH-KEY': authenticationKey
+            },
+            body: JSON.stringify(user)
+        })
+        
+    const APIResponseObject = await response.json()
+    
+    return APIResponseObject
+}
+
+/**
  * GET /users/
  * @param { String } authenticationKey 
  * @returns {Promise<Object>}
