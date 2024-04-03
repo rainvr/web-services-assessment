@@ -7,21 +7,21 @@ import { useAuthentication } from "../authentication"
 import { useState } from "react"
 
 function ProfilePage() {
-    const [authObject, login, logout, refresh] = useAuthentication()
+    const [user, login, logout, refresh] = useAuthentication()
     const [statusMessage, setStatusMessage] = useState()
     const navigate = useNavigate()
     const [view, setView] = useState("profile")
     
     const [formData, setFormData] = useState({
-        id: authObject.user.id,
-        firstname: authObject.user.firstname,
-        lastname: authObject.user.lastname,
-        email: authObject.user.email,
-        password: authObject.user.password,
-        role: authObject.user.role,
-        phone: authObject.user.phone,
-        address: authObject.user.address,
-        authKey: authObject.user.authKey
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        password: user.password,
+        role: user.role,
+        phone: user.phone,
+        address: user.address,
+        authenticationKey: user.authenticationKey
     })
     
     async function handleSubmit(event) {
@@ -37,8 +37,8 @@ function ProfilePage() {
             
             // Updated the user
             console.log(formData)  // TODO: remove test
-            console.log(authObject)  //  TODO: remove test
-            const result = await Users.update(formData, authObject.user.authKey)
+            console.log(user)  //  TODO: remove test
+            const result = await Users.update(formData, user.authenticationKey)
             console.log(result)
             setStatusMessage(result.message)
             
@@ -64,19 +64,19 @@ function ProfilePage() {
                     {/* --- Profile View --- */}
                     { view === "profile" ? <>
                         <h2 className="text-lg font-bold">First Name</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.firstname}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.firstname}</p>
                         <h2 className="text-lg font-bold">Last Name</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.lastname}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.lastname}</p>
                         <h2 className="text-lg font-bold">Email</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.email}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.email}</p>
                         <h2 className="text-lg font-bold">Password</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.password}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.password}</p>
                         <h2 className="text-lg font-bold">Role</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.role}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.role}</p>
                         <h2 className="text-lg font-bold">Phone</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.phone}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.phone}</p>
                         <h2 className="text-lg font-bold">Address</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.address}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.address}</p>
                     </> : null }
                     {/* --- Edit View --- */}
                     { view === "edit" ? <>
@@ -91,7 +91,7 @@ function ProfilePage() {
                             value={formData.lastname} 
                             onChange={(event) => setFormData(existingData => { return { ...existingData, lastname: event.target.value } } )}/>
                         <label className="text-lg font-bold">Email</label> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.email}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.email}</p>
                         {/* TODO: should I ever allow email to be edited? */}
                         {/* <input className="bg-slate-100 p-4 rounded-lg" 
                             type="email"
@@ -103,7 +103,7 @@ function ProfilePage() {
                             value={formData.password} 
                             onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}/>
                         <label className="text-lg font-bold">Role</label> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{authObject.user.role}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{user.role}</p>
                         {/* TODO: if the role is manager allow below input, otherwise allow above p */}
                         {/* <input className="bg-slate-100 p-4 rounded-lg"
                             type="text"
@@ -132,11 +132,13 @@ function ProfilePage() {
                         {/* --- Refresh Button --- */}
                         { view === "edit" ? <button type="button" onClick={
                             () => {
-                                // if (!authObject) {
+                                // if (!user) {
                                 // setStatusMessage("Loading...")
                                 // } 
-                                alert(`refresh clicked. authObject: ${JSON.stringify(authObject, null, 2)}`)
+                                // alert(`refresh clicked. user: ${JSON.stringify(user, null, 2)}`)
                                 refresh()
+                                // alert(`refreshed. user: ${JSON.stringify(user, null, 2)}`)
+
                             }
                         } className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Refresh</button> : null }
                         {/* --- Save Button --- */}

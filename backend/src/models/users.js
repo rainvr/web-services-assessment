@@ -3,7 +3,7 @@ import { db } from "../database.js";
 // --------- CONSTRUCTOR ---------- //
 
 // Construct a new user object
-export function newUser(id, email, password, role, phone, firstname, lastname, address, authKey) {
+export function newUser(id, email, password, role, phone, firstname, lastname, address, authenticationKey) {
     return {
         id,
         email,
@@ -13,7 +13,7 @@ export function newUser(id, email, password, role, phone, firstname, lastname, a
         firstname,
         lastname,
         address,
-        authKey
+        authenticationKey
     }
 }
 
@@ -98,9 +98,9 @@ export async function getByEmail(userEmail) {
 }
 
 // Get a user by their Authentication Key
-export async function getByAuthKey(authKey) {
+export async function getByauthenticationKey(authenticationKey) {
     try {
-        const [queryResult] = await db.query("SELECT * FROM users WHERE user_authentication_key = ?", authKey)
+        const [queryResult] = await db.query("SELECT * FROM users WHERE user_authentication_key = ?", authenticationKey)
         if (queryResult.length > 0) {
             const userResult = queryResult[0]
             return Promise.resolve(
@@ -169,7 +169,7 @@ export async function updateById(user) {
             user.firstname,
             user.lastname,
             user.address,
-            user.authKey,
+            user.authenticationKey,
             user.id
         ]
     )
@@ -201,7 +201,7 @@ export async function updateById(user) {
 // })
 
 
-// getByAuthKey("test").then(result => {
+// getByauthenticationKey("test").then(result => {
 //     return console.log(result)
 // })
 
@@ -230,7 +230,7 @@ export async function updateById(user) {
 //         firstname: "Joseph",
 //         lastname: "Blogs",
 //         address: "Someplace",
-//         authKey: "12345",
+//         authenticationKey: "12345",
 //         id: "99"
 //     }
 // ).then(result => {

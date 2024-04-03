@@ -5,11 +5,12 @@ import Footer from "../common/components/Footer"
 import ErrorPage from "./ErrorPage" // TODO: remove this?
 
 export function RestrictedRoute({ allowedRoles = [], children }) {
-    const [userObject, login, logout] = useAuthentication()
+    const [user, login, logout, refresh] = useAuthentication()
     const navigate = useNavigate()
 
-    const userIsAuthorised = userObject && allowedRoles.includes(userObject.user.role)
-    // console.log(userIsAuthorised)  // TODO: remove console test
+    console.log(user)  // TODO: remove console test
+
+    const userIsAuthorised = user && allowedRoles.includes(user.role)
     return userIsAuthorised
         ? children
         : <>

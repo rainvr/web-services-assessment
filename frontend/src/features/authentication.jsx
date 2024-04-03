@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import {
     login as apiLogin,
     logout as apiLogout,
-    getByAuthKey
+    getByauthenticationKey
 } from "../api/users"
 
 // Export the global Authentication variable
@@ -19,7 +19,7 @@ export function AuthenticationProvider({ router, children }) {
         if (authenticatedUser == null) {  // if noone is logged in or the page was reloaded
             const authenticationKey = localStorage.getItem("authenticationKey")  // get the auth key from local storage
             if (authenticationKey) {  // if there is an auth key in local storage
-                getByAuthKey(authenticationKey)  // retrieve the matching user object
+                getByauthenticationKey(authenticationKey)  // retrieve the matching user object
                     .then(user => {
                         setAuthenticatedUser(user)
                     })
@@ -51,7 +51,7 @@ export function useAuthentication() {
                     // Store auth key in case page is reloaded
                     localStorage.setItem("authenticationKey", result.authenticationKey)
                     // Fetch logged in user from backend
-                    return getByAuthKey(result.authenticationKey)
+                    return getByauthenticationKey(result.authenticationKey)
                         .then(user => {
                             setAuthenticatedUser(user)
                             return Promise.resolve(result.message)
@@ -77,8 +77,9 @@ export function useAuthentication() {
 
     // reload a users data in the frontend if backend is updated
     async function refresh() {
+        console.log(authenticatedUser)  // TODO: remove this test
         if (authenticatedUser) {  // is someone logged in according to the frontend?
-            return getByAuthKey(authenticatedUser.authenticationKey) // Get the user object from the backend
+            return getByauthenticationKey(authenticatedUser.authenticationKey) // Get the user object from the backend
                 .then(user => {
                     setAuthenticatedUser(user)  // set the frontend Auth user object the same as the backend
                     return Promise.resolve("user refreshed")

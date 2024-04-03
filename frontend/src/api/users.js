@@ -1,7 +1,8 @@
 import { API_URL } from "./api.js";
 
 
-// TODO: remove or change this as it conflicts with GET /users by authKey below
+// ---------- READ ---------- //
+
 /**
  * GET /users
  * Gets all the users from the database (only for a logged in user)
@@ -22,17 +23,39 @@ export async function getAll(authenticationKey) {
 }
 
 /**
+ * GET /users/:authenticationKey
+ * @param { String } authenticationKey 
+ * @returns {Promise<Object>}
+ */
+export async function getByauthenticationKey(authenticationKey) {
+    const response = await fetch(API_URL + "/users/authentication/" + authenticationKey, 
+        {
+            method: "GET",
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
+        
+    const APIResponseObject = await response.json()
+    
+    return APIResponseObject.user
+}
+
+
+// ---------- CREATE ---------- //
+
+/**
  *  POST /users  // TODO: do I need this api?
  * @param { Object } user 
- * @param { String } authKey
+ * @param { String } authenticationKey
  * @returns { Promise<Object> }
  */
-export async function create(user, authKey) {
+export async function create(user, authenticationKey) {
     const response = await fetch(API_URL + "/users", {
         method: "POST",
         headers: {
             'Content-Type': "application/json",
-            'X-AUTH-KEY': authKey
+            'X-AUTH-KEY': authenticationKey
         },
         body: JSON.stringify({user})
     })
@@ -61,6 +84,9 @@ export async function register(user) {
     
     return APIResponseObject
 }
+
+
+// ---------- UPDATE ---------- //
 
 /**
  *  POST /users/login
@@ -129,21 +155,3 @@ export async function update(user, authenticationKey) {
     return APIResponseObject
 }
 
-/**
- * GET /users/
- * @param { String } authenticationKey 
- * @returns {Promise<Object>}
- */
-export async function getByAuthKey(authenticationKey) {
-    const response = await fetch(API_URL + "/users/authentication/" + authenticationKey, 
-        {
-            method: "GET",
-            headers: {
-                'Content-Type': "application/json"
-            }
-        })
-        
-    const APIResponseObject = await response.json()
-    
-    return APIResponseObject
-}

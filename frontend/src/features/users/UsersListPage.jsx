@@ -18,7 +18,7 @@ function UsersListPage() {
             
             const fetchUsers = async () => {
                 try {
-                    const users = await Users.getAll(userObject.user.authKey)
+                    const users = await Users.getAll(userObject.user.authenticationKey)
                     if (users) {  // If we have some users returned
                         setUsers(users)  // Set the users state as the users returned
                     } else {

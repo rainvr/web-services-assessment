@@ -11,7 +11,7 @@ export default function RegisterPage() {
     const navigate = useNavigate()  // TODO: remove this?
 
     const [statusMessage, setStatusMessage] = useState("")
-    const [authObject, login, logout, refresh] = useAuthentication()
+    const [user, login, logout, refresh] = useAuthentication()
 
     const [formData, setFormData] = useState({
         email: "",

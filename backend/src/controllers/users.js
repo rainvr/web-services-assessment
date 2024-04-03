@@ -40,14 +40,14 @@ userController.post("/login", async (req, res) => {
         }
         
         // Create a unique auth key for the returned user
-        user.authKey = uuid4().toString()  
+        user.authenticationKey = uuid4().toString()  
 
-        // Update the user in the db with the one with the new authKey
+        // Update the user in the db with the one with the new authenticationKey
         Users.updateById(user).then(result => {
             res.status(200).json({
                 status: 200,
                 message: "The user is logged in",
-                authenticationKey: user.authKey,
+                authenticationKey: user.authenticationKey,
             })
         })
     } catch (error) {
@@ -62,11 +62,11 @@ userController.post("/login", async (req, res) => {
 // POST /Logout
 userController.post("/logout", (req, res) => {
     // Get the authentication key from the header
-    const authKey = req.get("X-AUTH-KEY")
+    const authenticationKey = req.get("X-AUTH-KEY")
 
     // TODO: validate auth key header (not empty and in the appropriate uuid style)
 
-    Users.getByAuthKey(authKey).then(user => {
+    Users.getByauthenticationKey(authenticationKey).then(user => {
         
         // If no matching user object is found
         if (!user) {
@@ -76,10 +76,10 @@ userController.post("/logout", (req, res) => {
             })
         }
 
-        // Clear the authKey from the returned user object
-        user.authKey = null  
+        // Clear the authenticationKey from the returned user object
+        user.authenticationKey = null  
 
-        // Update the user object in the db with the cleared authKey
+        // Update the user object in the db with the cleared authenticationKey
         Users.updateById(user).then(response => {
             res.status(200).json({
                 status: 200,
@@ -152,20 +152,20 @@ userController.post("/register", (req, res) => {
 
 // POST /profile
 userController.post("/profile", async (req, res) => {
-    const authKey = req.get("X-AUTH-KEY")
+    const authenticationKey = req.get("X-AUTH-KEY")
 
     try {
         // If no X-AUTH-KEY in the header
-        if (!authKey) {
+        if (!authenticationKey) {
             return res.status(400).json({
                 status: 400,
                 message: "Missing Authentication Key"
             })
         }
         
-        // TODO: Validate authKey
+        // TODO: Validate authenticationKey
 
-        const user = await Users.getByAuthKey(authKey)
+        const user = await Users.getByauthenticationKey(authenticationKey)
         
         // If no matching user object is found
         if (!user) {
@@ -217,7 +217,7 @@ userController.post("/update", async (req, res) => {
         updateData.firstname,
         updateData.lastname,
         updateData.address,
-        updateData.authKey
+        updateData.authenticationKey
     )
 
         // Update the user object in the db with the form data
@@ -254,21 +254,21 @@ userController.get("/", auth(["manager"]), async (req, res) => {
 // Get user by Auth Key
 userController.get("/authentication/:authenticationKey", async (req, res) => {
     
-    const authKey = req.params.authenticationKey
+    const authenticationKey = req.params.authenticationKey
     
     try {
         
         // If no X-AUTH-KEY in the header
-        if (!authKey) {
+        if (!authenticationKey) {
             return res.status(400).json({
                 status: 400,
                 message: "Missing Authentication Key"
             })
         }
 
-        // TODO: Validate authKey
+        // TODO: Validate authenticationKey
 
-        const user = await Users.getByAuthKey(authKey)
+        const user = await Users.getByauthenticationKey(authenticationKey)
         
         return res.status(200).json({
             status: 200,
