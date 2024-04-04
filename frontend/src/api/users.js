@@ -41,6 +41,26 @@ export async function getByauthenticationKey(authenticationKey) {
     return APIResponseObject.user
 }
 
+/**
+ * GET /users/:id
+ * @param { String } userId 
+ * @returns {Promise<Object>}
+ */
+export async function getById(userId, authenticationKey) {
+    const response = await fetch(API_URL + "/users/edit/" + userId, 
+        {
+            method: "GET",
+            headers: {
+                'Content-Type': "application/json",
+                'X-AUTH-KEY': authenticationKey
+            }
+        })
+        
+    const APIResponseObject = await response.json()
+    
+    return APIResponseObject.user
+}
+
 
 // ---------- CREATE ---------- //
 
@@ -133,13 +153,14 @@ export async function logout(authenticationKey) {
     return APIResponseObject
 }
 
+// TODO: change to PATCH?
 /**
  *  POST /users/update
  * @param { Object } user 
  * @returns {Promise<Object>}
  */
 export async function update(user, authenticationKey) {
-    console.log(user)
+
     const response = await fetch(API_URL + "/users/update", 
         {
             method: "POST",

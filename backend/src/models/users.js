@@ -43,31 +43,31 @@ export function getAll() {
 }
 
 // Get a user by their ID
-export function getById(userId) {
-    return db.query("SELECT * FROM users WHERE user_id = ?", userId)
-        .then((([queryResult]) => {
+export async function getById(userId) {
+    try {
+        const [queryResult] = await db.query("SELECT * FROM users WHERE user_id = ?", userId)
             if (queryResult.length > 0) {
-                return queryResult.map(
-                    result => newUser(
-                        result.user_id,
-                        result.user_email,
-                        result.user_password,
-                        result.user_role,    
-                        result.user_phone,
-                        result.user_firstname,
-                        result.user_lastname,
-                        result.user_address,
-                        result.user_authentication_key
+                const userResult = queryResult[0]
+                return Promise.resolve(
+                    newUser(
+                        userResult.user_id.toString(),
+                        userResult.user_email,
+                        userResult.user_password,
+                        userResult.user_role,    
+                        userResult.user_phone,
+                        userResult.user_firstname,
+                        userResult.user_lastname,
+                        userResult.user_address,
+                        userResult.user_authentication_key
                     )
                 )
             } else {
-                console.log(`Error - No users with user_id: ${userId}`)
-                // return  TODO: do I need to return here?
+                // console.log(`Error - No users with user_id: ${userId}`)  // TODO: reinstate this?
+                return Promise.resolve(null)
             }
-        }))
-        .catch(error => {
-            console.log(`Error getting the user: ${error}`)
-        })
+    } catch (error) {
+        return Promise.reject("Error getting the user from their ID" + error)
+    }
 }
 
 // Get a user by their email

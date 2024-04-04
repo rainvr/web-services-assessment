@@ -12,6 +12,7 @@ import ProfilePage from "./features/users/ProfilePage.jsx";
 import UsersListPage from "./features/users/UsersListPage.jsx";
 import ErrorPage from "./features/ErrorPage";
 import ImportPage from "./features/ImportPage";
+import EditUserPage from "./features/users/EditUserPage";
 
 // Declaring a router to map URL paths to react components
 // When a user visits a path a different component will render
@@ -41,24 +42,27 @@ const router = createBrowserRouter([
         element: <BlogPage />
     },
     {
+        path: "/error",
+        element: <ErrorPage />
+    },
+    
+    // ------- Restricted Routes ------- //
+    {
         path: "/profile",
         element: <RestrictedRoute allowedRoles={["manager", "trainer", "member"]}>
             <ProfilePage />
         </RestrictedRoute>
     },
     {
-        path: "/error",
-        element: <ErrorPage />
-    },
-    // {
-    //     path: "/users-list",
-    //     element: <UsersListPage />
-    // },
-    // ------- Restricted Routes ------- //
-    {
         path: "/users-list",
         element: <RestrictedRoute allowedRoles={["manager"]}>
             <UsersListPage />
+        </RestrictedRoute>
+    },
+    {
+        path: "/edit-user/:userId",
+        element: <RestrictedRoute allowedRoles={["manager"]}>
+            <EditUserPage />
         </RestrictedRoute>
     },
     {

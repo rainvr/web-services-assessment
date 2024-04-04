@@ -8,8 +8,6 @@ export function RestrictedRoute({ allowedRoles = [], children }) {
     const [user, login, logout, refresh] = useAuthentication()
     const navigate = useNavigate()
 
-    console.log(user)  // TODO: remove console test
-
     const userIsAuthorised = user && allowedRoles.includes(user.role)
     return userIsAuthorised
         ? children

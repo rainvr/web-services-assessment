@@ -195,7 +195,7 @@ userController.post("/update", async (req, res) => {
     
         // Get the authentication key from the header
         const updateData = req.body
-        console.log(updateData)
+        //  console.log(updateData)  // TODO: remove test
 
         // If no request body is found
         if (isEmpty(updateData)) {
@@ -273,6 +273,39 @@ userController.get("/authentication/:authenticationKey", async (req, res) => {
         return res.status(200).json({
             status: 200,
             message: "Retrieved the user by the Authentication Key",
+            user
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Error getting the user",
+            error
+        })
+    }
+})
+
+// Get user by Id
+userController.get("/edit/:userId", async (req, res) => {
+    
+    const userId = req.params.userId
+    
+    try {
+        
+        // If no userId param
+        if (!userId) {
+            return res.status(400).json({
+                status: 400,
+                message: "Missing User ID"
+            })
+        }
+
+        // TODO: Validate authenticationKey
+
+        const user = await Users.getById(userId)
+        
+        return res.status(200).json({
+            status: 200,
+            message: "Retrieved the user by their ID",
             user
         })
     } catch (error) {
