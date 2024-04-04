@@ -21,8 +21,8 @@ function EditUserPage() {
         password: location.state.password,
         role: location.state.role,
         phone: location.state.phone,
-        address: location.state.address // ,
-        // authenticationKey: user.authenticationKey
+        address: location.state.address,
+        authenticationKey: user.authenticationKey
     })
 
     // const { userId } = useParams()

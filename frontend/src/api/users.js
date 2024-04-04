@@ -163,7 +163,7 @@ export async function update(user, authenticationKey) {
 
     const response = await fetch(API_URL + "/users/update", 
         {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 'Content-Type': "application/json",
                 'X-AUTH-KEY': authenticationKey

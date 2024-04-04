@@ -190,7 +190,7 @@ userController.post("/profile", async (req, res) => {
 })
 
 // POST /update
-userController.post("/update", async (req, res) => {
+userController.patch("/update", async (req, res) => {
     try {
     
         // Get the authentication key from the header
