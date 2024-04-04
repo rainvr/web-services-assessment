@@ -176,3 +176,24 @@ export async function update(user, authenticationKey) {
     return APIResponseObject
 }
 
+// ---------- DELETE ---------- //
+
+/**
+ * DELETE /users/:id
+ * @param { String } userId 
+ * @returns {Promise<Object>}
+ */
+export async function deleteById(userId, authenticationKey) {
+    const response = await fetch(API_URL + "/users/" + userId, 
+        {
+            method: "DELETE",
+            headers: {
+                'Content-Type': "application/json",
+                'X-AUTH-KEY': authenticationKey
+            }
+        })
+        
+    const APIResponseObject = await response.json()
+    
+    return APIResponseObject
+}

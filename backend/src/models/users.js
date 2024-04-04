@@ -179,7 +179,12 @@ export async function updateById(user) {
 }
 
 // --------- DELETE ---------- //
-// TODO: do I need a delete() for the UsersListPage.jsx?
+// Delete the user by ID
+export async function deleteById(userId) {
+    return db.query("DELETE FROM users WHERE user_id = ?", userId)
+}
+
+
 
 
 // --- TESTING --- //
