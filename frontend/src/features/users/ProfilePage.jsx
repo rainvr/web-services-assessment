@@ -36,10 +36,8 @@ function ProfilePage() {
             // TODO: add validation for all fields
             
             // Updated the user
-            console.log(formData)  // TODO: remove test
-            console.log(user)  //  TODO: remove test
             const result = await Users.update(formData, user.authenticationKey)
-            console.log(result)
+            refresh()
             setStatusMessage(result.message)
             
             // TODO: check if If the new email doesn't already exist in the database
@@ -129,21 +127,11 @@ function ProfilePage() {
                         <button type="button" onClick={() => navigate(-1)} className="badge badge-outline font-semibold text-green-600 hover:bg-green-200 focus:bg-green-200  active:bg-green-200">Back</button> 
                         {/* --- Edit Button --- */}
                         { view === "profile" ? <button type="button" onClick={() => setView("edit")} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Edit</button> : null }
-                        {/* --- Refresh Button --- */}
-                        { view === "edit" ? <button type="button" onClick={
-                            () => {
-                                // if (!user) {
-                                // setStatusMessage("Loading...")
-                                // } 
-                                // alert(`refresh clicked. user: ${JSON.stringify(user, null, 2)}`)
-                                refresh()
-                                // alert(`refreshed. user: ${JSON.stringify(user, null, 2)}`)
-
-                            }
-                        } className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Refresh</button> : null }
+                        {/* --- TODO: Refresh Button...(when clicked reload the original state for each input - should be equal to the authenticatedUser values in context) --- */}
+                        {/* { view === "edit" ? <button type="button" onClick={() => {refresh()}} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Refresh</button> : null } */}
                         {/* --- Save Button --- */}
                         { view === "edit" ? <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200  active:bg-blue-200">Save</button> : null } 
-                        {/* --- Delete Button --- */}
+                        {/* --- TODO: Delete Button...(only for managers.. probably have to change api/controller to getById) --- */}
                         {/* <button onClick={() => } className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200  active:bg-red-200">Delete</button>  TODO: create & use the deleteBlog model/controller */}
                     </div>
             </form>
