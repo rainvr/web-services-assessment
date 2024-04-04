@@ -3,22 +3,24 @@ import { useState, useEffect } from "react"
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
 import { useAuthentication } from "../authentication"
+import { useNavigate } from "react-router-dom"
 
 function UsersListPage() {
-    const [userObject, login, logout, refresh] = useAuthentication()
+    const [user, login, logout, refresh] = useAuthentication()
+    const navigate = useNavigate()
 
     // TODO: refresh trigger for on Save
     const [users, setUsers] = useState([])
     const [userId, setUserId] = useState()
 
         useEffect(() => {
-            if (!userObject) {
-                return // Return early if the authenticated userObject is null
+            if (!user) {
+                return // Return early if the authenticated user is null
             }
             
             const fetchUsers = async () => {
                 try {
-                    const users = await Users.getAll(userObject.user.authenticationKey)
+                    const users = await Users.getAll(user.authenticationKey)
                     if (users) {  // If we have some users returned
                         setUsers(users)  // Set the users state as the users returned
                     } else {
@@ -29,10 +31,10 @@ function UsersListPage() {
                     console.error("Error fetching users:", error) // TODO: remove test
                     // return <div>Error fetching users: {error.message}</div> // TODO: remove??
                 }
-            };
+            }
         
             fetchUsers()
-        }, [userObject]) // Only re-run the effect if userObject changes ( see 2nd wk 5&6 video 1:26:30 )
+        }, [user]) // Only re-run the effect if user changes ( see 2nd wk 5&6 video 1:26:30 )
         
 
     return (
@@ -59,7 +61,8 @@ function UsersListPage() {
                             <td>{user.firstname} {user.lastname}</td>
                             <td>{user.address}</td>
                             <td>
-                                <button className="btn btn-primary" onClick={() => setUserId(user.id)}>Edit</button>
+                                <button className="btn btn-primary" onClick={() => navigate(`/edit-user/${user.id}`)}>Edit</button>
+                                <button className="btn btn-error ml-2" onClick={() => setUserId(user.id)}>Delete</button>
                             </td>
                         </tr>
                     )}
