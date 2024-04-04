@@ -190,12 +190,11 @@ userController.post("/profile", async (req, res) => {
 })
 
 // POST /update
-userController.patch("/update", async (req, res) => {
+userController.patch("/update", auth(["manager"]), async (req, res) => {
     try {
     
         // Get the authentication key from the header
         const updateData = req.body
-        //  console.log(updateData)  // TODO: remove test
 
         // If no request body is found
         if (isEmpty(updateData)) {
@@ -316,6 +315,43 @@ userController.get("/edit/:userId", async (req, res) => {
         })
     }
 })
+
+// ---------- DELETE ---------- //
+
+// DELETE /
+userController.delete("/:id", auth(["manager"]), async (req, res) => {
+    try {
+        // Get the id
+        const userId = req.params.id
+
+        // If no param is found
+        if (isEmpty(userId)) {
+            return res.status(404).json({
+                status: 400,
+                message: "Missing ID in the request"
+            })
+        }
+
+        // TODO: Validate parameter
+
+        // Delete the user object in the db with matching ID
+        const response = await Users.deleteById(userId)
+        
+        .then(response => {
+                res.status(200).json({
+                    status: 200,
+                    message: "User Deleted"
+                })
+            })
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            message: "Delete failed",
+            error
+        })
+    }
+})
+
 
 
 // ---- PRACTICE CONTROLLERS ---- //

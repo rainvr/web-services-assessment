@@ -70,7 +70,7 @@ const router = createBrowserRouter([
         element: <RestrictedRoute allowedRoles={["manager", "trainer"]}>
             <ImportPage />
         </RestrictedRoute>
-    },
+    }
 ])
 
 export default router
