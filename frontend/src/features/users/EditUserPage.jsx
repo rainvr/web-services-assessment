@@ -2,7 +2,7 @@
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
 import * as Users from "../../api/users"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { useAuthentication } from "../authentication"
 import { useEffect, useState } from "react"
 
@@ -10,34 +10,35 @@ function EditUserPage() {
     const [user, login, logout, refresh] = useAuthentication()
     const [statusMessage, setStatusMessage] = useState()
     const navigate = useNavigate()
+    const location = useLocation()
     const [view, setView] = useState("profile")
 
     const [formData, setFormData] = useState({
-        id: null,
-        firstname: "",
-        lastname: "",
-        email: "",
-        password: "",
-        role: "",
-        phone: "",
-        address: "",
-        authenticationKey: null
+        id: location.state.id,
+        firstname: location.state.firstname,
+        lastname: location.state.lastname,
+        email: location.state.email,
+        password: location.state.password,
+        role: location.state.role,
+        phone: location.state.phone,
+        address: location.state.address // ,
+        // authenticationKey: user.authenticationKey
     })
 
-    const { userId } = useParams()
+    // const { userId } = useParams()
     // console.log(userId)  // TODO: remove test
     
     // Load selected user provided in userId prop
-    useEffect(() => {
-        if (!userId) {
-            return
-        }
-        Users.getById(userId, user.authenticationKey).then(user => {
-            setFormData(user)
-            // console.log(user) // TODO: remove test
-        })
+    // useEffect(() => {
+    //     if (!userId) {
+    //         return
+    //     }
+    //     Users.getById(userId, user.authenticationKey).then(user => {
+    //         setFormData(user)
+    //         console.log(user) // TODO: remove test
+    //     })
 
-    }, [userId])
+    // }, [userId])
 
 
     async function handleSubmit(event) {
@@ -78,19 +79,19 @@ function EditUserPage() {
                     {/* --- Profile View --- */}
                     { view === "profile" ? <>
                         <h2 className="text-lg font-bold">First Name</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.firstname}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.firstname}</p>
                         <h2 className="text-lg font-bold">Last Name</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.lastname}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.lastname}</p>
                         <h2 className="text-lg font-bold">Email</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.email}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.email}</p>
                         <h2 className="text-lg font-bold">Password</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.password}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.password}</p>
                         <h2 className="text-lg font-bold">Role</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.role}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.role}</p>
                         <h2 className="text-lg font-bold">Phone</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.phone}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.phone}</p>
                         <h2 className="text-lg font-bold">Address</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.address}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.address}</p>
                     </> : null }
                     {/* --- Edit View --- */}
                     { view === "edit" ? <>
@@ -105,7 +106,7 @@ function EditUserPage() {
                             value={formData.lastname} 
                             onChange={(event) => setFormData(existingData => { return { ...existingData, lastname: event.target.value } } )}/>
                         <label className="text-lg font-bold">Email</label> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.email}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.email}</p>
                         {/* TODO: should I ever allow email to be edited? */}
                         {/* <input className="bg-slate-100 p-4 rounded-lg" 
                             type="email"
@@ -117,7 +118,7 @@ function EditUserPage() {
                             value={formData.password} 
                             onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}/>
                         <label className="text-lg font-bold">Role</label> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.role}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">{formData.role}</p>
                         {/* TODO: if the role is manager allow below input, otherwise allow above p */}
                         {/* <input className="bg-slate-100 p-4 rounded-lg"
                             type="text"

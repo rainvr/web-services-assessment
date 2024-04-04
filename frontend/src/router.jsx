@@ -60,7 +60,7 @@ const router = createBrowserRouter([
         </RestrictedRoute>
     },
     {
-        path: "/edit-user/:userId",
+        path: "/edit-user",
         element: <RestrictedRoute allowedRoles={["manager"]}>
             <EditUserPage />
         </RestrictedRoute>

@@ -61,7 +61,7 @@ function UsersListPage() {
                             <td>{user.firstname} {user.lastname}</td>
                             <td>{user.address}</td>
                             <td>
-                                <button className="btn btn-primary" onClick={() => navigate(`/edit-user/${user.id}`)}>Edit</button>
+                                <button className="btn btn-primary" onClick={() => navigate(`/edit-user`, {state: user})}>Edit</button>
                                 <button className="btn btn-error ml-2" onClick={() => setUserId(user.id)}>Delete</button>
                             </td>
                         </tr>
