@@ -393,13 +393,21 @@ userController.patch("/update", auth(["manager", "member", "trainer"]), async (r
 
 // Get all users
 userController.get("/", auth(["manager"]), async (req, res) => {
-    const users = await Users.getAll()
+    try {
+        const users = await Users.getAll()
 
-    res.status(200).json({
-        status: 200,
-        message: "All Users List",
-        users
-    })
+        res.status(200).json({
+            status: 200,
+            message: "All Users List",
+            users
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Error getting the users",
+            error
+        })
+    }
 })
 
 // Get user by Auth Key

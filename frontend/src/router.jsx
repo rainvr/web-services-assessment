@@ -7,7 +7,7 @@ import LoginPage from "./features/users/LoginPage.jsx";
 import RegisterPage from "./features/users/RegisterPage.jsx";
 import CalendarPage from "./features/CalendarPage.jsx";
 import BookingsPage from "./features/BookingsPage.jsx";
-import BlogPage from "./features/BlogPage.jsx";
+import BlogPage from "./features/blogs/BlogPage";
 import ProfilePage from "./features/users/ProfilePage.jsx";
 import UsersListPage from "./features/users/UsersListPage.jsx";
 import ErrorPage from "./features/ErrorPage";
