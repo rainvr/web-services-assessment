@@ -2,7 +2,7 @@
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
 import * as Users from "../../api/users"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useAuthentication } from "../authentication"
 import { useState } from "react"
 

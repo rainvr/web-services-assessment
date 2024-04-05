@@ -4,6 +4,7 @@ import pkg from 'lodash'
 const { isEmpty } = pkg
 import { v4 as uuid4 } from "uuid"
 import auth from "../middleware/auth.js"
+import validator from "validator"
 
 const userController = Router()
 
@@ -18,7 +19,14 @@ userController.post("/login", async (req, res) => {
             })
         } 
 
-        // TODO: Validate request body
+        // Validate email
+        if (!validator.isEmail(loginData.email)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid email format"
+            })
+        }
 
         // Get the user from the db by their email
         const user = await Users.getByEmail(loginData.email)
@@ -31,8 +39,19 @@ userController.post("/login", async (req, res) => {
             })
         }
 
+        // TODO: Convert password to hash
+        // loginData.password = bcrypt.hashSync(loginData.password)
+
+        // TODO: If a matching user object is found, check if the pw hashes match
+        // if (bcrypt.compareSync(loginData.password, user.password)) {  
+        //     return res.status(400).json({
+        //         status: 400,
+        //         message: "Invalid credentials"
+        //     })
+        // }
+        
         // If a matching user object is found check the passwords match
-        if (loginData.password != user.password) {  // TODO: bcrypt hashsync this
+        if (loginData.password != user.password) {  
             return res.status(400).json({
                 status: 400,
                 message: "Invalid credentials"
@@ -64,8 +83,24 @@ userController.post("/logout", (req, res) => {
     // Get the authentication key from the header
     const authenticationKey = req.get("X-AUTH-KEY")
 
-    // TODO: validate auth key header (not empty and in the appropriate uuid style)
+    // Check if there is an Authentication Key
+    if (isEmpty(authenticationKey)) {  // If the request body is empty
+        return res.status(400).json({
+            status: 400,
+            message: "Missing Authentication Key"
+        })
+    } 
 
+    // Validate the Authentication Key
+    if (!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(authenticationKey)) {
+        // Show error
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid Authentication Key format"
+        })
+    }
+
+    // Get the user by the Authentication Key
     Users.getByauthenticationKey(authenticationKey).then(user => {
         
         // If no matching user object is found
@@ -108,18 +143,75 @@ userController.post("/register", (req, res) => {
         })
     }
 
-    // TODO: Validate request body
+    // --- VALIDATION --- //
 
-    // Convert the user data into an User model object
+    // Validate email
+    if (!validator.isEmail(registerData.email)) {
+        // Show error
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid email format"
+        })
+    }
+
+    // Validate the password
+    if (!/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/.test(registerData.password)) {
+        // Show error
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid Password. Must use a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces"
+        })
+    }
+
+    // Validate firstname
+    if (!/^[a-zA-Z -]+$/.test(registerData.firstname)) {
+        // Show error
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid first name"
+        })
+    }
+
+    // Validate lastname
+    if (!/^[a-zA-Z -]+$/.test(registerData.lastname)) {
+        // Show error
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid last name"
+        })
+    }
+
+    // Validate phone number
+    if (!/^(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})$/.test(registerData.phone)) {
+        // Show error
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid phone number"
+        })
+    }
+
+    // Validate Address
+    if (!/^[a-zA-Z0-9\- ,]+$/.test(registerData.address)) {
+        // Show error
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid address"
+        })
+    }
+
+    // TODO: Hash the password
+    // registerData.password = bcrypt.hashSync(registerData.password);
+
+    // Convert the user data into an User model object (and sanitise appropriate inputs)
     const userObject = Users.newUser(
         null,
-        registerData.email,
-        registerData.password,  // TODO: bcrypt the password when inputting
+        validator.escape(registerData.email),
+        registerData.password,
         "member",
-        registerData.phone,
-        registerData.firstname,
-        registerData.lastname,
-        registerData.address,
+        validator.escape(registerData.phone),
+        validator.escape(registerData.firstname),
+        validator.escape(registerData.lastname),
+        validator.escape(registerData.address),
         null
     )
 
@@ -163,7 +255,14 @@ userController.post("/profile", async (req, res) => {
             })
         }
         
-        // TODO: Validate authenticationKey
+        // Validate the Authentication Key
+        if (!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(authenticationKey)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid Authentication Key format"
+            })
+        }
 
         const user = await Users.getByauthenticationKey(authenticationKey)
         
@@ -174,7 +273,6 @@ userController.post("/profile", async (req, res) => {
                 message: "The user was not found"
             })
         }
-        
         return res.status(200).json({
             status: 200,
             message: "The user profile has been returned",
@@ -189,8 +287,8 @@ userController.post("/profile", async (req, res) => {
     }
 })
 
-// POST /update
-userController.patch("/update", auth(["manager"]), async (req, res) => {
+// PATCH /update
+userController.patch("/update", auth(["manager", "member", "trainer"]), async (req, res) => {
     try {
     
         // Get the authentication key from the header
@@ -203,25 +301,79 @@ userController.patch("/update", auth(["manager"]), async (req, res) => {
                 message: "Missing request body"
             })
         }
+        
+        // --- VALIDATION --- //
 
-        // TODO: Validate request body
+        // Validate email
+        if (!validator.isEmail(updateData.email)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid email format"
+            })
+        }
 
-        // Convert the update data into an User model object
+        // Validate the password
+        if (!/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/.test(updateData.password)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid Password. Must use a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces"
+            })
+        }
+
+        // Validate firstname
+        if (!/^[a-zA-Z -]+$/.test(updateData.firstname)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid first name"
+            })
+        }
+
+        // Validate lastname
+        if (!/^[a-zA-Z -]+$/.test(updateData.lastname)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid last name"
+            })
+        }
+
+        // Validate phone number
+        if (!/^(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})$/.test(updateData.phone)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid phone number"
+            })
+        }
+
+        // Validate Address
+        if (!/^[a-zA-Z0-9\- ,]+$/.test(updateData.address)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid address"
+            })
+        }
+
+        // Convert the update data into an User model object (sanitise appropriate inputs)
         const userObject = Users.newUser(
-        updateData.id,
-        updateData.email,
-        updateData.password,  // TODO: bcrypt the password when inputting
-        updateData.role,
-        updateData.phone,
-        updateData.firstname,
-        updateData.lastname,
-        updateData.address,
-        updateData.authenticationKey
-    )
+            updateData.id,
+            validator.escape(updateData.email),
+            updateData.password,  // TODO: bcrypt the password when inputting
+            updateData.role,
+            validator.escape(updateData.phone),
+            validator.escape(updateData.firstname),
+            validator.escape(updateData.lastname),
+            validator.escape(updateData.address),
+            updateData.authenticationKey
+        )
 
         // Update the user object in the db with the form data
         const response = await Users.updateById(userObject)
-        
+       
         .then(response => {
                 res.status(200).json({
                     status: 200,
@@ -265,7 +417,14 @@ userController.get("/authentication/:authenticationKey", async (req, res) => {
             })
         }
 
-        // TODO: Validate authenticationKey
+        // Validate the Authentication Key
+        if (!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(authenticationKey)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid Authentication Key format"
+            })
+        }
 
         const user = await Users.getByauthenticationKey(authenticationKey)
         
@@ -298,7 +457,14 @@ userController.get("/edit/:userId", async (req, res) => {
             })
         }
 
-        // TODO: Validate authenticationKey
+        // Validate the userId
+        if (!/^(0|[1-9]\d*)$/.test(userId)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid userId format"
+            })
+        }
 
         const user = await Users.getById(userId)
         
@@ -332,7 +498,14 @@ userController.delete("/:id", auth(["manager"]), async (req, res) => {
             })
         }
 
-        // TODO: Validate parameter
+        // Validate the userId
+        if (!/^(0|[1-9]\d*)$/.test(userId)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid userId format"
+            })
+        }
 
         // Delete the user object in the db with matching ID
         const response = await Users.deleteById(userId)
@@ -353,20 +526,6 @@ userController.delete("/:id", auth(["manager"]), async (req, res) => {
 })
 
 
-
-// ---- PRACTICE CONTROLLERS ---- //
-// TODO: remove practice controllers?
-
-// Get the user by their email
-userController.get("/profile/:email", async (req, res) => {
-    const userEmail = req.params.email
-    const user = await Users.getByEmail(userEmail)
-
-    res.status(200).json({
-        status: 200,
-        message: "The user has been returned!",
-        user
-    })
-})
+// ---------- EXPORT ---------- //
 
 export default userController

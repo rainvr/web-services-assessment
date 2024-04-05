@@ -11,22 +11,7 @@ function UsersListPage() {
 
     // TODO: refresh trigger for on Save
     const [users, setUsers] = useState([])
-    const [userId, setUserId] = useState()
-
-    // const fetchUsers = async () => {
-    //     try {
-    //         const users = await Users.getAll(user.authenticationKey)
-    //         if (users) {  // If we have some users returned
-    //             setUsers(users)  // Set the users state as the users returned
-    //         } else {
-    //             console.log("No users returned")  // TODO: remove test
-    //             // return <div>No users returned</div>  // TODO: remove??
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching users:", error) // TODO: remove test
-    //         // return <div>Error fetching users: {error.message}</div> // TODO: remove??
-    //     }
-    // }
+    // const [userId, setUserId] = useState()  // TODO: remove?
 
     useEffect(() => {
         if (!user) {
@@ -39,12 +24,10 @@ function UsersListPage() {
                 if (users) {  // If we have some users returned
                     setUsers(users)  // Set the users state as the users returned
                 } else {
-                    console.log("No users returned")  // TODO: remove test
-                    // return <div>No users returned</div>  // TODO: remove??
+                    console.log("No users returned")  
                 }
             } catch (error) {
-                console.error("Error fetching users:", error) // TODO: remove test
-                // return <div>Error fetching users: {error.message}</div> // TODO: remove??
+                console.error("Error fetching users:", error) 
             }
         }
     
@@ -53,11 +36,8 @@ function UsersListPage() {
         
 
     async function deleteThisUser(userId) {
-        console.log("Trying to delete user with ID: " + userId) // TODO: remove test
         
         const result = await Users.deleteById(userId, user.authenticationKey)
-        console.log(user.authenticationKey)
-        console.log(result)
 
         const fetchUsers = async () => {
             try {
@@ -65,12 +45,10 @@ function UsersListPage() {
                 if (users) {  // If we have some users returned
                     setUsers(users)  // Set the users state as the users returned
                 } else {
-                    console.log("No users returned")  // TODO: remove test
-                    // return <div>No users returned</div>  // TODO: remove??
+                    console.log("No users returned")  
                 }
             } catch (error) {
-                console.error("Error fetching users:", error) // TODO: remove test
-                // return <div>Error fetching users: {error.message}</div> // TODO: remove??
+                console.error("Error fetching users:", error) 
             }
         }
         fetchUsers()
