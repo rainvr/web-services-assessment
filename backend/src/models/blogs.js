@@ -60,3 +60,33 @@ export async function getById(blogId) {
         return Promise.reject("Error getting the blog from their ID" + error)
     }
 }
+
+// --------- CREATE ---------- //
+
+export async function create(blog) {
+    delete blog.id
+    delete blog.author
+
+    return db.query(
+        "INSERT INTO blog_posts (post_user_id, post_datetime, post_title, post_content)" +
+        "VALUES (?, ?, ?, ?)",
+        [
+            blog.userId,
+            blog.datetime,
+            blog.title,
+            blog.content
+        ]
+    )
+    .then(([result]) => {
+        return { ...blog, id: result.insertId }  // return an object with the blog fields plus the inserted ID as the id
+    })
+}
+
+// ---------- TESTING ---------- //
+
+// create({
+//     userId: 111,
+//     datetime: '2020-01-01 10:10:10',
+//     title: "Some title",
+//     content: "Some content."
+// })
