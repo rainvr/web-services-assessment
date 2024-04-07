@@ -186,12 +186,9 @@ blogController.delete("/:id", auth(["manager", "member", "trainer"]), async (req
 
         // Delete the blog object in the db with matching ID
         const response = await Blogs.deleteById(blogId)
-        
-        .then(response => {
-                res.status(200).json({
-                    status: 200,
-                    message: "Blog Deleted"
-                })
+            res.status(200).json({
+                status: 200,
+                message: "Blog Deleted"
             })
     } catch (error) {
         res.status(500).json({
