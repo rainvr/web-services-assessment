@@ -79,9 +79,6 @@ export async function update(blog, authenticationKey) {
  * @returns {Promise<Object>}
  */
 export async function deleteById(blogId, authenticationKey) {
-    console.log(blogId)
-    console.log(authenticationKey)
-
     const response = await fetch(API_URL + "/blogs/" + blogId, 
         {
             method: "DELETE",

@@ -16,7 +16,7 @@ function BlogPage() {
 
     const [formData, setFormData] = useState({
         id: null,
-        userId: parseInt(user.id),
+        userId: null, // parseInt(user.id),  // TODO: this was how I had it before
         datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
         title: "",
         content: ""
@@ -36,8 +36,15 @@ function BlogPage() {
     }
 
     useEffect(() => {
-        fetchBlogs()
-    }, []) // Only re-run the effect if user changes ( see 2nd wk 5&6 video 1:26:30 )
+        // Set the userId in the formData only after the user has been retrieved from useAuthentication
+        if (user) {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                userId: parseInt(user.id)
+            }))
+            fetchBlogs()
+        }
+    }, [user]) // Re-run the effect if user changes ( see 2nd wk 5&6 video 1:26:30 )
 
     async function handleSubmit(event) {
         try {
