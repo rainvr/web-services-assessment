@@ -4,7 +4,7 @@ import * as Users from "../../api/users"
 import { useState } from "react"
 import { useAuthentication } from "../../features/authentication"
 
-function Blog({id, userId, author, datetime, title, content}) {
+function Blog({id, userId, author, datetime, title, content, onDelete}) {
     const [user] = useAuthentication()
 
     // Format datetime to a more readable format
@@ -20,6 +20,17 @@ function Blog({id, userId, author, datetime, title, content}) {
         return date.toLocaleDateString('en-GB', options)
     }
 
+    async function deleteBlog(blogId) { 
+        console.log(blogId)  // TODO: remove test
+        try {       
+            const result = await Blogs.deleteById(blogId, user.authenticationKey)
+        // Call the onDelete callback function passed from the parent
+        onDelete()
+        } catch (error) {
+        console.error("Error deleting blog:", error)
+        }
+    }
+
     return (
         <form className="card-body card mx-auto w-96 bg-base-100 shadow-xl shadow-grey-500">
             <div className="flex flex-row justify-between">
@@ -30,7 +41,7 @@ function Blog({id, userId, author, datetime, title, content}) {
             <p className="bg-slate-100 p-4 rounded-lg">{content}</p>
             <div className="flex flex-row justify-end gap-2"> {/* TODO: toggle visibility if the blog belong's to the user */}
                 { user && userId == user.id ? <button className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Edit</button> : null }  {/* TODO: create the EditBlogPage */}
-                { user && userId == user.id ? <button className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200  active:bg-red-200">Delete</button> : null }  {/* TODO: create & use the deleteBlog model/controller */}
+                { user && userId == user.id ? <button onClick={() => deleteBlog(id)} className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200  active:bg-red-200">Delete</button> : null }  {/* TODO: create & use the deleteBlog model/controller */}
             </div>
         </form>
     )

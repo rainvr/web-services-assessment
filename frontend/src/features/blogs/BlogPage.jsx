@@ -16,25 +16,26 @@ function BlogPage() {
 
     const [formData, setFormData] = useState({
         id: null,
-        userId: parseInt(user.id),
+        userId: parseInt(user.id),  // userId: user?.id ? parseInt(user.id) : null,  // TODO: double check - introduced this as was getting user is null error when deleting a blog
         datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
         title: "",
         content: ""
     })
 
-    useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                const blogs = await Blogs.getAll()
-                if (blogs) {  // If we have some users returned
-                    setBlogs(blogs)  // Set the users state as the users returned
-                } else {
-                    console.log("No blogs returned")  
-                }
-            } catch (error) {
-                console.error("Error fetching blogs:", error) 
+    const fetchBlogs = async () => {
+        try {
+            const blogs = await Blogs.getAll()
+            if (blogs) {  // If we have some users returned
+                setBlogs(blogs)  // Set the users state as the users returned
+            } else {
+                console.log("No blogs returned")  
             }
+        } catch (error) {
+            console.error("Error fetching blogs:", error) 
         }
+    }
+
+    useEffect(() => {
         fetchBlogs()
     }, []) // Only re-run the effect if user changes ( see 2nd wk 5&6 video 1:26:30 )
 
@@ -51,6 +52,27 @@ function BlogPage() {
             
             // Create the blog
             const result = await Blogs.create(formData, user.authenticationKey)
+            if (result) {
+                // Refresh the list of blogs
+                const updatedBlogs = await Blogs.getAll();
+                if (updatedBlogs) {
+                    setBlogs(updatedBlogs);
+                } else {
+                    console.log("No blogs returned after creating a new post");
+                }
+                // Reset the form data
+                setFormData({
+                    id: null,
+                    userId: parseInt(user.id),
+                    datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    title: "",
+                    content: ""
+                });
+                // Close the create form
+                setCreate("false");
+            } else {
+                console.log("Failed to create a new post");
+            }
             refresh()
             // setStatusMessage(result.message)  // TODO: Status Message
         } catch (error) {
@@ -59,9 +81,9 @@ function BlogPage() {
     } 
 
     return (
-        <main className="flex flex-col min-h-screen bg-slate-50 overflow-hidden">
+        <main className="flex flex-col h-screen bg-slate-50 overflow-hidden">
             <Header />
-            <section className="flex flex-col gap-4 flex-1 mx-auto p-4 overflow-y-scroll">
+            <section className="flex flex-col gap-4 flex-1 mx-auto p-4 overflow-y-auto">
                 <h1 className="text-xl font-bold text-center">Blogs</h1>
                 {/* ----- Set the nav based on if there is a logged in user and create has been clicked ----- */}
                 {user && (
@@ -95,7 +117,7 @@ function BlogPage() {
                     </form>
                 : null }
                 {/* ----- Set the display based on the view  ----- */}
-                { view == "every" ? blogs.map(thisBlog => 
+                { view == "every" ? blogs.sort((a, b) => new Date(b.datetime) - new Date(a.datetime)).map(thisBlog => 
                     <Blog 
                         key={thisBlog.id}
                         id={thisBlog.id}
@@ -104,8 +126,9 @@ function BlogPage() {
                         datetime={thisBlog.datetime}
                         title={thisBlog.title}
                         content={thisBlog.content}
+                        onDelete={fetchBlogs} // Pass the fetchBlogs function as a callback
                     />
-                ) : blogs.filter((thisBlog) => thisBlog.userId == user.id).map(thisBlog => 
+                ) : blogs.filter((thisBlog) => thisBlog.userId == user.id).sort((a, b) => new Date(b.datetime) - new Date(a.datetime)).map(thisBlog => 
                     <Blog 
                         key={thisBlog.id}
                         id={thisBlog.id}
@@ -114,6 +137,7 @@ function BlogPage() {
                         datetime={thisBlog.datetime}
                         title={thisBlog.title}
                         content={thisBlog.content}
+                        onDelete={fetchBlogs} // Pass the fetchBlogs function as a callback
                     />
                 )}
             </section>
