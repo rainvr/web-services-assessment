@@ -82,6 +82,39 @@ export async function create(blog) {
     })
 }
 
+
+// --------- UPDATE ---------- //
+
+export async function updateById(blog) {
+    delete blog.userId
+    delete blog.author
+
+    return db.query(
+        "UPDATE blog_posts SET "
+        + "post_datetime = ?, "
+        + "post_title = ?, "
+        + "post_content = ? "
+        + "WHERE post_id = ?",
+        [
+            blog.datetime,
+            blog.title,
+            blog.content,
+            blog.id
+        ]
+    )
+    .then(([result]) => {
+        //console.log(result)
+        return {blog}  // return an object with the blog fields plus the inserted ID as the id
+    })
+}
+
+// --------- DELETE ---------- //
+// Delete the blog by ID
+export async function deleteById(blogId) {
+    return db.query("DELETE FROM blog_posts WHERE post_id = ?", blogId)
+}
+
+
 // ---------- TESTING ---------- //
 
 // create({
