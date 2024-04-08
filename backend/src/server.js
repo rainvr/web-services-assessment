@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import userController from "./controllers/users.js"
 import blogController from "./controllers/blogs.js"
+import classController from "./controllers/classes.js"
 
 const app = express()
 const port = 8080
@@ -18,6 +19,7 @@ app.use(express.json())
 // Import and use routes defined by the controllers
 app.use("/users", userController)
 app.use("/blogs", blogController)
+app.use("/classes", classController)
 
 // Catch errors raised by endpoints and respond with JSON error object
 app.use((err, req, res, next) => {

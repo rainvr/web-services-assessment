@@ -2,7 +2,6 @@ import { Router } from "express"
 import * as Blogs from "../models/blogs.js"
 import pkg from 'lodash'
 const { isEmpty } = pkg
-import { v4 as uuid4 } from "uuid"
 import auth from "../middleware/auth.js"
 import validator from "validator"
 
