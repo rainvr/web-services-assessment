@@ -97,7 +97,7 @@ blogController.post("/", auth(["manager", "trainer", "member"]), async (req, res
 // ---------- UPDATE ---------- //
 
 // PATCH /update
-blogController.patch("/update", auth(["manager", "member", "trainer"]), async (req, res) => {
+blogController.patch("/", auth(["manager", "member", "trainer"]), async (req, res) => {
     try {
     
         // Get the form data for updating from the request body
