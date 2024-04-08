@@ -4,12 +4,10 @@ import Footer from "../../common/components/Footer"
 import Blog from "../../common/components/Blog"
 import * as Blogs from "../../api/blogs"
 import { useAuthentication } from "../authentication"
-import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 
 function BlogPage() {
     const [user, login, logout, refresh] = useAuthentication()
-    const navigate = useNavigate()
     const [blogs, setBlogs] = useState([])
     const [view, setView] = useState("every")
     const [create, setCreate] = useState("false")
@@ -119,8 +117,7 @@ function BlogPage() {
                             onChange={(event) => setFormData(existingData => { return { ...existingData, content: event.target.value } } )}
                         />
                         <div className="flex flex-row justify-end gap-2">
-                            {user ? <button className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Edit</button> : null}  {/* TODO: create the EditBlogPage */}
-                            {user ? <button className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200  active:bg-red-200">Delete</button> : null}  {/* TODO: create & use the deleteBlog model/controller */}
+                        {user ? <button type="button" onClick={()=>setCreate("false")} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Cancel</button> : null}  {/* TODO: create & use the deleteBlog model/controller */}
                             {user ? <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200  active:bg-blue-200">Save</button> : null}  {/* TODO: create & use the deleteBlog model/controller */}
                         </div>
                     </form>
