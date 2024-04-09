@@ -13,23 +13,36 @@ function UsersListPage() {
     const [users, setUsers] = useState([])
     // const [userId, setUserId] = useState()  // TODO: remove?
 
+    const fetchUsers = async () => {
+        try {
+            const users = await Users.getAll(user.authenticationKey)
+            if (users) {  // If we have some users returned
+                setUsers(users)  // Set the users state as the users returned
+            } else {
+                console.log("No users returned")  
+            }
+        } catch (error) {
+            console.error("Error fetching users:", error) 
+        }
+    }
+    
     useEffect(() => {
         if (!user) {
             return // Return early if the authenticated user is null
         }
         
-        const fetchUsers = async () => {
-            try {
-                const users = await Users.getAll(user.authenticationKey)
-                if (users) {  // If we have some users returned
-                    setUsers(users)  // Set the users state as the users returned
-                } else {
-                    console.log("No users returned")  
-                }
-            } catch (error) {
-                console.error("Error fetching users:", error) 
-            }
-        }
+        // const fetchUsers = async () => {
+        //     try {
+        //         const users = await Users.getAll(user.authenticationKey)
+        //         if (users) {  // If we have some users returned
+        //             setUsers(users)  // Set the users state as the users returned
+        //         } else {
+        //             console.log("No users returned")  
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching users:", error) 
+        //     }
+        // }
     
         fetchUsers()
     }, [user.authenticationKey]) // Only re-run the effect if user changes ( see 2nd wk 5&6 video 1:26:30 )
@@ -39,18 +52,18 @@ function UsersListPage() {
         
         const result = await Users.deleteById(userId, user.authenticationKey)
 
-        const fetchUsers = async () => {
-            try {
-                const users = await Users.getAll(user.authenticationKey)
-                if (users) {  // If we have some users returned
-                    setUsers(users)  // Set the users state as the users returned
-                } else {
-                    console.log("No users returned")  
-                }
-            } catch (error) {
-                console.error("Error fetching users:", error) 
-            }
-        }
+        // const fetchUsers = async () => {
+        //     try {
+        //         const users = await Users.getAll(user.authenticationKey)
+        //         if (users) {  // If we have some users returned
+        //             setUsers(users)  // Set the users state as the users returned
+        //         } else {
+        //             console.log("No users returned")  
+        //         }
+        //     } catch (error) {
+        //         console.error("Error fetching users:", error) 
+        //     }
+        // }
         fetchUsers()
     }
 
