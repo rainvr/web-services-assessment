@@ -5,7 +5,7 @@ import { RestrictedRoute } from "./features/RestrictedRoute";
 import HomePage from "./features/HomePage.jsx";
 import LoginPage from "./features/users/LoginPage.jsx";
 import RegisterPage from "./features/users/RegisterPage.jsx";
-import CalendarPage from "./features/CalendarPage.jsx";
+import CalendarPage from "./features/classes/CalendarPage.jsx";
 import BookingsPage from "./features/BookingsPage.jsx";
 import BlogPage from "./features/blogs/BlogPage";
 import ProfilePage from "./features/users/ProfilePage.jsx";
@@ -40,6 +40,10 @@ const router = createBrowserRouter([
     {
         path: "/blog",
         element: <BlogPage />
+    },
+    {
+        path: "/calendar",
+        element: <CalendarPage />
     },
     {
         path: "/error",
