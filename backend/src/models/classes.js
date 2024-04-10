@@ -1,4 +1,4 @@
-import { db } from "../database.js";
+import { db } from "../database.js"
 import { addHours } from "date-fns"
 
 // --------- CONSTRUCTOR ---------- //
