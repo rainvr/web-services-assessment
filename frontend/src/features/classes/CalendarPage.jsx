@@ -14,8 +14,14 @@ function CalendarPage() {
         {id: 3, name: "Brisbane City"}
     ])
     // const [locations, setLocations] = useState([])
-    const [weekStartDate, setWeekStartDate] = useState(addHours(startOfWeek(new Date(), { weekStartsOn: 1 }), 10).toISOString())  // TODO: did have at the end... but it was an issue // .toISOString()
+    const [weekStartDate, setWeekStartDate] = useState(addHours(startOfWeek(new Date(), { weekStartsOn: 1 }), 10).toISOString())
     const [locationId, setLocationId] = useState(3)
+    const tuesDate = addHours(new Date(weekStartDate), 24)
+    const wednesDate = addHours(new Date(weekStartDate), 48)
+    const thursDate = addHours(new Date(weekStartDate), 72)
+    const friDate = addHours(new Date(weekStartDate), 96)
+    const saturDate = addHours(new Date(weekStartDate), 120)
+    const sunDate = addHours(new Date(weekStartDate), 144)
 
     // Fetch the classes (with location, trainer and activity data included) AND add the day field
     useEffect(() => {
@@ -23,53 +29,10 @@ function CalendarPage() {
             try {
                 // Get all the classes from the db
                 const fetchedClasses = await Classes.getWeek(weekStartDate, locationId)
-                // console.log(weekStartDate)  //TODO: remove test
-
-                // TODO: remove test (working)
-                // if (isSameDay(new Date("2024-04-08T18:00:00.000Z"), new Date(weekStartDate))) {
-                //     console.log("2024-04-08 23:59:00" + "is the same day as " + weekStartDate)
-                // }
-
-                // TODO: remove test (working)
-                // if (weekStartDate) {
-                //     console.log(weekStartDate)
-                // }
 
                 if (fetchedClasses) {
                     // Set the classes state as the classes returned
                     setClasses(fetchedClasses)
-                    
-                    // Add and set the day field for classes
-                    // const updatedClasses = fetchedClasses.map(clazz => {
-                    //     let day;
-                    //     switch (clazz.weekday) {
-                    //         case 0:
-                    //             day = "Monday"
-                    //             break
-                    //         case 1:
-                    //             day = "Tuesday"
-                    //             break
-                    //         case 2:
-                    //             day = "Wednesday"
-                    //             break
-                    //         case 3:
-                    //             day = "Thursday"
-                    //             break
-                    //         case 4:
-                    //             day = "Friday"
-                    //             break
-                    //         case 5:
-                    //             day = "Saturday"
-                    //             break
-                    //         case 6:
-                    //             day = "Sunday"
-                    //             break
-                    //         default:
-                    //             day = ""
-                    //     }
-                    //     return { ...clazz, day }
-                    // })
-                    // setClasses(updatedClasses)
                 } else {
                     console.log("No classes returned")
                 }
@@ -110,12 +73,28 @@ function CalendarPage() {
                 <div className="divider"></div> 
 
                 {/* ----- MONDAY ----- */}
-                <div className="flex flex-row justify-between w-full bg-slate-200 py-1 px-4 rounded-box ">
+                {classes.length > 0 && <Day classes={classes} day="Monday" date={weekStartDate} />}
+                {/* ----- TUESDAY ----- */}
+                {classes.length > 0 && <Day classes={classes} day="Tuesday" date={tuesDate} />}
+                {/* ----- WEDNESDAY ----- */}
+                {classes.length > 0 && <Day classes={classes} day="Wednesday" date={wednesDate} />}
+                {/* ----- THURSDAY ----- */}
+                {classes.length > 0 && <Day classes={classes} day="Thursday" date={thursDate} />}
+                {/* ----- FRIDAY ----- */}
+                {classes.length > 0 && <Day classes={classes} day="Friday" date={friDate} />}
+                {/* ----- SATURDAY ----- */}
+                {classes.length > 0 && <Day classes={classes} day="Saturday" date={saturDate} />}
+                {/* ----- SUNDAY ----- */}
+                {classes.length > 0 && <Day classes={classes} day="Sunday" date={sunDate} />}
+
+
+
+                {/* <div className="flex flex-row justify-between w-full bg-slate-200 py-1 px-4 rounded-box ">
                     <h2 className="text-lg font-bold">Monday</h2>
                     <h3 className="text-md pt-1">{weekStartDate}</h3>
                 </div>
                 <table className="table">
-                    {/* head */}
+
                     <thead>
                         <tr>
                             <th></th>
@@ -125,25 +104,14 @@ function CalendarPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* Map the classes */}
+                        
                         {classes
                             .filter(clazz => isSameDay(addHours(new Date(clazz.datetime), -10), new Date(weekStartDate)))
-                            // .filter(clazz=>{
-                            //     console.log("clazz.datetime:", addHours(new Date(clazz.datetime), -10));
-                            //     console.log("weekStartDate:", addHours(weekStartDate, -10));
-                            //     console.log("isSameDay:", isSameDay(addHours(new Date(clazz.datetime), -10), new Date(weekStartDate)));
-                            // })
-                            // .filter(clazz => {
-                            //     const clazzDate = format(new Date(clazz.datetime), "yyyy-MM-dd");
-                            //     const weekStartDateFormatted = format(new Date(weekStartDate), "yyyy-MM-dd");
-                            //     return clazzDate === weekStartDateFormatted;
-                            // })
                             .map(clazz => (
-                                //<div>{clazz.id} {clazz.activityName} {clazz.datetime}</div>
                                 <Day key={clazz.id} clazz={clazz} />
                             ))}
                     </tbody>
-                </table>
+                </table> */}
                 <div className="divider"></div> 
                 <div className="join grid grid-cols-2">
                     <button className="join-item btn btn-outline" onClick={()=>setWeekStartDate(addHours(weekStartDate, -168).toISOString())}>Last week</button>
