@@ -34,10 +34,11 @@ classController.get("/", async (req, res) => {
 })
 
 // Get the classes for the next week
-classController.get("/weekly/:weekStartDate", async (req, res) => {
+classController.get("/weekly/:locationId/:weekStartDate", async (req, res) => {
     try {
+        const locationId = req.params.locationId
         const weekStartDate = req.params.weekStartDate
-        const classes = await Classes.getWeek(weekStartDate)
+        const classes = await Classes.getWeek(weekStartDate, locationId)
 
         if (isEmpty(classes)) {
             return res.status(404).json({
