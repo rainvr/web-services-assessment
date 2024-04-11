@@ -34,8 +34,8 @@ function Day({classes, day, date}) {
                     </tbody>
                 </table>
                 : 
-                <div className="flex">
-                    <span className="text-sm">No classes available</span> 
+                <div>
+                    <p className="text-sm pl-8">No classes available</p> 
                 </div>}
 
         </>

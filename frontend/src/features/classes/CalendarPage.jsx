@@ -12,6 +12,7 @@ function CalendarPage() {
 
     const [locations, setLocations] = useState([])
     const [locationId, setLocationId] = useState(3)
+    const [locationName, setLocationName] = useState("Brisbane City")
 
     const [weekStartDate, setWeekStartDate] = useState(addHours(startOfWeek(new Date(), { weekStartsOn: 1 }), 10).toISOString())
     const tuesDate = addHours(new Date(weekStartDate), 24)
@@ -39,6 +40,11 @@ function CalendarPage() {
         fetchLocations()
     }, [])
 
+    function selectLocation(location) {
+        setLocationId(location.id)
+        setLocationName(location.name)
+    }
+
     // Fetch the classes (with location, trainer and activity data included) AND add the day field
     useEffect(() => {
         async function fetchClassesWithDay() {
@@ -63,18 +69,22 @@ function CalendarPage() {
         <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
             <Header />
             <section className="flex-1 mx-auto p-4 overflow-y-auto">
-                <h1>Calendar</h1>
+                <h1 className="text-xl font-bold text-center">Weekly Classes</h1>
 
                 {/* ----- LOCATION SELECTOR ----- */}
-                <div className="dropdown dropdown-right">
-                    <div tabIndex={0} role="button" className="btn m-1">Location</div>
-                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                        {/* Map the list of locations */}
-                        {locations.map(location => (
-                            <li key={location.id} onClick={()=>setLocationId(location.id)}><a>{location.name}</a></li>
-                        ))}
-                    </ul>
+                <div className="navbar">
+                    <div className="navbar-start dropdown dropdown-right">
+                        <div tabIndex={0} role="button" className="btn m-1">Location</div>
+                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                            {/* Map the list of locations */}
+                            {locations.map(location => (
+                                <li key={location.id} onClick={() => selectLocation(location)}><a>{location.name}</a></li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="navbar-end">{locationName}</div>
                 </div>
+                
                 <div className="divider"></div> 
 
                 {/* ----- MONDAY ----- */}
