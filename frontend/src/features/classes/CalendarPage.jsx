@@ -74,18 +74,20 @@ function CalendarPage() {
                 {/* ----- LOCATION SELECTOR ----- */}
                 <div className="navbar">
                     <div className="navbar-start dropdown dropdown-right">
-                        <div tabIndex={0} role="button" className="btn m-1">Location</div>
+                        <div tabIndex={0} role="button" className="btn btn-sm btn-info btn-outline m-1">Location</div>
                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                             {/* Map the list of locations */}
                             {locations.map(location => (
-                                <li key={location.id} onClick={() => selectLocation(location)}><a>{location.name}</a></li>
+                                <li key={location.id} onClick={() => selectLocation(location)}>
+                                    <a>{location.name}</a>
+                                </li>
                             ))}
                         </ul>
                     </div>
-                    <div className="navbar-end">{locationName}</div>
+                    <div className="navbar-end font-semibold text-sky-400">{locationName}</div>
                 </div>
                 
-                <div className="divider"></div> 
+                <div className="divider mt-0 mb-2"></div> 
 
                 {/* ----- MONDAY ----- */}
                 {classes.length > 0 && <Day classes={classes} day="Monday" date={weekStartDate} />}
@@ -105,8 +107,8 @@ function CalendarPage() {
                 {/* ----- PREVIOUS | NEXT ----- */}
                 <div className="divider"></div> 
                 <div className="join grid grid-cols-2">
-                    <button className="join-item btn btn-outline" onClick={()=>setWeekStartDate(addHours(weekStartDate, -168).toISOString())}>Last week</button>
-                    <button className="join-item btn btn-outline" onClick={()=>setWeekStartDate(addHours(weekStartDate, 168).toISOString())}>Next week</button>
+                    <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setWeekStartDate(addHours(weekStartDate, -168).toISOString())}>Last week</button>
+                    <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setWeekStartDate(addHours(weekStartDate, 168).toISOString())}>Next week</button>
                 </div>
             </section>
             <Footer />

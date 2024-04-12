@@ -29,7 +29,7 @@ function Day({classes, day, date}) {
                         {classes
                             .filter(clazz => isSameDay(addHours(new Date(clazz.datetime), -10), new Date(date)))
                             .map(clazz => (
-                                <Activity key={clazz.id} name={clazz.activityName} time={clazz.datetime} />
+                                <Activity key={clazz.id} clazz={clazz} />
                                 ))}
                     </tbody>
                 </table>
