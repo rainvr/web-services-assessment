@@ -4,6 +4,7 @@ import userController from "./controllers/users.js"
 import blogController from "./controllers/blogs.js"
 import classController from "./controllers/classes.js"
 import locationController from "./controllers/locations.js"
+import bookingController from "./controllers/bookings.js"
 
 const app = express()
 const port = 8080
@@ -22,6 +23,7 @@ app.use("/users", userController)
 app.use("/blogs", blogController)
 app.use("/classes", classController)
 app.use("/locations", locationController)
+app.use("/bookings", bookingController)
 
 // Catch errors raised by endpoints and respond with JSON error object
 app.use((err, req, res, next) => {
