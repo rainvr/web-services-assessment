@@ -1,5 +1,6 @@
 import express from "express"
 import cors from "cors"
+import fileUpload from "express-fileupload"
 import userController from "./controllers/users.js"
 import blogController from "./controllers/blogs.js"
 import classController from "./controllers/classes.js"
@@ -17,6 +18,11 @@ app.use(cors({
 
 // Enable JSON request parsing middleware
 app.use(express.json())
+
+// Enable file upload support (max 50MB file upload)
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+}))
 
 // Import and use routes defined by the controllers
 app.use("/users", userController)
