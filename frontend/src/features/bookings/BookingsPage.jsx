@@ -82,7 +82,7 @@ function BookingsPage() {
                             .sort((a, b) => new Date(b.classDatetime) - new Date(a.classDatetime))
                             .reverse()
                             .map(booking => (
-                                <tr className="hover">
+                                <tr className="hover" key={booking.id}>
                                     <th></th>
                                     <td>{booking.locationName}</td>
                                     <td>{booking.activityName}</td>

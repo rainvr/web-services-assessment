@@ -22,7 +22,7 @@ function Header() {
                         { user && user.role === "trainer" ? <li><Link to="/classes">Classes</Link></li> : null }
                         { user && user.role === "manager" ? <li><Link to="/users-list">Users</Link></li> : null }
                         { user && (user.role === "trainer" | user.role === "manager") ? <li><Link to="/import">Import</Link></li> : null }
-                        <li><Link to="/blog">Blog</Link></li>
+                        { user && <li><Link to="/blog">Blog</Link></li> }
                     </ul>
                 </div>
             </div>
