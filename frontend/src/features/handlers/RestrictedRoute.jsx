@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
-import { useAuthentication } from "../features/authentication"
-import Header from "../common/components/Header"
-import Footer from "../common/components/Footer"
+import { useAuthentication } from "../authentication"
+import Header from "../../common/components/Header"
+import Footer from "../../common/components/Footer"
 import ErrorPage from "./ErrorPage" // TODO: remove this?
 
 export function RestrictedRoute({ allowedRoles = [], children }) {

@@ -1,7 +1,7 @@
 // --- The Blog Page of the Application --- //
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
-import Blog from "../../common/components/Blog"
+import Blog from "./Blog"
 import * as Blogs from "../../api/blogs"
 import { useAuthentication } from "../authentication"
 import { useState, useEffect } from "react"

@@ -34,8 +34,6 @@ export async function create(booking, authenticationKey) {
  * @returns {Promise<Array<Object>>}
  */
 export async function getAll(userId, authenticationKey) {
-    console.log(userId) // TODO: remove test
-    console.log(authenticationKey) // TODO: remove test
 
     const apiResponse = await fetch(API_URL + "/bookings/" + userId, {
         method: "GET",
@@ -44,8 +42,6 @@ export async function getAll(userId, authenticationKey) {
             'X-AUTH-KEY': authenticationKey
         }
     })
-
-    console.log(apiResponse) // TODO: remove test
 
     const APIResponseObject = await apiResponse.json()
 

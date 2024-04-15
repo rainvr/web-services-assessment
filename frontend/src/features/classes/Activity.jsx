@@ -1,7 +1,7 @@
 import { format } from "date-fns"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAuthentication } from "../../features/authentication"
+import { useAuthentication } from "../authentication"
 
 
 function Activity({clazz}) {

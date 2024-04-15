@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import * as Blogs from "../../api/blogs"
 import * as Users from "../../api/users"
 import { useState } from "react"
-import { useAuthentication } from "../../features/authentication"
+import { useAuthentication } from "../authentication"
 
 function Blog({id, userId, author, datetime, title, content}) {
     const [user, login, logout, refresh] = useAuthentication()

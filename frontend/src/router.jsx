@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { RestrictedRoute } from "./features/RestrictedRoute"
+import { RestrictedRoute } from "./features/handlers/RestrictedRoute"
 
-import HomePage from "./features/HomePage.jsx"
+import HomePage from "./features/home/HomePage.jsx"
 import LoginPage from "./features/users/LoginPage.jsx"
 import RegisterPage from "./features/users/RegisterPage.jsx"
 import CalendarPage from "./features/classes/CalendarPage.jsx"
@@ -10,8 +10,8 @@ import CreateBookingPage from "./features/bookings/CreateBookingPage"
 import BlogPage from "./features/blogs/BlogPage"
 import ProfilePage from "./features/users/ProfilePage.jsx"
 import UsersListPage from "./features/users/UsersListPage.jsx"
-import ErrorPage from "./features/ErrorPage"
-import ImportPage from "./features/ImportPage"
+import ErrorPage from "./features/handlers/ErrorPage"
+import ImportPage from "./features/import/ImportPage"
 import EditUserPage from "./features/users/EditUserPage"
 
 // Declaring a router to map URL paths to react components

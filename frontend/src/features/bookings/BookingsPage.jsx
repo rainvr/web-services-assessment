@@ -39,7 +39,6 @@ function BookingsPage() {
                 //setStatusMessage("Updating...")  // TODO: set status message
     
                 // Get all the bookings from the db
-                    console.log(user) // TODO: remove test
                     const fetchedBookings = await Bookings.getAll(user.id, user.authenticationKey)
                     
                     if (fetchedBookings) {

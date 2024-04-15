@@ -1,6 +1,6 @@
 // --- The Home Page of the Application --- //
-import Header from "../common/components/Header"
-import Footer from "../common/components/Footer"
+import Header from "../../common/components/Header"
+import Footer from "../../common/components/Footer"
 
 function ImportPage() {
     return (
