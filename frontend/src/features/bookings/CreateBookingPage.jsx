@@ -37,10 +37,10 @@ export default function CreateBookingPage() {
             const result = await Bookings.create(formData, user.authenticationKey)
             setStatusMessage(result.message)
 
-            // TODO: If the booking was successful, navigate to the user's bookings page
-            // if (result.status === 200) {
-            //     navigate("/bookings")
-            // }
+            // If the booking was successful, navigate to the user's bookings page
+            if (result.status === 200) {
+                navigate("/bookings")
+            }
 
         } catch (error) {
             console.log(error)

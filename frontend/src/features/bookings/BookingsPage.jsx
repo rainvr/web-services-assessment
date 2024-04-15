@@ -10,12 +10,27 @@ import { useAuthentication } from "../authentication"
 function BookingsPage() {
     const [user] = useAuthentication()
     const [bookings, setBookings] = useState([])
+    const [statusMessage, setStatusMessage] = useState("")
 
     // const formattedTime = format(new Date(booking.classDatetime), 'hh:mm bbb')
 
     const [locations, setLocations] = useState([])
     const [locationId, setLocationId] = useState(3)
     const [locationName, setLocationName] = useState("Brisbane City")
+
+    async function cancel(bookingId) {
+        try {
+            const cancelled = await Bookings.deleteById(bookingId, user.authenticationKey)
+            if (cancelled) {
+                setStatusMessage("Success! " + cancelled.message)
+                location.reload()  // Reload the window after the booking was deleted (to display the resulting array of bookings)
+            } else {
+                setStatusMessage("Error: " + cancelled.message)
+            }
+        } catch (error) {
+            console.log("Error cancelling the booking", error)
+        }
+    }
 
     // Fetch the bookings (with location, trainer and activity data included)
     useEffect(() => {
@@ -46,62 +61,8 @@ function BookingsPage() {
             <Header />
             <section className="flex-1 mx-auto p-4 overflow-y-auto">
                 <h1 className="text-xl font-bold text-center">Your Bookings</h1>
-
-                {/* ----- LOCATION SELECTOR ----- */}
-                {/* <div className="navbar">
-                    <div className="navbar-start dropdown dropdown-right">
-                        <div tabIndex={0} role="button" className="btn btn-sm btn-info btn-outline m-1">Location</div>
-                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            {locations.map(location => (
-                                <li key={location.id} onClick={() => selectLocation(location)}>
-                                    <a>{location.name}</a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className="navbar-end font-semibold text-sky-400">{locationName}</div>
-                </div> */}
                 
                 <div className="divider mt-0 mb-2"></div> 
-                
-                {/* ----- FOR EACH LOCATION ----- */}
-                {/* <h2 className="text-xl font-bold">Locations</h2>
-                {bookings.length > 0 && 
-                    bookings
-                        .filter(booking => booking.locationId === 1)
-                        .map(booking => (
-                        <div>{booking.id} {booking.locationName} {format(new Date(booking.classDatetime), 'EEE do LLL')} {format(new Date(booking.classDatetime), 'hh:mm bbb')} {booking.activityName}</div>
-                    ))
-                }
-                
-                <div className="divider mt-0 mb-2"></div>  */}
-
-                {/* ----- FOR EACH DAY OF THE WEEK ----- */}
-                {/* <h2 className="text-xl font-bold">Days of the Week</h2> */}
-
-                {/* ----- MONDAY ----- */}
-                {/* <h2 className="text-xl font-bold">MONDAY</h2>
-                {bookings.length > 0 && 
-                    bookings
-                        .filter(booking => getDay(booking.classDatetime) === 1)
-                        .map(booking => (
-                        <div>{booking.locationName} - {format(new Date(booking.classDatetime), 'EEE do LLL')}, {format(new Date(booking.classDatetime), 'hh:mm bbb')} - {booking.activityName}</div>
-                    ))
-                }
-
-                <div className="divider mt-0 mb-2"></div>  */}
-
-                {/* ----- SORTED ----- */}
-                {/* <h2 className="text-xl font-bold">Sorted</h2>
-                {bookings.length > 0 && 
-                    bookings
-                        .sort((a, b) => new Date(b.classDatetime) - new Date(a.classDatetime))
-                        .reverse()
-                        .map(booking => (
-                        <div>{booking.locationName} - {format(new Date(booking.classDatetime), 'EEE do LLL')}, {format(new Date(booking.classDatetime), 'hh:mm bbb')} - {booking.activityName}</div>
-                    ))
-                } */}
-                
                 
                 <table className="table">
                     {/* head */}
@@ -127,16 +88,13 @@ function BookingsPage() {
                                     <td>{booking.activityName}</td>
                                     <td>{format(new Date(booking.classDatetime), 'EEE do LLL')}</td>
                                     <td>{format(new Date(booking.classDatetime), 'hh:mm bbb')}</td>
-                                    <td><button type="submit" onClick={() => navigate(`/cancel-booking`, { state: { booking } })} className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200 active:bg-red-200">Cancel</button></td>
+                                    <td><button type="submit" onClick={()=> cancel(booking.id)} className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200 active:bg-red-200">Cancel</button></td>
                                 </tr>
                             ))
                         }
                     </tbody>
                 </table>
-                
-
-
-                
+                <div><span>{statusMessage}</span></div>
                 
             </section>
             <Footer />
