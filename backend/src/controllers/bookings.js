@@ -90,9 +90,15 @@ bookingController.post("/", auth(["member"]), async (req, res) => {
             null,
             // validator.toInt(bookingData.userId).toString(),
             // validator.toInt(bookingData.classId).toString(),
+            bookingData.createDate,
             bookingData.userId,
             bookingData.classId,
-            bookingData.createDate
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         )
 
         console.log(bookingObject) // TODO: remove test

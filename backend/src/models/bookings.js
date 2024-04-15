@@ -3,13 +3,15 @@ import { db } from "../database.js"
 // --------- CONSTRUCTOR ---------- //
 
 // Construct a new booking object
-export function newBooking(id, createDate, userId, trainerName, classId, classDatetime, activityName, activityDescription) {
+export function newBooking(id, createDate, userId, classId, classDatetime, locationId, locationName, activityName, activityDescription, trainerName) {
     return {
         id,
         createDate,
         userId,
         classId,
         classDatetime,
+        locationId,
+        locationName,
         activityName,
         activityDescription,
         trainerName,
@@ -30,6 +32,8 @@ export function getAll(userId) {
             users.user_id, 
             classes.class_id, 
             classes.class_datetime,
+            location.location_id,
+            location.location_name,
             activities.activity_name,
             activities.activity_description,
             CONCAT(trainer.user_firstname, ' ', trainer.user_lastname) AS trainer_name
@@ -38,6 +42,7 @@ export function getAll(userId) {
             INNER JOIN users ON bookings.booking_user_id = users.user_id
             INNER JOIN classes ON bookings.booking_class_id = classes.class_id
             INNER JOIN activities ON classes.class_activity_id = activities.activity_id
+            INNER JOIN location ON classes.class_location_id = location.location_id
             INNER JOIN users AS trainer ON classes.class_trainer_user_id = trainer.user_id
         WHERE 
             bookings.booking_user_id = ?
@@ -49,7 +54,9 @@ export function getAll(userId) {
                     result.booking_created_datetime, 
                     result.user_id, 
                     result.class_id, 
-                    result.class_datetime, 
+                    result.class_datetime,
+                    result.location_id,
+                    result.location_name, 
                     result.activity_name, 
                     result.activity_description,
                     result.trainer_name

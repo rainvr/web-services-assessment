@@ -5,14 +5,14 @@ import HomePage from "./features/HomePage.jsx"
 import LoginPage from "./features/users/LoginPage.jsx"
 import RegisterPage from "./features/users/RegisterPage.jsx"
 import CalendarPage from "./features/classes/CalendarPage.jsx"
-import BookingsPage from "./features/BookingsPage.jsx"
+import BookingsPage from "./features/bookings/BookingsPage.jsx"
+import CreateBookingPage from "./features/bookings/CreateBookingPage"
 import BlogPage from "./features/blogs/BlogPage"
 import ProfilePage from "./features/users/ProfilePage.jsx"
 import UsersListPage from "./features/users/UsersListPage.jsx"
 import ErrorPage from "./features/ErrorPage"
 import ImportPage from "./features/ImportPage"
 import EditUserPage from "./features/users/EditUserPage"
-import CreateBookingPage from "./features/bookings/CreateBookingPage"
 
 // Declaring a router to map URL paths to react components
 // When a user visits a path a different component will render
