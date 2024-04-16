@@ -5,6 +5,7 @@ const { isEmpty } = pkg
 import { v4 as uuid4 } from "uuid"
 import auth from "../middleware/auth.js"
 import validator from "validator"
+import xml2js from "xml2js"
 
 const userController = Router()
 
@@ -241,6 +242,128 @@ userController.post("/register", (req, res) => {
         })
     })
 })
+
+// POST /upload
+userController.post("/upload", auth(["manager"]), async (req, res) => {
+    
+    // If the file is missing or incorrect return an error
+    if (!req.files || !req.files["xml-file"]) {  
+        return res.status(400).json({
+            status: 400,
+            message: "No file selected"
+        })
+    }
+    
+    try {
+
+        // Convert the file data into a string
+        const XMLFile = req.files["xml-file"]
+        const file_text = XMLFile.data.toString()
+
+        // Set up XML parser
+        const parser = new xml2js.Parser({explicitArray : false})
+        const data = await parser.parseStringPromise(file_text)
+        
+        const usersData = data["Users"]["User"]
+        
+        // Validate each user's data
+        const validationErrors = usersData.map(userData => {
+            // Validate email
+            if (!userData.Email || !validator.isEmail(userData.Email)) {
+                return "Invalid email format"
+            }
+            // Validate password
+            if (!userData.Password || !/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/.test(userData.Password)) {
+                return "Invalid Password. Must use a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces"
+            }
+            // Validate role
+            if (!userData.Role || !(userData.Role === "member" || userData.Role === "trainer" || userData.Role === "manager")) {
+                return "Invalid user role"
+            }
+            // Validate first name
+            if (!userData.FirstName || !/^[a-zA-Z -]+$/.test(userData.FirstName)) {
+                return "Invalid first name"
+            }
+            // Validate last name
+            if (!userData.LastName || !/^[a-zA-Z -]+$/.test(userData.LastName)) {
+                return "Invalid last name"
+            }
+            // Turn the phone number into a string if it is null
+            if (!userData.Phone) {
+                userData.Phone = ""
+            }
+            // Validate phone number
+            if (userData.Phone && !/^(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})$/.test(userData.Phone)) {
+                return "Invalid phone number"
+            }
+            // Turn the address into a string if it is null
+            if (!userData.Address) {
+                userData.Address = ""
+            }
+            // Validate address
+            if (userData.Address && !/^[a-zA-Z0-9\- ,]+$/.test(userData.Address)) {
+                return "Invalid address"
+            }
+            return null // No validation errors
+        })
+
+        // Check if any validation errors occurred
+        const hasErrors = validationErrors.some(error => error !== null)
+
+        if (hasErrors) {
+            // If any validation errors occurred, return them
+            const errors = validationErrors.filter(error => error !== null)
+            return res.status(400).json({
+                status: 400,
+                message: "Validation errors: " + errors,
+                errors
+            })
+        } else {
+            // Insert users if all validations pass
+            const insertionPromises = usersData.map(userData => {
+                // Convert XML object into a model object
+                const userModel = Users.newUser(
+                    null, 
+                    validator.escape(userData.Email), 
+                    // TODO: Hash the password
+                    // userModel.password = bcrypt.hashSync(userModel.password);
+                    userData.Password, 
+                    validator.escape(userData.Role), 
+                    validator.escape(userData.Phone),
+                    validator.escape(userData.FirstName),
+                    validator.escape(userData.LastName),
+                    validator.escape(userData.Address),
+                    null
+                )
+
+                // Check if a user with that email exists
+                return Users.getByEmail(userModel.email).then(user => {
+                    if (user) {
+                        // If a matching user object is found, skip insertion
+                        return null
+                    } else {
+                        // If no matching user object is found, insert the user
+                        return Users.create(userModel)
+                    }
+                })
+            })
+
+            // Wait for all insertion promises to resolve
+            await Promise.all(insertionPromises)
+
+            return res.status(200).json({
+                status: 200,
+                message: "Users XML Upload insert was successful"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Users XML Upload failed: " + error.message
+        })
+    }
+})
+
 
 // POST /profile
 userController.post("/profile", async (req, res) => {
