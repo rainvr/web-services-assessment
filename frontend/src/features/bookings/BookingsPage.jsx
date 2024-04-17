@@ -18,12 +18,33 @@ function BookingsPage() {
     const [locationId, setLocationId] = useState(3)
     const [locationName, setLocationName] = useState("Brisbane City")
 
+    // Fetch the bookings (with location, trainer and activity data included)
+    async function fetchBookings() {
+        try {
+            //setStatusMessage("Updating...")  // TODO: set status message
+            
+            // Get all the bookings from the db
+            const fetchedBookings = await Bookings.getAll(user.id, user.authenticationKey)
+            
+            if (fetchedBookings) {
+                // Set the bookings state as the bookings returned
+                setBookings(fetchedBookings)
+                
+            } else {
+                console.log("No bookings returned")
+            }
+        } catch (error) {
+            console.error("Error fetching bookings:", error)
+        }
+    }
+
     async function cancel(bookingId) {
         try {
             const cancelled = await Bookings.deleteById(bookingId, user.authenticationKey)
             if (cancelled) {
                 setStatusMessage("Success! " + cancelled.message)
-                location.reload()  // Reload the window after the booking was deleted (to display the resulting array of bookings)
+                fetchBookings()
+                // location.reload()  // Reload the window after the booking was deleted (to display the resulting array of bookings)
             } else {
                 setStatusMessage("Error: " + cancelled.message)
             }
@@ -32,26 +53,7 @@ function BookingsPage() {
         }
     }
 
-    // Fetch the bookings (with location, trainer and activity data included)
     useEffect(() => {
-        async function fetchBookings() {
-            try {
-                //setStatusMessage("Updating...")  // TODO: set status message
-    
-                // Get all the bookings from the db
-                    const fetchedBookings = await Bookings.getAll(user.id, user.authenticationKey)
-                    
-                    if (fetchedBookings) {
-                        // Set the bookings state as the bookings returned
-                        setBookings(fetchedBookings)
-                
-                } else {
-                    console.log("No bookings returned")
-                }
-            } catch (error) {
-                console.error("Error fetching bookings:", error)
-            }
-        }
         fetchBookings()
     }, [user])
 

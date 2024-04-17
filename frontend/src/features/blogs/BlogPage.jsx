@@ -132,6 +132,7 @@ function BlogPage() {
                         datetime={thisBlog.datetime}
                         title={thisBlog.title}
                         content={thisBlog.content}
+                        onRefresh={fetchBlogs}
                     />
                 ) : blogs.filter((thisBlog) => thisBlog.userId == user.id).sort((a, b) => new Date(b.datetime) - new Date(a.datetime)).map(thisBlog => 
                     <Blog 
@@ -142,6 +143,7 @@ function BlogPage() {
                         datetime={thisBlog.datetime}
                         title={thisBlog.title}
                         content={thisBlog.content}
+                        onRefresh={fetchBlogs}
                     />
                 )}
             </section>

@@ -4,7 +4,7 @@ import * as Users from "../../api/users"
 import { useState } from "react"
 import { useAuthentication } from "../authentication"
 
-function Blog({id, userId, author, datetime, title, content}) {
+function Blog({id, userId, author, datetime, title, content, onRefresh}) {
     const [user, login, logout, refresh] = useAuthentication()
     const [view, setView] = useState("read")
 
@@ -31,8 +31,10 @@ function Blog({id, userId, author, datetime, title, content}) {
     async function deleteBlog(blogId) { 
         try {       
             const result = await Blogs.deleteById(blogId, user.authenticationKey)
-            console.log(result)
-            location.reload()  // Reload the window after the blog was deleted (to display the resulting array of blogs)
+            // console.log(result)  // TODO: remove test
+            if (typeof onRefresh == "function") {
+                onRefresh()  // tell the parent to re-fetch the blogs, triggering a page refresh
+            }
         } catch (error) {
         console.error("Error deleting blog:", error)
         }
