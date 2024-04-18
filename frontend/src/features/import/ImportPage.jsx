@@ -9,10 +9,22 @@ function ImportPage({ onUploadSuccess, disabled = false }) {
     // const [statusMessage, setStatusMessage] = useState()
     const [user] = useAuthentication()
     const [status, setStatus] = useState("")
-    const [uploadUrl, setUploadUrl] = useState("/users/upload")  // TODO: add a button to set this accordingly and view the correct input
+    const [uploadUrl, setUploadUrl] = useState("/users/upload") 
+    const [uploadType, setUploadType] = useState("Users")
 
     // get the upload input element reference
     const uploadInputRef = useRef(null)
+
+    function setUpload(type) {
+        if (type == "users") {
+            setUploadUrl("/users/upload")
+            setUploadType("Users")
+        }
+        if (type == "classes") {
+            setUploadUrl("/classes/upload")
+            setUploadType("Classes")
+        }
+    }
 
     function uploadFile(e) {
         e.preventDefault()
@@ -57,7 +69,13 @@ function ImportPage({ onUploadSuccess, disabled = false }) {
 
                 <div className="divider"></div>
 
-                <h2 className="text-lg font-bold">Upload new Users</h2>
+                <h2 className="text-lg font-bold">Upload new {uploadType}</h2>
+
+                {/* ----- USERS | CLASSES ----- */}
+                <div className="join grid grid-cols-2">
+                    <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setUpload("users")}>Users</button>
+                    <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setUpload("classes")}>Classes</button>
+                </div>
                 <form onSubmit={uploadFile}>
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
@@ -72,29 +90,11 @@ function ImportPage({ onUploadSuccess, disabled = false }) {
                         <div className="label">
                             <span className="label-text-alt">{status}</span>
                         </div>
-                        
                     </label>
 
                     <div className="divider"></div>
 
-                    <h2 className="text-lg font-bold">Upload new Classes</h2>
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text-alt">Select the XML file to upload</span>
-                        </div>
-                        <input 
-                            type="file" 
-                            // ref={uploadInputRef}  // TODO: need a second one of these
-                            disabled={disabled}
-                            className="file-input file-input-bordered file-input-success w-full max-w-xs"
-                        />
-                        <div className="label">
-                            <span className="label-text-alt">{status}</span>
-                        </div>
-                    </label>
-
-                    <div className="divider"></div>
-                    <button  disabled={disabled} className="btn btn-primary">Upload</button>
+                    <button disabled={disabled} className="btn btn-primary">Upload</button>
                 </form>
 
             </section>

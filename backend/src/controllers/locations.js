@@ -31,6 +31,33 @@ locationController.get("/", async (req, res) => {
     }
 })
 
+// Get the location by the name
+locationController.get("/:locationName", async (req, res) => {
+    try {
+        const locationName = req.params.locationName
+        const location = await Locations.getByName(locationName)
+        
+        if (isEmpty(location)) {
+            return res.status(404).json({
+                status: 404,
+                message: "There was no location found matching that location name"
+            })
+        }
+        
+        res.status(200).json({
+            status: 200,
+            message: "The matching location is listed",
+            location
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Error getting the location from the given location name",
+            error
+        })
+    }
+})
+
 // ---------- EXPORT ---------- //
 
 export default locationController

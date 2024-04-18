@@ -4,7 +4,18 @@ import { addHours } from "date-fns"
 // --------- CONSTRUCTOR ---------- //
 
 // Construct a new class object
-export function newClass(id, datetime, date, day, weekday, week, time, locationId, locationName, activityId, activityName, activityDescription, activityDuration, trainerId, trainerName) {
+export function newClass(id, datetime, locationId, activityId, trainerId) {
+    return {
+        id,
+        datetime: addHours(new Date(datetime), 10),
+        locationId,
+        activityId,
+        trainerId
+    }
+}
+
+// Construct a new class object with extended view fields
+export function newClassExtended(id, datetime, date, day, weekday, week, time, locationId, locationName, activityId, activityName, activityDescription, activityDuration, trainerId, trainerName) {
     return {
         id,
         datetime: addHours(new Date(datetime), 10),
@@ -33,7 +44,7 @@ export function getAll() {
     WHERE classes.class_trainer_user_id = users.user_id AND classes.class_location_id = location.location_id AND classes.class_activity_id = activities.activity_id`)
         .then((([queryResult]) => {
             return queryResult.map(
-                result => newClass(
+                result => newClassExtended(
                     result.class_id,
                     result.class_datetime,
                     result.class_date,
@@ -64,7 +75,7 @@ export function getWeek(weekStartDate, locationId) {
     WHERE classes.class_trainer_user_id = users.user_id AND classes.class_location_id = location.location_id AND classes.class_activity_id = activities.activity_id AND classes.class_datetime >= ? AND classes.class_datetime < ? AND location_id = ?`, [weekStartDate, addHours(weekStartDate,168), locationId])
         .then((([queryResult]) => {
             return queryResult.map(
-                result => newClass(
+                result => newClassExtended(
                     result.class_id,
                     result.class_datetime,
                     result.class_date,
@@ -86,4 +97,22 @@ export function getWeek(weekStartDate, locationId) {
         .catch(error => {
             console.log(`Error getting the week of classes: ` + error)
         })
+}
+
+// --------- CREATE ---------- //
+
+export async function create(clazz) {
+    return db.query(
+        "INSERT INTO classes (class_datetime, class_location_id, class_activity_id, class_trainer_user_id)" +
+        "VALUES (?, ?, ?, ?)",
+        [
+            clazz.datetime,
+            clazz.locationId,
+            clazz.activityId,
+            clazz.trainerId
+        ]
+    )
+    .then(([result]) => {
+        return { ...clazz, id: result.insertId }  // return an object with the class fields plus the inserted ID as the id
+    })
 }
