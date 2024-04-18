@@ -264,7 +264,14 @@ userController.post("/upload", auth(["manager"]), async (req, res) => {
         const parser = new xml2js.Parser({explicitArray : false})
         const data = await parser.parseStringPromise(file_text)
         
-        const usersData = data["Users"]["User"]
+        let usersData = data["Users"]["User"]
+
+        // If the usersData isn't an array, make it an array
+        // xml2js parses single elements as objects and multiple as arrays
+        // This check is to ensure everything can be treated equally later
+        if (!Array.isArray(usersData)) {
+            usersData = [usersData]
+        }
         
         // Validate each user's data
         const validationErrors = usersData.map(userData => {
