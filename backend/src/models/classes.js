@@ -70,9 +70,12 @@ export function getAll() {
 
 // Get the classes for the next week from the database
 export function getWeek(weekStartDate, locationId) {
-    return db.query(`SELECT class_id, class_datetime, DATE_FORMAT(class_datetime, "%D %M") AS class_date, DATE_FORMAT(class_datetime, "%W") AS class_day, WEEKDAY(class_datetime) AS class_weekday, WEEK(class_datetime) AS class_week, class_time, location_id, location_name, activity_id, activity_name, activity_description, activity_duration, user_id AS trainer_id, CONCAT(user_firstname, " ", user_lastname) AS trainer_name 
-    FROM classes, users, location, activities
-    WHERE classes.class_trainer_user_id = users.user_id AND classes.class_location_id = location.location_id AND classes.class_activity_id = activities.activity_id AND classes.class_datetime >= ? AND classes.class_datetime < ? AND location_id = ?`, [weekStartDate, addHours(weekStartDate,168), locationId])
+    return db.query(`SELECT class_id, class_datetime, class_location_id, activity_id, activity_name, activity_description, activity_duration 
+    FROM classes, activities
+    WHERE classes.class_activity_id = activities.activity_id 
+        AND classes.class_datetime >= ? 
+        AND classes.class_datetime < ? 
+        AND class_location_id = ?`, [weekStartDate, addHours(weekStartDate,168), locationId])
         .then((([queryResult]) => {
             return queryResult.map(
                 result => newClassExtended(
