@@ -19,7 +19,8 @@ function Header() {
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link to="/calendar">Calendar</Link></li>
                         { user && user.role === "member" ? <li><Link to="/bookings">Bookings</Link></li> : null }
-                        { user && user.role === "trainer" ? <li><Link to="/classes">Classes</Link></li> : null }
+                        {/* TODO: Possible future feature - trainers can see the classes asigned to themselves */}
+                        {/* { user && user.role === "trainer" ? <li><Link to="/classes">Classes</Link></li> : null } */}
                         { user && user.role === "manager" ? <li><Link to="/users-list">Users</Link></li> : null }
                         { user && (user.role === "trainer" | user.role === "manager") ? <li><Link to="/import">Import</Link></li> : null }
                         { user && <li><Link to="/blog">Blog</Link></li> }
