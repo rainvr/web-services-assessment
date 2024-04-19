@@ -15,23 +15,15 @@ export function newClass(id, datetime, locationId, activityId, trainerId) {
 }
 
 // Construct a new class object with extended view fields
-export function newClassExtended(id, datetime, date, day, weekday, week, time, locationId, locationName, activityId, activityName, activityDescription, activityDuration, trainerId, trainerName) {
+export function newClassExtended(id, datetime, locationId, activityId, activityName, activityDescription, activityDuration) {
     return {
         id,
         datetime: addHours(new Date(datetime), 10),
-        date,
-        day,
-        weekday,
-        week,
-        time,
         locationId,
-        locationName,
         activityId,
         activityName,
         activityDescription,
-        activityDuration,
-        trainerId,
-        trainerName
+        activityDuration
     }
 }
 
@@ -81,19 +73,11 @@ export function getWeek(weekStartDate, locationId) {
                 result => newClassExtended(
                     result.class_id,
                     result.class_datetime,
-                    result.class_date,
-                    result.class_day,
-                    result.class_weekday,
-                    result.class_week,
-                    result.class_time,
-                    result.location_id,
-                    result.location_name,
+                    result.class_location_id,
                     result.activity_id,    
                     result.activity_name,
                     result.activity_description,
-                    result.activity_duration,
-                    result.trainer_id,
-                    result.trainer_name
+                    result.activity_duration
                 )
             )
         }))
