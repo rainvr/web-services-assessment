@@ -65,6 +65,35 @@ classController.get("/weekly/:locationId/:weekStartDate", async (req, res) => {
     }
 })
 
+// Get the classes for the location, date, and activity
+classController.get("/:locationId/:day/:activityId", auth(["member"]), async (req, res) => {
+    try {
+        const locationId = req.params.locationId
+        const day = req.params.day
+        const activityId = req.params.activityId
+        const classes = await Classes.getByLDA(locationId, day, activityId)
+
+        if (isEmpty(classes)) {
+            return res.status(404).json({
+                status: 404,
+                message: "There were no classes found"
+            })
+        }
+        
+        res.status(200).json({
+            status: 200,
+            message: "The classes for the location, date and activity are listed",
+            classes
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Error getting the classes by location, date and activity",
+            error
+        })
+    }
+})
+
 
 // POST /upload
 classController.post("/upload", auth(["manager"]), async (req, res) => {
