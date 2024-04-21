@@ -80,7 +80,7 @@ userController.post("/login", async (req, res) => {
 })
 
 // POST /Logout
-userController.post("/logout", (req, res) => {
+userController.post("/logout", auth(["manager", "member", "trainer"]), (req, res) => {
     // Get the authentication key from the header
     const authenticationKey = req.get("X-AUTH-KEY")
 
@@ -373,7 +373,7 @@ userController.post("/upload", auth(["manager"]), async (req, res) => {
 
 
 // POST /profile
-userController.post("/profile", async (req, res) => {
+userController.post("/profile", auth(["manager", "member", "trainer"]), async (req, res) => {
     const authenticationKey = req.get("X-AUTH-KEY")
 
     try {
@@ -581,7 +581,7 @@ userController.get("/authentication/:authenticationKey", async (req, res) => {
 })
 
 // Get user by Id
-userController.get("/edit/:userId", async (req, res) => {
+userController.get("/edit/:userId", auth(["manager", "member", "trainer"]), async (req, res) => {
     
     const userId = req.params.userId
     
