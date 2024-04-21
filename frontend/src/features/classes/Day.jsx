@@ -10,7 +10,6 @@ function Day({classes, day, date}) {
     useEffect(()=> {
         // On page load check the filter works  // TODO: delete this test
         const checkedFilter = classes.filter(clazz => isSameDay(addHours(new Date(clazz.date), -10), new Date(date)))
-        console.log(checkedFilter)
     }, [])
 
     return ( 

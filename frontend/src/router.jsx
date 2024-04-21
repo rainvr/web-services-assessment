@@ -34,33 +34,33 @@ const router = createBrowserRouter([
         element: <CalendarPage />
     },
     {
-        path: "/bookings",
-        element: <BookingsPage />
-    },
-    {
-        path: "/blog",
-        element: <BlogPage />
-    },
-    {
-        path: "/calendar",
-        element: <CalendarPage />
-    },
-    {
         path: "/error",
         element: <ErrorPage />
     },
     
     // ------- Restricted Routes ------- //
     {
-        path: "/create-booking",
-        element: <RestrictedRoute allowedRoles={["member"]}>
-            <CreateBookingPage />
-        </RestrictedRoute>
-    },
-    {
         path: "/profile",
         element: <RestrictedRoute allowedRoles={["manager", "trainer", "member"]}>
             <ProfilePage />
+        </RestrictedRoute>
+    },
+    {
+        path: "/blog",
+        element: <RestrictedRoute allowedRoles={["manager", "trainer", "member"]}>
+        <BlogPage />
+    </RestrictedRoute>
+    },
+    {
+        path: "/bookings",
+        element: <RestrictedRoute allowedRoles={["member"]}>
+            <BookingsPage />
+        </RestrictedRoute>
+    },
+    {
+        path: "/create-booking",
+        element: <RestrictedRoute allowedRoles={["member"]}>
+            <CreateBookingPage />
         </RestrictedRoute>
     },
     {
@@ -77,7 +77,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/import",
-        element: <RestrictedRoute allowedRoles={["manager", "trainer"]}>
+        element: <RestrictedRoute allowedRoles={["manager"]}>
             <ImportPage />
         </RestrictedRoute>
     }

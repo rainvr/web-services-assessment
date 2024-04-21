@@ -77,7 +77,6 @@ export function useAuthentication() {
 
     // reload a users data in the frontend if backend is updated
     async function refresh() {
-        // console.log(authenticatedUser)  // TODO: remove this test
         if (authenticatedUser) {  // is someone logged in according to the frontend?
             return getByauthenticationKey(authenticatedUser.authenticationKey) // Get the user object from the backend
                 .then(user => {

@@ -40,7 +40,6 @@ function EditUserPage() {
             const result = await Users.update(formData, user.authenticationKey)
             refresh()
             setStatusMessage(result.message)
-            // console.log(result.message)  // TODO: remove test
             
             // TODO: check if If the new email doesn't already exist in the database
             // if (result.status != 400) {
@@ -73,11 +72,6 @@ function EditUserPage() {
                         onChange={(event) => setFormData(existingData => { return { ...existingData, lastname: event.target.value } } )}/>
                     <label className="text-lg font-bold">Email</label> 
                     <p className="bg-slate-100 p-4 rounded-lg">{formData.email}</p>
-                    {/* TODO: should I ever allow email to be edited? */}
-                    {/* <input className="bg-slate-100 p-4 rounded-lg" 
-                        type="email"
-                        value={formData.email} 
-                        onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}/> */}
                     <label className="text-lg font-bold">Password</label> 
                     <input className="bg-slate-100 p-4 rounded-lg"
                         type="text"
@@ -100,7 +94,7 @@ function EditUserPage() {
                         type="text"
                         value={formData.address} 
                         onChange={(event) => setFormData(existingData => { return { ...existingData, address: event.target.value } } )}/>
-                    <div className="flex flex-row justify-end gap-2"> {/* TODO: toggle visibility if the blog belong's to the user */}
+                    <div className="flex flex-row justify-end gap-2"> 
                         {/* --- Status Message --- */}
                         <label className="label">
                             <span className="label-text-alt">{statusMessage}</span>
@@ -109,8 +103,6 @@ function EditUserPage() {
                         <button type="button" onClick={() => navigate(-1)} className="badge badge-outline font-semibold text-green-600 hover:bg-green-200 focus:bg-green-200  active:bg-green-200">Back</button> 
                         {/* --- Save Button --- */}
                         <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200  active:bg-blue-200">Save</button> 
-                        {/* --- TODO: Delete Button...(only for managers.. probably have to change api/controller to getById) --- */}
-                        {/* <button onClick={() => } className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200  active:bg-red-200">Delete</button>  TODO: create & use the deleteBlog model/controller */}
                     </div>
                 </form>
             </section>

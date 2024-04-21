@@ -31,7 +31,6 @@ function Blog({id, userId, author, datetime, title, content, onRefresh}) {
     async function deleteBlog(blogId) { 
         try {       
             const result = await Blogs.deleteById(blogId, user.authenticationKey)
-            // console.log(result)  // TODO: remove test
             if (typeof onRefresh == "function") {
                 onRefresh()  // tell the parent to re-fetch the blogs, triggering a page refresh
             }

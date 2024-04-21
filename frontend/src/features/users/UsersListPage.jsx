@@ -8,10 +8,7 @@ import { useNavigate } from "react-router-dom"
 function UsersListPage() {
     const [user, login, logout, refresh] = useAuthentication()
     const navigate = useNavigate()
-
-    // TODO: refresh trigger for on Save
     const [users, setUsers] = useState([])
-    // const [userId, setUserId] = useState()  // TODO: remove?
 
     const fetchUsers = async () => {
         try {

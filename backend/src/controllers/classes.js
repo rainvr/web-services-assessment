@@ -115,9 +115,6 @@ classController.post("/upload", auth(["manager"]), async (req, res) => {
         // Set up XML parser
         const parser = new xml2js.Parser({explicitArray : false})
         const data = await parser.parseStringPromise(file_text)
-        
-        // console.log("data:")  // TODO: remove test
-        // console.log(data) // TODO: remove test
 
         let classesData = data["Classes"]["Class"]
 
@@ -129,9 +126,6 @@ classController.post("/upload", auth(["manager"]), async (req, res) => {
         }
 
         // Validate each class' data
-        // console.log("classesData:")  // TODO: remove test
-        // console.log(classesData) // TODO: remove test
-
         const validationErrors = classesData.map(classData => {
             // Validate Datetime
             if (!classData.Datetime || !/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(classData.Datetime)) {
@@ -176,24 +170,12 @@ classController.post("/upload", auth(["manager"]), async (req, res) => {
             const retrievedLocation = Locations.getByName(escapedLocation) 
             const retrievedActivity = Activities.getByName(escapedActivity)
 
-            // console.log("retrievedLocation: ")  // TODO: remove test
-            // console.log(retrievedLocation)  // TODO: remove test
-            // console.log("retrievedActivity: ")  // TODO: remove test
-            // console.log(retrievedActivity)  // TODO: remove test
-
             return Promise.all([retrievedLocation, retrievedActivity]).then(([location, activity]) => {
-                // console.log("location: ")  // TODO: remove test
-                // console.log(location)  // TODO: remove test
-                // console.log("activity: ")  // TODO: remove test
-                // console.log(activity)  // TODO: remove test
                 
                 if (location && activity) {
                     // If matching location and activity objects are found, get their IDs
                     const locationId = location[0].id
                     const activityId = activity[0].id
-
-                    // console.log("locationId: " + locationId)  // TODO: remove test
-                    // console.log("activityId: " + activityId)  // TODO: remove test
 
                     const sanitisedDatetime = validator.escape(classData.Datetime)
                     const localDatetime = addHours(new Date(sanitisedDatetime), -10)
@@ -206,9 +188,6 @@ classController.post("/upload", auth(["manager"]), async (req, res) => {
                         activityId,
                         validator.escape(classData.TrainerID)
                     )
-
-                    // console.log("classModel:")  // TODO: remove test
-                    // console.log(classModel) // TODO: remove test
 
                     // Insert the class 
                     return Classes.create(classModel);

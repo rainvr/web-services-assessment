@@ -8,7 +8,7 @@ import * as Users from "../../api/users"
 import { useAuthentication } from "../authentication";
 
 export default function RegisterPage() {
-    const navigate = useNavigate()  // TODO: remove this?
+    const navigate = useNavigate() 
 
     const [statusMessage, setStatusMessage] = useState("")
     const [user, login, logout, refresh] = useAuthentication()
