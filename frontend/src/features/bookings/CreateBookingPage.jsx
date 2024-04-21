@@ -1,38 +1,63 @@
 // --- The Register Page of the Application --- //
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
+import * as Classes from "../../api/classes"
+import * as Locations from "../../api/locations"
 import * as Bookings from "../../api/bookings"
 import { useAuthentication } from "../authentication"
 import { format, formatISO9075 } from "date-fns"
 
 export default function CreateBookingPage() {
-    const navigate = useNavigate()  // TODO: remove this?
+    const navigate = useNavigate()
     const location = useLocation()
 
     const [statusMessage, setStatusMessage] = useState("")
     const [user, login, logout, refresh] = useAuthentication()
-    // const { clazz } = props.location.state
+    const [classes, setClasses] = useState([])
+    const [uniqueClass, setUniqueClass] = useState({})
+    const [formData, setFormData] = useState({})
+    const [selector, setSelector] = useState("unselected")
 
+    // Upon page load retrieve the list of classes by the location, date and activity
+    useEffect(()=> {
+        async function fetchClasses() {
+            try {
+                // Get all the classes from the db by location, date and activity
+                const fetchedClasses = await Classes.getByLDA(location.state.clazz.locationId, location.state.clazz.date, location.state.clazz.activityId, user.authenticationKey)
 
-    const [formData, setFormData] = useState({
-        userId: user.id,
-        classId: location.state.clazz.id,
-        createDate: formatISO9075(new Date())
-    })
+                if (fetchedClasses) {
+                    setClasses(fetchedClasses)
+                    // Get an object with the unique fields (uniqueClass)
+                    setUniqueClass(fetchedClasses[0])
+                } else {
+                    console.log("No classes returned")
+                }
+            } catch (error) {
+                console.error("Error fetching classes:", error)
+            }
+        }
+        fetchClasses()
+    }, [])
+
+    function makeClassToBook(clazz) {
+        setFormData({
+            userId: user.id,
+            classId: clazz.classId,
+            createDate: formatISO9075(new Date())
+        })
+        setSelector("selected")
+    }
 
     async function handleSubmit(event) {
         try {
             event.preventDefault()
             setStatusMessage("Booking...")
 
-            // TODO: loading/registering spinner
-
-            // alert(`The form has been submitted with details: ${formData}`)  // TODO: remove this?
+            // Set the form details and display the time and trainer
+            makeClassToBook(uniqueClass)
             
-            // TODO: add validation for all fields
-
             // Create the booking
             const result = await Bookings.create(formData, user.authenticationKey)
             setStatusMessage(result.message)
@@ -53,44 +78,41 @@ export default function CreateBookingPage() {
             <section className="flex-1 mx-auto p-4 overflow-y-scroll">
                 <form onSubmit={handleSubmit} className="card-body card w-96 bg-base-100 shadow-xl">
                     <h2 className="card-title justify-center mb-4">Book a Class</h2>
-                    <h3 className="pl-4 font-semibold text-sky-400">{location.state.clazz.locationName}</h3>
                     <div className="flex flex-row justify-between w-full bg-slate-200 py-1 px-4 rounded-box ">
-                        <h2 className="text-lg font-bold">{location.state.clazz.day}</h2>
-                        <h3 className="text-md pt-1">{location.state.clazz.date}</h3>
+                        <div className="flex flex-row justify-between w-full">
+                            {uniqueClass && <h2 className="text-lg font-bold">{uniqueClass.locationName}</h2>}
+                            <h2 className="text-lg font-semibold">{format(new Date(location.state.clazz.date), 'EEE do LLL')}</h2>
+                        </div>
                     </div>
-                    <h3 className="pl-4"><strong>Class: </strong>{location.state.clazz.activityName}</h3>
-                    <p className="pl-4"><strong>Duration: </strong>{location.state.clazz.activityDuration} minutes</p>
-                    <p className="pl-4">{location.state.clazz.activityDescription}</p>
-                    <h3 className="pl-4"><strong>Time: </strong>{format(location.state.clazz.datetime, 'h aaa')}</h3>
-                    <p className="pl-4"><strong>Trainer: </strong>{location.state.clazz.trainerName}</p>
+                    {uniqueClass && <>
+                        <h3 className="pl-4"><strong>Class: </strong>{uniqueClass.activityName}</h3>
+                        <p className="pl-4"><strong>Duration: </strong>{uniqueClass.activityDuration} minutes</p>
+                        <p className="pl-4">{uniqueClass.activityDescription}</p>
+                        {/* ----- TIME SELECTOR ----- */}
+                        <div className="navbar">
+                            <div className="navbar-start dropdown dropdown-right">
+                                <div tabIndex={0} role="button" className="btn btn-sm btn-info btn-outline m-1">{selector == "selected" ? "Time" : "Select Time"}</div>
+                                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+    
+                                    {classes.map(clazz => (
+                                        <li key={clazz.classId} onClick={() => makeClassToBook(clazz)}>
+                                            <a>{clazz.classTime}</a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="navbar-end font-semibold text-sky-400">{selector == "selected" ? uniqueClass.classTime : null}</div>
+                        </div>
+                        {/* ---- Show the trainer if a time is selected ---- */}
+                        {selector == "selected" ? 
+                            <p className="pl-4"><strong>Trainer: </strong>{uniqueClass.trainerName}</p> 
+                        : 
+                            <p className="pl-4 text-sky-400">Please select a time to see the trainer</p>
+                        }
+                    </> }
 
-                    {/* <label className="form-control w-full max-w-xs">
-                        <input
-                            type="text"
-                            //name="class-id"
-                            value={formData.classId}
-                            onChange={(event) => setFormData({ ...formData, phone: event.target.value } )}
-                            placeholder="Phone Number"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            // TODO: pattern ...  Checks the phone number pattern
-                        />
-                        <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid phone number</span>
-                    </label>
-                    <label className="form-control w-full max-w-xs">
-                        <input
-                            type="text"
-                            //name="address"
-                            value={formData.address}
-                            onChange={(event) => setFormData({ ...formData, address: event.target.value } )}
-                            placeholder="Address"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            // TODO: pattern ...  Checks the address pattern
-                        />
-                        <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid Address</span>
-                    </label> */}
-                     {/* <button type="submit" className="btn btn-primary">Book</button> */}
-                    {/* <p className="mx-auto">Go to your <Link to="/">Bookings</Link></p>  */}
                     <div className="divider"></div>
+                    
                     <div className="flex flex-row justify-end gap-2">
                         <span className="label-text-alt">{statusMessage}</span>
                         <button type="button" onClick={()=>navigate('/calendar')} className="badge badge-lg badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Cancel</button>

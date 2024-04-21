@@ -101,8 +101,6 @@ bookingController.post("/", auth(["member"]), async (req, res) => {
             null
         )
 
-        console.log(bookingObject) // TODO: remove test
-
         const booking = await Bookings.create(bookingObject)
             res.status(200).json({
                 status: 200,
