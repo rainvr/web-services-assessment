@@ -11,7 +11,7 @@ function HomePage() {
     return (
         <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
             <Header />
-            <section className="flex-1 mx-auto p-4 hero" style={{backgroundImage: 'url(../src/common/images/pexels-pixabay-416778.jpg)'}}>
+            <section className="flex-1 mx-auto p-4 hero bg-portrait-background md:bg-landscape-background">
                 <div className="hero-overlay bg-opacity-60"></div>
                 <div className="hero-content text-center text-neutral-content">
                     <div className="max-w-md">
