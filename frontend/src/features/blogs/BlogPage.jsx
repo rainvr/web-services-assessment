@@ -103,7 +103,7 @@ function BlogPage() {
                 )}
                 {/* ----- Set the form based on if create = "true" ----- */}
                 { create == "true" ? 
-                    <form onSubmit={handleSubmit} className="card-body card mx-auto w-96 bg-base-100 shadow-xl shadow-grey-500">
+                    <form onSubmit={handleSubmit} className="card-body card flex-grow-0 mx-auto w-80 sm:w-96 md:w-[500px] lg:w-[650px] bg-base-100 shadow-xl shadow-grey-500">
                         <input className="text-lg font-bold"
                             type="text"
                             placeholder="Title"

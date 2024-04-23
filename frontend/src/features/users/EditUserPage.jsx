@@ -74,7 +74,7 @@ function EditUserPage() {
                     <p className="bg-slate-100 p-4 rounded-lg">{formData.email}</p>
                     <label className="text-lg font-bold">Password</label> 
                     <input className="bg-slate-100 p-4 rounded-lg"
-                        type="text"
+                        type="password"
                         value={formData.password} 
                         onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}/>
                     <label className="text-lg font-bold">Role</label> 

@@ -6,6 +6,7 @@ import { v4 as uuid4 } from "uuid"
 import auth from "../middleware/auth.js"
 import validator from "validator"
 import xml2js from "xml2js"
+import bcrypt from "bcryptjs"
 
 const userController = Router()
 
@@ -40,24 +41,29 @@ userController.post("/login", async (req, res) => {
             })
         }
 
-        // TODO: Convert password to hash
+        // Convert login password to hash
         // loginData.password = bcrypt.hashSync(loginData.password)
 
-        // TODO: If a matching user object is found, check if the pw hashes match
-        // if (bcrypt.compareSync(loginData.password, user.password)) {  
+        // TODO: delete this as it doesn't change the database: If the password in the db isn't hashed, encrypt it
+        // if (!user.password.startsWith("$2a")) {
+        //     user.password = bcrypt.hashSync(user.password)
+        // }
+
+        // If a matching user object is not found, return an error
+        if (!bcrypt.compareSync(loginData.password, user.password)) {  
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid credentials: loginData: " + loginData.password + " stored pw: " + user.password  // TODO: remove pws from string
+            })
+        }
+        
+        // TODO: delete this: If a matching user object is found check the passwords match
+        // if (loginData.password != user.password) {  
         //     return res.status(400).json({
         //         status: 400,
         //         message: "Invalid credentials"
         //     })
         // }
-        
-        // If a matching user object is found check the passwords match
-        if (loginData.password != user.password) {  
-            return res.status(400).json({
-                status: 400,
-                message: "Invalid credentials"
-            })
-        }
         
         // Create a unique auth key for the returned user
         user.authenticationKey = uuid4().toString()  
@@ -156,7 +162,7 @@ userController.post("/register", (req, res) => {
     }
 
     // Validate the password
-    if (!/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/.test(registerData.password)) {
+    if (!/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})$/.test(registerData.password)) {
         // Show error
         return res.status(400).json({
             status: 400,
@@ -200,8 +206,8 @@ userController.post("/register", (req, res) => {
         })
     }
 
-    // TODO: Hash the password
-    // registerData.password = bcrypt.hashSync(registerData.password);
+    // Hash the password
+    registerData.password = bcrypt.hashSync(registerData.password)
 
     // Convert the user data into an User model object (and sanitise appropriate inputs)
     const userObject = Users.newUser(
@@ -280,7 +286,7 @@ userController.post("/upload", auth(["manager"]), async (req, res) => {
                 return "Invalid email format"
             }
             // Validate password
-            if (!userData.Password || !/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/.test(userData.Password)) {
+            if (!userData.Password || !/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})$/.test(userData.Password)) {
                 return "Invalid Password. Must use a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces"
             }
             // Validate role
@@ -332,9 +338,9 @@ userController.post("/upload", auth(["manager"]), async (req, res) => {
                 const userModel = Users.newUser(
                     null, 
                     validator.escape(userData.Email), 
-                    // TODO: Hash the password
-                    // userModel.password = bcrypt.hashSync(userModel.password);
-                    userData.Password, 
+                    // Hash the password
+                    bcrypt.hashSync(userData.Password),
+                    // userData.Password, 
                     validator.escape(userData.Role), 
                     validator.escape(userData.Phone),
                     validator.escape(userData.FirstName),
@@ -443,13 +449,16 @@ userController.patch("/update", auth(["manager", "member", "trainer"]), async (r
             })
         }
 
-        // Validate the password
-        if (!/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$/.test(updateData.password)) {
-            // Show error
-            return res.status(400).json({
-                status: 400,
-                message: "Invalid Password. Must use a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces"
-            })
+        // Check for hashing on the password & validate if not hashed
+        if (!updateData.password.startsWith("$2a")) {
+            // Validate the password
+            if (!/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})$/.test(updateData.password)) {
+                // Show error
+                return res.status(400).json({
+                    status: 400,
+                    message: "Invalid Password. Must use a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces"
+                })
+            }
         }
 
         // Validate firstname
@@ -492,7 +501,9 @@ userController.patch("/update", auth(["manager", "member", "trainer"]), async (r
         const userObject = Users.newUser(
             updateData.id,
             validator.escape(updateData.email),
-            updateData.password,  // TODO: bcrypt the password when inputting
+            // Hash the password
+            bcrypt.hashSync(updateData.password),
+            // TODO: delete this: updateData.Password,
             updateData.role,
             validator.escape(updateData.phone),
             validator.escape(updateData.firstname),
@@ -508,7 +519,7 @@ userController.patch("/update", auth(["manager", "member", "trainer"]), async (r
                 res.status(200).json({
                     status: 200,
                     message: "Updated",
-                    response  // TODO: do I want to return the full user object here?
+                    response 
                 })
             })
     } catch (error) {

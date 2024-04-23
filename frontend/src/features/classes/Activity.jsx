@@ -12,7 +12,7 @@ function Activity({clazz}) {
     // const [clazz, setClazz] = useState(clazz)
 
     return (
-        <tr className="hover">
+        <tr className="hover w-full">
             <th></th>
             <td>{clazz.activityName}</td>
             {/* <td>{format(Date({time}), "h 'o''clock'")}</td> */}

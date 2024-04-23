@@ -68,7 +68,7 @@ function ProfilePage() {
                         <h2 className="text-lg font-bold">Email</h2> 
                         <p className="bg-slate-100 p-4 rounded-lg">{user.email}</p>
                         <h2 className="text-lg font-bold">Password</h2> 
-                        <p className="bg-slate-100 p-4 rounded-lg">{user.password}</p>
+                        <p className="bg-slate-100 p-4 rounded-lg">*********</p>
                         <h2 className="text-lg font-bold">Role</h2> 
                         <p className="bg-slate-100 p-4 rounded-lg">{user.role}</p>
                         <h2 className="text-lg font-bold">Phone</h2> 
@@ -97,7 +97,7 @@ function ProfilePage() {
                             onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}/> */}
                         <label className="text-lg font-bold">Password</label> 
                         <input className="bg-slate-100 p-4 rounded-lg"
-                            type="text"
+                            type="password"
                             value={formData.password} 
                             onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}/>
                         <label className="text-lg font-bold">Role</label> 
