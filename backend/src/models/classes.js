@@ -3,6 +3,17 @@ import { addHours } from "date-fns"
 
 // --------- CONSTRUCTOR ---------- //
 
+// Construct a new class object (used in XML upload)
+export function newClass(id, datetime, locationId, activityId, trainerId) {
+    return {
+        id,
+        datetime: addHours(new Date(datetime), 10),
+        locationId,
+        activityId,
+        trainerId
+    }
+}
+
 // Construct a new class object for the weekly view
 export function newClassByWeek(date, locationId, activityId, activityName, activityDescription, activityDuration) {
     return {
