@@ -31,23 +31,11 @@ function EditUserPage() {
             setStatusMessage("Updating...")
 
             // TODO: loading/registering spinner
-
-            // alert(`The form has been submitted with details: ${formData}`)  // TODO: remove this?
-            
-            // TODO: add validation for all fields
             
             // Updated the user
             const result = await Users.update(formData, user.authenticationKey)
             refresh()
             setStatusMessage(result.message)
-            
-            // TODO: check if If the new email doesn't already exist in the database
-            // if (result.status != 400) {
-            //     // Try to login the user and navigate home
-            //     const nextResult = await login(formData.email, formData.password)
-            //     setStatusMessage(nextResult.message)
-            //     navigate("/")
-            // }
             
         } catch (error) {
             console.log(error)

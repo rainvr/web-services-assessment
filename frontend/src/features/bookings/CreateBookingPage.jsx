@@ -20,24 +20,25 @@ export default function CreateBookingPage() {
     const [formData, setFormData] = useState({})
     const [selector, setSelector] = useState("unselected")
 
+    async function fetchClasses() {
+        try {
+            // Get all the classes from the db by location, date and activity
+            const fetchedClasses = await Classes.getByLDA(location.state.clazz.locationId, location.state.clazz.date, location.state.clazz.activityId, user.authenticationKey)
+
+            if (fetchedClasses) {
+                setClasses(fetchedClasses)
+                // Get an object with the unique fields (uniqueClass)
+                setUniqueClass(fetchedClasses[0])
+            } else {
+                console.log("No classes returned")
+            }
+        } catch (error) {
+            console.error("Error fetching classes:", error)
+        }
+    }
+    
     // Upon page load retrieve the list of classes by the location, date and activity
     useEffect(()=> {
-        async function fetchClasses() {
-            try {
-                // Get all the classes from the db by location, date and activity
-                const fetchedClasses = await Classes.getByLDA(location.state.clazz.locationId, location.state.clazz.date, location.state.clazz.activityId, user.authenticationKey)
-
-                if (fetchedClasses) {
-                    setClasses(fetchedClasses)
-                    // Get an object with the unique fields (uniqueClass)
-                    setUniqueClass(fetchedClasses[0])
-                } else {
-                    console.log("No classes returned")
-                }
-            } catch (error) {
-                console.error("Error fetching classes:", error)
-            }
-        }
         fetchClasses()
     }, [])
 
@@ -47,6 +48,7 @@ export default function CreateBookingPage() {
             classId: clazz.classId,
             createDate: formatISO9075(new Date())
         })
+        setUniqueClass(clazz)
         setSelector("selected")
     }
 
@@ -54,9 +56,6 @@ export default function CreateBookingPage() {
         try {
             event.preventDefault()
             setStatusMessage("Booking...")
-
-            // Set the form details and display the time and trainer
-            makeClassToBook(uniqueClass)
             
             // Create the booking
             const result = await Bookings.create(formData, user.authenticationKey)

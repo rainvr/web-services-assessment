@@ -29,10 +29,6 @@ export default function RegisterPage() {
             setStatusMessage("Registering...")
 
             // TODO: loading/registering spinner
-
-            // alert(`The form has been submitted with details: ${formData}`)  // TODO: remove this?
-            
-            // TODO: add validation for all fields
             
             // Register the user
             const result = await Users.register(formData)

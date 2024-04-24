@@ -41,14 +41,6 @@ userController.post("/login", async (req, res) => {
             })
         }
 
-        // Convert login password to hash
-        // loginData.password = bcrypt.hashSync(loginData.password)
-
-        // TODO: delete this as it doesn't change the database: If the password in the db isn't hashed, encrypt it
-        // if (!user.password.startsWith("$2a")) {
-        //     user.password = bcrypt.hashSync(user.password)
-        // }
-
         // If a matching user object is not found, return an error
         if (!bcrypt.compareSync(loginData.password, user.password)) {  
             return res.status(400).json({
@@ -56,14 +48,6 @@ userController.post("/login", async (req, res) => {
                 message: "Invalid credentials: loginData: " + loginData.password + " stored pw: " + user.password  // TODO: remove pws from string
             })
         }
-        
-        // TODO: delete this: If a matching user object is found check the passwords match
-        // if (loginData.password != user.password) {  
-        //     return res.status(400).json({
-        //         status: 400,
-        //         message: "Invalid credentials"
-        //     })
-        // }
         
         // Create a unique auth key for the returned user
         user.authenticationKey = uuid4().toString()  
