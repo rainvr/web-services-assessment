@@ -5,6 +5,7 @@ import Blog from "./Blog"
 import * as Blogs from "../../api/blogs"
 import { useAuthentication } from "../authentication"
 import { useState, useEffect } from "react"
+import { unescape } from "validator"
 
 function BlogPage() {
     const [user, login, logout, refresh] = useAuthentication()
@@ -24,6 +25,11 @@ function BlogPage() {
         try {
             const blogs = await Blogs.getAll()
             if (blogs) {  // If we have some users returned
+                // unescape the title and content (to ensure readible content)
+                const unEscapedBlogs = blogs.map(blog => {
+                    blog.title = unescape(blog.title),
+                    blog.content = unescape(blog.content)
+                })
                 setBlogs(blogs)  // Set the users state as the users returned
             } else {
                 console.log("No blogs returned")  

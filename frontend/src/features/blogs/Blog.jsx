@@ -3,6 +3,7 @@ import * as Blogs from "../../api/blogs"
 import * as Users from "../../api/users"
 import { useState } from "react"
 import { useAuthentication } from "../authentication"
+import { unescape } from "validator"
 
 function Blog({id, userId, author, datetime, title, content, onRefresh}) {
     const [user, login, logout, refresh] = useAuthentication()
@@ -11,8 +12,8 @@ function Blog({id, userId, author, datetime, title, content, onRefresh}) {
     const [formData, setFormData] = useState({
         id: id,
         datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        title: title,
-        content: content
+        title: unescape(title),
+        content: unescape(content)
     })
 
     // Format datetime to a more readable format
