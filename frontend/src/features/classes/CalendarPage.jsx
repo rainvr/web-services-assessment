@@ -74,7 +74,7 @@ function CalendarPage() {
                 {/* ----- LOCATION SELECTOR ----- */}
                 <div className="navbar">
                     <div className="navbar-start dropdown dropdown-right">
-                        <div tabIndex={0} role="button" className="btn btn-sm btn-info btn-outline m-1">Location</div>
+                        <div tabIndex={0} role="button" className="btn btn-sm btn-info btn-outline m-1">Location &#9660;</div>
                         <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                             {/* Map the list of locations */}
                             {locations.map(location => (
