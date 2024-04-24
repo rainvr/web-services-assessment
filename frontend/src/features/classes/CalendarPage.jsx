@@ -107,7 +107,7 @@ function CalendarPage() {
                 {/* ----- PREVIOUS | NEXT ----- */}
                 <div className="divider"></div> 
                 <div className="join grid grid-cols-2">
-                    <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setWeekStartDate(addHours(weekStartDate, -168).toISOString())}>Last week</button>
+                    <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setWeekStartDate(addHours(weekStartDate, -168).toISOString())}>Previous week</button>
                     <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setWeekStartDate(addHours(weekStartDate, 168).toISOString())}>Next week</button>
                 </div>
             </section>
