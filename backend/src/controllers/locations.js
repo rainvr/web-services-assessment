@@ -35,6 +35,16 @@ locationController.get("/", async (req, res) => {
 locationController.get("/:locationName", async (req, res) => {
     try {
         const locationName = req.params.locationName
+        
+        // Validate locationName
+        if (!/^[a-zA-Z -]+$/.test(locationName)) {
+            // Show error
+            return res.status(400).json({
+                status: 400,
+                message: "Invalid location name"
+            })
+        }
+        
         const location = await Locations.getByName(locationName)
         
         if (isEmpty(location)) {
