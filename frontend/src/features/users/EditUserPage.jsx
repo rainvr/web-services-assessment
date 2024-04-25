@@ -29,8 +29,6 @@ function EditUserPage() {
         try {
             event.preventDefault()
             setStatusMessage("Updating...")
-
-            // TODO: loading/registering spinner
             
             // Updated the user
             const result = await Users.update(formData, user.authenticationKey)

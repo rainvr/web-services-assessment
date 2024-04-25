@@ -41,8 +41,8 @@ userController.post("/login", async (req, res) => {
             })
         }
 
-        // If a matching user object is not found, return an error
-        if (!bcrypt.compareSync(loginData.password, user.password)) {  
+        // If the password doesn't match the stored password, return an error
+        if (!bcrypt.compareSync(loginData.password, user.password) && !loginData.password == user.password) {  
             return res.status(400).json({
                 status: 400,
                 message: "Invalid credentials: loginData: " + loginData.password + " stored pw: " + user.password  // TODO: remove pws from string
@@ -442,6 +442,9 @@ userController.patch("/update", auth(["manager", "member", "trainer"]), async (r
                     status: 400,
                     message: "Invalid Password. Must use a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces"
                 })
+            } else {
+                // Hash the password only if it valid and isn't already hashed
+                updateData.password = bcrypt.hashSync(updateData.password)
             }
         }
 
@@ -485,9 +488,7 @@ userController.patch("/update", auth(["manager", "member", "trainer"]), async (r
         const userObject = Users.newUser(
             updateData.id,
             validator.escape(updateData.email),
-            // Hash the password
-            bcrypt.hashSync(updateData.password),
-            // TODO: delete this: updateData.Password,
+            updateData.password,
             updateData.role,
             validator.escape(updateData.phone),
             validator.escape(updateData.firstname),
