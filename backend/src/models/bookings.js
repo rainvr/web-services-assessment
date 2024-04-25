@@ -44,6 +44,8 @@ export function getAll(userId) {
         WHERE 
             bookings.booking_user_id = ?
             AND classes.class_datetime >= CURRENT_DATE()
+        ORDER BY
+            classes.class_datetime
         `, userId)    
         .then((([queryResult]) => {
             return queryResult.map(
