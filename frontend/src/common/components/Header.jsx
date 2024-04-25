@@ -8,8 +8,6 @@ function Header() {
     const navigate = useNavigate()
 
     return (
-        // <header className="flex flex-col bg-slate-500">This is the Header</header>
-
         <div className="navbar bg-slate-200">
             <div className="navbar-start">
                 <div className="dropdown">
@@ -19,8 +17,7 @@ function Header() {
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         <li><Link to="/calendar">Calendar</Link></li>
                         { user && user.role === "member" ? <li><Link to="/bookings">Bookings</Link></li> : null }
-                        {/* TODO: Possible future feature - trainers can see the classes asigned to themselves */}
-                        {/* { user && user.role === "trainer" ? <li><Link to="/classes">Classes</Link></li> : null } */}
+                        { user && user.role === "trainer" ? <li><Link to="/classes">Classes</Link></li> : null }
                         { user && user.role === "manager" ? <li><Link to="/users-list">Users</Link></li> : null }
                         { user && user.role === "manager" ? <li><Link to="/import">Import</Link></li> : null }
                         { user && <li><Link to="/blog">Blog</Link></li> }
@@ -32,14 +29,12 @@ function Header() {
             </div>
             <div className="navbar-end">
                 <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                            {/* <img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" /> */}
-                            <img alt="Login Icon" src="/src/common/images/login.png" />  {/* TODO: make this image a bit nicer */}
+                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar placeholder">
+                        <div className="bg-neutral text-neutral-content rounded-full w-8">
+                            { user ? <span className="text-xs">{user.firstname.charAt(0)} {user.lastname.charAt(0)}</span>
+                            : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-5 h-5 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg> }
                         </div>
                     </div>
-                    {/* If authenticated user exists show their firstname, if not (i.e. during loading, or if none logged in) return nothing */}
-                    { user ? ( <div className="justify-self-center">{user.firstname}</div> ) : null }
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         { !user ? <li><Link to="/register">Register</Link></li> : null }
                         { !user ? <li><Link to="/login">Login</Link></li> : null }
