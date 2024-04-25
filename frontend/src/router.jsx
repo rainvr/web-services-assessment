@@ -5,6 +5,7 @@ import HomePage from "./features/home/HomePage.jsx"
 import LoginPage from "./features/users/LoginPage.jsx"
 import RegisterPage from "./features/users/RegisterPage.jsx"
 import CalendarPage from "./features/classes/CalendarPage.jsx"
+import ClassesPage from "./features/classes/ClassesPage.jsx"
 import BookingsPage from "./features/bookings/BookingsPage.jsx"
 import CreateBookingPage from "./features/bookings/CreateBookingPage"
 import BlogPage from "./features/blogs/BlogPage"
@@ -50,6 +51,12 @@ const router = createBrowserRouter([
         element: <RestrictedRoute allowedRoles={["manager", "trainer", "member"]}>
         <BlogPage />
     </RestrictedRoute>
+    },
+    {
+        path: "/classes",
+        element: <RestrictedRoute allowedRoles={["trainer"]}>
+            <ClassesPage />
+        </RestrictedRoute>
     },
     {
         path: "/bookings",

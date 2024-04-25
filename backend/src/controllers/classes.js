@@ -68,6 +68,32 @@ classController.get("/:locationId/:day/:activityId", auth(["member"]), async (re
     }
 })
 
+// Get the classes for the userId
+classController.get("/:userId", auth(["trainer"]), async (req, res) => {
+    try {
+        const userId = req.params.userId
+        const classes = await Classes.getByUserId(userId)
+
+        if (isEmpty(classes)) {
+            return res.status(404).json({
+                status: 404,
+                message: "There were no classes found"
+            })
+        }
+        
+        res.status(200).json({
+            status: 200,
+            message: "The classes for the user, date and activity are listed",
+            classes
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            message: "Error getting the classes by user",
+            error
+        })
+    }
+})
 
 // POST /upload
 classController.post("/upload", auth(["manager"]), async (req, res) => {
@@ -109,10 +135,10 @@ classController.post("/upload", auth(["manager"]), async (req, res) => {
             if (!classData.Location || !/^[a-zA-Z -]+$/.test(classData.Location)) {
                 return "Invalid Location"
             }
-            // Validate Activity
-            // if (!classData.Activity || !/^[a-zA-Z -]+$/.test(classData.Activity)) {
-            //     return "Invalid Activity"
-            // }
+            // Validate Activity // TODO: does this work?
+            if (!classData.Activity || !/^[a-zA-Z -]+$/.test(classData.Activity)) {
+                return "Invalid Activity"
+            }
             // Validate Trainer
             if (!classData.TrainerID || !validator.isInt(classData.TrainerID)) {
                 return "Invalid TrainerID"

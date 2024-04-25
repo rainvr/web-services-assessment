@@ -39,3 +39,22 @@ export async function getByLDA(locationId, date, activityId, authenticationKey) 
 
     return APIResponseObject.classes
 }
+
+/**
+ * GET /classes/:userId
+ * Gets the classes for the given userId
+ * @returns {Promise<Array<Object>>}
+ */
+export async function getByUserId(userId, authenticationKey) {
+    const apiResponse = await fetch(API_URL + "/classes/" + userId, {
+        method: "GET",
+        headers: {
+            'Content-Type': "application/json",
+            'X-AUTH-KEY': authenticationKey
+        }
+    })
+
+    const APIResponseObject = await apiResponse.json()
+
+    return APIResponseObject.classes
+}
