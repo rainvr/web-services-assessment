@@ -20,11 +20,8 @@ export function newBooking(id, createDate, userId, classId, classDatetime, locat
 
 // --------- READ ---------- //
 
-// Get all the bookings from the database
+// Get all the bookings from the database for the userId
 export function getAll(userId) {
-    // return db.query(`SELECT booking_id, booking_created_datetime, user_id, CONCAT(user_firstname, " ", user_lastname) AS trainer_name, class_id, class_datetime, activity_name, activity_description 
-    // FROM bookings, users, classes, activities
-    // WHERE bookings.booking_user_id = ? AND bookings.booking_class_id = classes.class_id AND classes.class_activity_id = activities.activity_id`, userId)
     return db.query(`
         SELECT 
             bookings.booking_id, 
@@ -46,6 +43,7 @@ export function getAll(userId) {
             INNER JOIN users AS trainer ON classes.class_trainer_user_id = trainer.user_id
         WHERE 
             bookings.booking_user_id = ?
+            AND classes.class_datetime >= CURRENT_DATE()
         `, userId)    
         .then((([queryResult]) => {
             return queryResult.map(
