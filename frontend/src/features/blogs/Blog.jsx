@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom"
 import * as Blogs from "../../api/blogs"
-import * as Users from "../../api/users"
 import { useState } from "react"
 import { useAuthentication } from "../authentication"
 import { unescape } from "validator"
 
-function Blog({id, userId, author, datetime, title, content, onRefresh}) {
+function Blog({id, userId, author, datetime, title, content, onRefresh, onAction}) {
     const [user, login, logout, refresh] = useAuthentication()
     const [view, setView] = useState("read")
 
@@ -35,6 +33,9 @@ function Blog({id, userId, author, datetime, title, content, onRefresh}) {
             if (typeof onRefresh == "function") {
                 onRefresh()  // tell the parent to re-fetch the blogs, triggering a page refresh
             }
+            if (typeof onAction == "function") {
+                onAction("Your blog has been successfully deleted")  // tell the parent to setStatusMessage for the edit message
+            }
         } catch (error) {
         console.error("Error deleting blog:", error)
         }
@@ -53,22 +54,14 @@ function Blog({id, userId, author, datetime, title, content, onRefresh}) {
     async function handleSubmit(event) {
         try {
             event.preventDefault()
-
-            // TODO: setStatusMessage("Updating...")
-
-            // TODO: loading/registering spinner
-
-            // alert(`The form has been submitted with details: ${formData}`)  // TODO: remove this?
-            
-            // TODO: add validation for all fields
             
             // Create the blog
             const result = await Blogs.update(formData, user.authenticationKey)
             
             if (result) {
-                // TODO: do I need to Reset the form data ???
-                // TODO: do I need to refresh the view?
-            
+                if (typeof onAction == "function") {
+                    onAction("Your blog has been successfully edited")  // tell the parent to setStatusMessage for the edit message
+                }
                 // Close the edit view
                 setView("read");
             } else {
@@ -76,7 +69,6 @@ function Blog({id, userId, author, datetime, title, content, onRefresh}) {
             }
 
             refresh()
-            // setStatusMessage(result.message)  // TODO: Status Message
         } catch (error) {
             console.log(error)
         }
