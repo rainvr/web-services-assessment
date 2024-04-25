@@ -44,6 +44,18 @@ export function newClassByLDA(classId, classDatetime, classDay, classTime, locat
     }
 }
 
+// Construct a new class object for the trainer's classes view
+export function newClassByUserId(classId, classDatetime, locationName, activityName, activityDuration, bookingCount) {
+    return {
+        classId,
+        classDatetime, 
+        locationName,
+        activityName,
+        activityDuration,
+        bookingCount
+    }
+}
+
 // --------- READ ---------- //
 
 // Get the unique classes (by activity and day) for the next week from the database
@@ -126,6 +138,51 @@ export function getByLDA(locationId, date, activityId) {
         }))
         .catch(error => {
             console.log(`Error getting all the classes: ` + error)
+        })
+}
+
+// Get all the classes by trainer user Id from today's date onward and count the bookings
+export function getByUserId(userId) {
+    return db.query(`
+    SELECT 
+        class_id,
+        class_datetime,
+        location_name,
+        activity_name,
+        activity_duration,
+        COUNT(booking_id) AS booking_count
+    FROM 
+        classes
+    JOIN 
+        location ON classes.class_location_id = location.location_id 
+    JOIN 
+        activities ON classes.class_activity_id = activities.activity_id 
+    LEFT JOIN 
+        bookings ON class_id = booking_class_id
+    WHERE class_trainer_user_id = ?  
+        AND class_datetime >= CURRENT_DATE()
+    GROUP BY 
+        class_id, 
+        class_datetime, 
+        location_name, 
+        activity_name, 
+        activity_duration
+    ORDER BY class_datetime
+    `, userId)
+        .then((([queryResult]) => {
+            return queryResult.map(
+                result => newClassByUserId(
+                    result.class_id,
+                    result.class_datetime,
+                    result.location_name,
+                    result.activity_name,   
+                    result.activity_duration,
+                    result.booking_count
+                )
+            )
+        }))
+        .catch(error => {
+            console.log(`Error getting the classes: ` + error)
         })
 }
 
