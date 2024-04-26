@@ -70,7 +70,6 @@ function ClassesPage() {
                 {/* ---- CLASSES LIST ---- */}
                 {classes.map(clazz => 
                     <form key={clazz.classId} className="card-body card w-80 sm:w-96 md:w-[500px] lg:w-[650px]  mb-4 bg-base-100 shadow-xl">
-                        <h2 className="card-title justify-center mb-4">Your classes</h2>
                         <div className="flex flex-row justify-between w-full bg-slate-200 py-1 px-4 rounded-box ">
                             <div className="flex flex-row justify-between w-full">
                                 {clazz && <h2 className="text-lg font-bold">{clazz.locationName}</h2>}

@@ -54,7 +54,7 @@ function BookingsPage() {
                 <div className="divider mt-0 mb-2"></div> 
                 {/* ---- NO BOOKINGS MESSAGE ---- */}
                 { bookings.length == 0 && <>
-                    <p className="text-md font-normal text-center">You have no bookings.</p>
+                    <p className="text-md font-normal text-center">You have no upcoming bookings.</p>
                     <p className="text-md font-normal text-center">Please go to the calendar to make a booking.</p>
                 </> }
                 {/* ---- STATUS MESSAGE ---- */}
