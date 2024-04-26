@@ -43,8 +43,8 @@ function ProfilePage() {
         <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
             <Header />
             <section className="flex-1 mx-auto p-4 overflow-y-scroll">
-                <h1 className="text-xl font-bold">Profile</h1>
-                <form onSubmit={handleSubmit} className="card-body card mx-auto w-96 bg-base-100 shadow-xl shadow-grey-500">
+                <form onSubmit={handleSubmit} className="card-body card mx-auto w-80 sm:w-96 md:w-[500px] lg:w-[650px] bg-base-100 shadow-xl shadow-grey-500">
+                    <h1 className="card-title justify-center mb-4">Profile</h1>
                     {/* --- Profile View --- */}
                     { view === "profile" ? <>
                         <h2 className="text-lg font-bold">First Name</h2> 

@@ -45,7 +45,7 @@ function EditUserPage() {
             <Header />
             <section className="flex-1 mx-auto p-4 overflow-y-scroll">
                 <h1 className="text-xl font-bold">Edit User</h1>
-                <form onSubmit={handleSubmit} className="card-body card mx-auto w-96 bg-base-100 shadow-xl shadow-grey-500">        
+                <form onSubmit={handleSubmit} className="card-body card mx-auto w-80 sm:w-96 md:w-[500px] lg:w-[650px] bg-base-100 shadow-xl shadow-grey-500">        
                     <label className="text-lg font-bold">First Name</label> 
                     <input className="bg-slate-100 p-4 rounded-lg" 
                         type="text"

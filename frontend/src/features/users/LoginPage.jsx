@@ -36,28 +36,28 @@ export default function LoginPage() {
         <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
             <Header />
             <section className="flex-1 mx-auto p-4 overflow-y-scroll">
-                <form onSubmit={handleSubmit} className="card-body card mx-auto w-96 bg-base-100 shadow-xl">
+                <form onSubmit={handleSubmit} className="card-body card mx-auto w-80 sm:w-96 md:w-[500px] lg:w-[650px] bg-base-100 shadow-xl">
                     <h2 className="card-title justify-center mb-4">Login</h2>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={(event) => setFormData({ ...formData, email: event.target.value })}
                             placeholder="Email"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                             pattern="^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"  // Checks the email pattern
                             required />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid email</span>
                     </label>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={(event) => setFormData({ ...formData, password: event.target.value })}
                             placeholder="Password"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                             pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"  
                             required />
                         <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid password</span>

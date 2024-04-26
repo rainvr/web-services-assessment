@@ -49,67 +49,67 @@ export default function RegisterPage() {
         <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
             <Header />
             <section className="flex-1 mx-auto p-4 overflow-y-scroll">
-                <form onSubmit={handleSubmit} className="card-body card w-96 bg-base-100 shadow-xl">
+                <form onSubmit={handleSubmit} className="card-body card w-80 sm:w-96 md:w-[500px] lg:w-[650px] bg-base-100 shadow-xl">
                     <h2 className="card-title justify-center mb-4">Sign Up</h2>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="text"
                             value={formData.firstname}
                             onChange={(event) => setFormData(existingData => { return { ...existingData, firstname: event.target.value } } )}
                             placeholder="First Name"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                             required />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid name</span>
                     </label>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="text"
                             value={formData.lastname}
                             onChange={(event) => setFormData({ ...formData, lastname: event.target.value } )}
                             placeholder="Last Name"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                             required />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid last name</span>
                     </label>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="email"
                             value={formData.email}
                             onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}
                             placeholder="Email"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                             pattern="^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$"  // Checks the email pattern
                             required />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid email</span>
                     </label>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="password"
                             value={formData.password}
                             onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}
                             placeholder="Password"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                             pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"  // Checks that a password has a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces.
                             required />
                         <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid password</span>
                     </label>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="text"
                             value={formData.phone}
                             onChange={(event) => setFormData({ ...formData, phone: event.target.value } )}
                             placeholder="Phone Number"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                         />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid phone number</span>
                     </label>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                         <input
                             type="text"
                             value={formData.address}
                             onChange={(event) => setFormData({ ...formData, address: event.target.value } )}
                             placeholder="Address"
-                            className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
+                            className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
                         />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid Address</span>
                     </label>
