@@ -113,13 +113,3 @@ export async function updateById(blog) {
 export async function deleteById(blogId) {
     return db.query("DELETE FROM blog_posts WHERE post_id = ?", blogId)
 }
-
-
-// ---------- TESTING ---------- //
-
-// create({
-//     userId: 111,
-//     datetime: '2020-01-01 10:10:10',
-//     title: "Some title",
-//     content: "Some content."
-// })

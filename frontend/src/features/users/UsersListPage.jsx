@@ -29,7 +29,7 @@ function UsersListPage() {
             return // Return early if the authenticated user is null
         }
         fetchUsers()
-    }, [user.authenticationKey]) // Only re-run the effect if user changes ( see 2nd wk 5&6 video 1:26:30 )
+    }, [user.authenticationKey]) // Only re-run the effect if user changes 
         
 
     async function deleteThisUser(userId) {

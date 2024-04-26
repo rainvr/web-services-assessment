@@ -70,7 +70,7 @@ function ClassesPage() {
                 {/* ---- CLASSES LIST ---- */}
                 {classes.map(clazz => 
                     <form key={clazz.classId} className="card-body card w-80 sm:w-96 md:w-[500px] lg:w-[650px]  mb-4 bg-base-100 shadow-xl">
-                        {/* <h2 className="card-title justify-center mb-4">Your class</h2> */}
+                        <h2 className="card-title justify-center mb-4">Your classes</h2>
                         <div className="flex flex-row justify-between w-full bg-slate-200 py-1 px-4 rounded-box ">
                             <div className="flex flex-row justify-between w-full">
                                 {clazz && <h2 className="text-lg font-bold">{clazz.locationName}</h2>}
@@ -83,10 +83,6 @@ function ClassesPage() {
                             <p className="pl-4"><strong>Duration: </strong>{clazz.activityDuration} minutes</p>
                             <p className="pl-4"><strong>Enrolled: </strong>{clazz.bookingCount}</p>
                         </> }
-                        {/* ---- CANCEL BUTTON ---- */}
-                        {/* <div className="flex flex-row justify-end gap-2">
-                            <button type="button" onClick={() => cancel(clazz.id)} className="badge badge-lg badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Cancel</button>
-                        </div> */}
                     </form>
                 )}
             </section>

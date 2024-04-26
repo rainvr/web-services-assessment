@@ -1,18 +1,10 @@
-import { useState } from "react"
 import Activity from "../classes/Activity"
-import { format, isSameDay, addHours } from "date-fns"
+import { isSameDay, addHours } from "date-fns"
 
 function Location({bookings}) {
 
-    // Format the date into an exeptable format
-    // const formattedDate = format(new Date(date), 'do MMMM')
-
     return ( 
         <>
-                {/* <div className="flex flex-row justify-between w-full bg-slate-200 py-1 px-4 rounded-box ">
-                    <h2 className="text-lg font-bold">{day}</h2>
-                    <h3 className="text-md pt-1">{formattedDate}</h3>
-                </div> */}
                 { bookings.filter(booking => isSameDay(addHours(new Date(clazz.datetime), -10), new Date(date))).length > 0 ?
                 <table className="table">
                     {/* head */}

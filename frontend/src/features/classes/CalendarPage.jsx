@@ -5,7 +5,7 @@ import * as Classes from "../../api/classes"
 import * as Locations from "../../api/locations"
 import { useEffect, useState } from "react"
 import Day from "./Day"
-import { addHours, previousMonday, isSameDay, format, formatISO9075, startOfWeek } from "date-fns"
+import { addHours, startOfWeek } from "date-fns"
 
 function CalendarPage() {
     const [classes, setClasses] = useState([])

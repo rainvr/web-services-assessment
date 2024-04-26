@@ -2,7 +2,7 @@
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
 import * as Users from "../../api/users"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useAuthentication } from "../authentication"
 import { useState } from "react"
 
@@ -11,7 +11,6 @@ function EditUserPage() {
     const [statusMessage, setStatusMessage] = useState()
     const navigate = useNavigate()
     const location = useLocation()
-    // const [view, setView] = useState("edit")
 
     const [formData, setFormData] = useState({
         id: location.state.id,
