@@ -16,7 +16,7 @@ function BlogPage() {
 
     const [formData, setFormData] = useState({
         id: null,
-        userId: null, // parseInt(user.id),  // TODO: this was how I had it before
+        userId: null, 
         datetime: new Date().toISOString().slice(0, 19).replace('T', ' '),
         title: "",
         content: ""
@@ -87,7 +87,6 @@ function BlogPage() {
             }
 
             refresh()
-            // setStatusMessage(result.message)  // TODO: Status Message
         } catch (error) {
             console.log(error)
         }
@@ -141,8 +140,8 @@ function BlogPage() {
                             onChange={(event) => setFormData(existingData => { return { ...existingData, content: event.target.value } } )}
                         />
                         <div className="flex flex-row justify-end gap-2">
-                        {user ? <button type="button" onClick={()=>setCreate("false")} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Cancel</button> : null}  {/* TODO: create & use the deleteBlog model/controller */}
-                            {user ? <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200  active:bg-blue-200">Save</button> : null}  {/* TODO: create & use the deleteBlog model/controller */}
+                        {user ? <button type="button" onClick={()=>setCreate("false")} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200  active:bg-orange-200">Cancel</button> : null} 
+                            {user ? <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200  active:bg-blue-200">Save</button> : null}  
                         </div>
                     </form>
                 : null }

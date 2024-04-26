@@ -135,7 +135,7 @@ classController.post("/upload", auth(["manager"]), async (req, res) => {
             if (!classData.Location || !/^[a-zA-Z -]+$/.test(classData.Location)) {
                 return "Invalid Location"
             }
-            // Validate Activity // TODO: does this work?
+            // Validate Activity // 
             if (!classData.Activity || !/^[a-zA-Z -]+$/.test(classData.Activity)) {
                 return "Invalid Activity"
             }

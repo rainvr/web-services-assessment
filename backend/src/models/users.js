@@ -62,7 +62,6 @@ export async function getById(userId) {
                     )
                 )
             } else {
-                // console.log(`Error - No users with user_id: ${userId}`)  // TODO: reinstate this?
                 return Promise.resolve(null)
             }
     } catch (error) {

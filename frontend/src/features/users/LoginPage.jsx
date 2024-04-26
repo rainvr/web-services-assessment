@@ -20,11 +20,7 @@ export default function LoginPage() {
     async function handleSubmit(event) {
         event.preventDefault()  // prevents the browser from refreshing/reloading
 
-        //alert(`The form has been submitted with email: ${emailInput} and password: ${passwordInput}`)
-
         setStatusMessage("Logging in...")
-
-        // TODO: Client side validation (maybe just backend?)
 
         try {
         // Call the login function from the useAuthentication module
@@ -62,14 +58,14 @@ export default function LoginPage() {
                             onChange={(event) => setFormData({ ...formData, password: event.target.value })}
                             placeholder="Password"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            // pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"  // TODO: Checks that a password has a minimum of 6 characters, at least 1 uppercase letter, 1 lowercase letter, and 1 number with no spaces.
+                            pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"  
                             required />
                         <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid password</span>
                     </label>
                     <button className="btn btn-primary">Login</button>
-                    <p className="mx-auto">Not a member yet? <Link to="/register" className="link link-hover">Sign Up</Link></p>  {/* TODO: get link underline on hover */}
+                    <p className="mx-auto">Not a member yet? <Link to="/register" className="link link-hover">Sign Up</Link></p>  
                     <label className="label">
-                        <span className="label-text-alt">{statusMessage}</span>  {/* TODO: make this nicer */}
+                        <span className="label-text-alt">{statusMessage}</span>  
                     </label>
                 </form>
             </section>

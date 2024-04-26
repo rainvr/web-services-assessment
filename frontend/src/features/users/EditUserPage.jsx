@@ -65,11 +65,6 @@ function EditUserPage() {
                         onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}/>
                     <label className="text-lg font-bold">Role</label> 
                     <p className="bg-slate-100 p-4 rounded-lg">{formData.role}</p>
-                    {/* TODO: if the role is manager allow below input, otherwise allow above p */}
-                    {/* <input className="bg-slate-100 p-4 rounded-lg"
-                        type="text"
-                        value={formData.role} 
-                        onChange={(event) => setFormData(existingData => { return { ...existingData, role: event.target.value } } )} /> */}
                     <label className="text-lg font-bold">Phone</label> 
                     <input className="bg-slate-100 p-4 rounded-lg"
                         type="text"

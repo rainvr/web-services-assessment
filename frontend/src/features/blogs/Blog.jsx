@@ -84,9 +84,9 @@ function Blog({id, userId, author, datetime, title, content, onRefresh, onAction
             { view == "read" ? <>    
                 <h2 className="text-lg font-bold">{title}</h2>  
                 <p className="bg-slate-100 p-4 rounded-lg">{content}</p>
-                <div className="flex flex-row justify-end gap-2"> {/* TODO: toggle visibility if the blog belong's to the user */}
-                    { user && userId == user.id ? <button type="button" onClick={()=>setView("edit")} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200 active:bg-orange-200">Edit</button> : null }  {/* TODO: create the EditBlogPage */}
-                    { user && userId == user.id ? <button type="button" onClick={()=>deleteBlog(id)} className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200 active:bg-red-200">Delete</button> : null }  {/* TODO: create & use the deleteBlog model/controller */}
+                <div className="flex flex-row justify-end gap-2"> 
+                    { user && userId == user.id ? <button type="button" onClick={()=>setView("edit")} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200 active:bg-orange-200">Edit</button> : null }  
+                    { user && userId == user.id ? <button type="button" onClick={()=>deleteBlog(id)} className="badge badge-outline font-semibold text-red-600 hover:bg-red-200 focus:bg-red-200 active:bg-red-200">Delete</button> : null }  
                 </div>
             {/* ----- Set the form for the other view (i.e. "edit") ----- */}       
             </> : <> 
@@ -100,9 +100,9 @@ function Blog({id, userId, author, datetime, title, content, onRefresh, onAction
                     value={formData.content} 
                     onChange={(event) => setFormData(existingData => { return { ...existingData, content: event.target.value } } )}
                 />
-                <div className="flex flex-row justify-end gap-2"> {/* TODO: toggle visibility if the blog belong's to the user */}
-                    { user && userId == user.id ? <button type="button" onClick={()=>cancelEdit()} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200 active:bg-orange-200">Cancel</button> : null }  {/* TODO: create the EditBlogPage */}
-                    { user && userId == user.id ? <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200 active:bg-blue-200">Save</button> : null }  {/* TODO: create & use the deleteBlog model/controller */}
+                <div className="flex flex-row justify-end gap-2"> 
+                    { user && userId == user.id ? <button type="button" onClick={()=>cancelEdit()} className="badge badge-outline font-semibold text-orange-600 hover:bg-orange-200 focus:bg-orange-200 active:bg-orange-200">Cancel</button> : null }  
+                    { user && userId == user.id ? <button type="submit" className="badge badge-outline font-semibold text-blue-600 hover:bg-blue-200 focus:bg-blue-200 active:bg-blue-200">Save</button> : null }  
                 </div>           
             </> } 
         </form>         

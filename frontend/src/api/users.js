@@ -65,7 +65,7 @@ export async function getById(userId, authenticationKey) {
 // ---------- CREATE ---------- //
 
 /**
- *  POST /users  // TODO: do I need this api?
+ *  POST /users 
  * @param { Object } user 
  * @param { String } authenticationKey
  * @returns { Promise<Object> }
@@ -153,9 +153,8 @@ export async function logout(authenticationKey) {
     return APIResponseObject
 }
 
-// TODO: change to PATCH?
 /**
- *  POST /users/update
+ *  PATCH /users/update
  * @param { Object } user 
  * @returns {Promise<Object>}
  */

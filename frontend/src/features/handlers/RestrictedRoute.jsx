@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom"
 import { useAuthentication } from "../authentication"
 import Header from "../../common/components/Header"
 import Footer from "../../common/components/Footer"
-import ErrorPage from "./ErrorPage" // TODO: remove this?
 
 export function RestrictedRoute({ allowedRoles = [], children }) {
     const [user, login, logout, refresh] = useAuthentication()
@@ -21,11 +20,5 @@ export function RestrictedRoute({ allowedRoles = [], children }) {
                 </div>
                 <Footer />
             </main>
-
-            {/* TODO: remove ErrorPage component? */}
-            {/* <ErrorPage 
-                heading={"Not Authorised"}
-                message={"Access role is not permitted to view this page."}
-            /> */}
         </>
 }

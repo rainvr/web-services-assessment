@@ -45,7 +45,7 @@ userController.post("/login", async (req, res) => {
         if (!bcrypt.compareSync(loginData.password, user.password) && !loginData.password == user.password) {  
             return res.status(400).json({
                 status: 400,
-                message: "Invalid credentials: loginData: " + loginData.password + " stored pw: " + user.password  // TODO: remove pws from string
+                message: "Invalid credentials" 
             })
         }
         
@@ -110,7 +110,7 @@ userController.post("/logout", auth(["manager", "member", "trainer"]), (req, res
             res.status(200).json({
                 status: 200,
                 message: "User is logged out",
-                response  // TODO: do I really want to return the full user object here?
+                response  
             })
         })
     }).catch(error => {

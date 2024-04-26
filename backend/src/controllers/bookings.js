@@ -52,44 +52,9 @@ bookingController.post("/", auth(["member"]), async (req, res) => {
             })
         }
 
-        // --- VALIDATION --- //
-
-        // TODO: do I validate these integers?  The below causes an error: Type error - expect a string but receive a number
-        // Validate the userId
-        // if (!validator.isInt(bookingData.userId)) {
-        //     // Show error
-        //     return res.status(400).json({
-        //         status: 400,
-        //         message: "Invalid user ID"
-        //     })
-        // }
-
-        // TODO: do I validate these integers?  The below causes an error: Type error - expect a string but receive a number
-        // Validate the classId
-        // if (!validator.isInt(bookingData.classId)) {
-        //     // Show error
-        //     return res.status(400).json({
-        //         status: 400,
-        //         message: "Invalid class ID"
-        //     })
-        // }
-
-        // TODO: The below throws the "Invalid creation date error"
-        // Validate the createDate
-        // if (!validator.isDate(bookingData.createDate)) {
-        //     // Show error
-        //     return res.status(400).json({
-        //         status: 400,
-        //         message: "Invalid creation date"
-        //     })
-        // }
-
-        // TODO: if fix integer validation above, might have to reinstate these couple below to convert back to int
         // Convert the booking data into an booking model object (and sanitise appropriate inputs)
         const bookingObject = Bookings.newBooking(
             null,
-            // validator.toInt(bookingData.userId).toString(),
-            // validator.toInt(bookingData.classId).toString(),
             bookingData.createDate,
             bookingData.userId,
             bookingData.classId,

@@ -27,8 +27,6 @@ export default function RegisterPage() {
         try {
             event.preventDefault()
             setStatusMessage("Registering...")
-
-            // TODO: loading/registering spinner
             
             // Register the user
             const result = await Users.register(formData)
@@ -56,31 +54,26 @@ export default function RegisterPage() {
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="text"
-                            //name="first-name"
                             value={formData.firstname}
                             onChange={(event) => setFormData(existingData => { return { ...existingData, firstname: event.target.value } } )}
                             placeholder="First Name"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            // TODO: pattern ...  Checks the first name pattern
                             required />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid name</span>
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="text"
-                            //name="last-name"
                             value={formData.lastname}
                             onChange={(event) => setFormData({ ...formData, lastname: event.target.value } )}
                             placeholder="Last Name"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            // TODO: pattern ...  Checks the last name pattern
                             required />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid last name</span>
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="email"
-                            //name="email"
                             value={formData.email}
                             onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}
                             placeholder="Email"
@@ -92,7 +85,6 @@ export default function RegisterPage() {
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="password"
-                            //name="password"
                             value={formData.password}
                             onChange={(event) => setFormData(existingData => { return { ...existingData, password: event.target.value } } )}
                             placeholder="Password"
@@ -104,29 +96,25 @@ export default function RegisterPage() {
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="text"
-                            //name="phone"
                             value={formData.phone}
                             onChange={(event) => setFormData({ ...formData, phone: event.target.value } )}
                             placeholder="Phone Number"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            // TODO: pattern ...  Checks the phone number pattern
                         />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid phone number</span>
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <input
                             type="text"
-                            //name="address"
                             value={formData.address}
                             onChange={(event) => setFormData({ ...formData, address: event.target.value } )}
                             placeholder="Address"
                             className="peer input input-bordered w-full max-w-xs invalid:border-red-600 invalid:outline-red-600"
-                            // TODO: pattern ...  Checks the address pattern
                         />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid Address</span>
                     </label>
                      <button className="btn btn-primary">Register</button>
-                    <p className="mx-auto">Already a member? <Link to="/login">Login</Link></p>  {/* TODO: get link underline on hover */}
+                    <p className="mx-auto">Already a member? <Link to="/login">Login</Link></p> 
                     <label className="label">
                         <span className="label-text-alt">{statusMessage}</span>
                     </label>

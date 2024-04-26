@@ -45,7 +45,7 @@ export function useAuthentication() {
         // Clear existing client side user record (i.e. logout if relogin)
         setAuthenticatedUser(null)
         // Attempt login and retrieve user if successful
-        return apiLogin(email, password)  // TODO: do I need to rename this?
+        return apiLogin(email, password)  
             .then(result => {
                 if (result.status == 200) {
                     // Store auth key in case page is reloaded
