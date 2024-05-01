@@ -77,20 +77,23 @@ function ImportPage({ onUploadSuccess, disabled = false }) {
                     <button className="join-item btn btn-outline btn-sm btn-success" onClick={()=>setUpload("classes")}>Classes</button>
                 </div>
                 <form onSubmit={uploadFile}>
+                    <div className="label">
+                        <span className="label-text-alt">Select the XML file to upload</span>
+                    </div>
                     <label className="form-control w-full max-w-xs">
-                        <div className="label">
+                        {/* <div className="label">
                             <span className="label-text-alt">Select the XML file to upload</span>
-                        </div>
+                        </div> */}
                         <input 
                             type="file" 
                             ref={uploadInputRef} 
                             disabled={disabled}
                             className="file-input file-input-bordered file-input-success w-full max-w-xs"
                         />
-                        <div className="label">
-                            <span className="label-text-alt">{status}</span>
-                        </div>
                     </label>
+                    <div className="label">
+                        <span className="label-text-alt">{status}</span>
+                    </div>
 
                     <div className="divider"></div>
 

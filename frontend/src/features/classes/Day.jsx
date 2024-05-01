@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import Activity from "./Activity"
 import { format, isSameDay, addHours } from "date-fns"
+import { useAuthentication } from "../authentication"
 
 function Day({classes, day, date}) {
+    const [user] = useAuthentication()
 
     // Format the date into an exeptable format
     const formattedDate = format(new Date(date), 'do MMMM')
@@ -26,7 +28,7 @@ function Day({classes, day, date}) {
                             <th></th>
                             <th>Activity</th>
                             <th>Duration</th>
-                            <th></th>
+                            { user && user.role === "member" && <th></th> }
                         </tr>
                     </thead>
                     <tbody>
