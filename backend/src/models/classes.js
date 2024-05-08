@@ -141,6 +141,31 @@ export function getByLDA(locationId, date, activityId) {
         })
 }
 
+// Get all the classes from the database by locationId, datetime and activityId
+export function getByLTA(locationId, time, activityId) {
+    return db.query(`
+        SELECT * FROM classes
+        WHERE 
+            class_location_id = ? 
+            AND class_datetime = ?
+            AND class_activity_id = ? 
+    `, [locationId, time, activityId])
+        .then((([queryResult]) => {
+            return queryResult.map(
+                result => newClass(
+                    result.class_id,
+                    result.class_datetime,
+                    result.class_location_id,
+                    result.class_activity_id,    
+                    result.class_trainer_id
+                )
+            )
+        }))
+        .catch(error => {
+            console.log(`Error matching the class: ` + error)
+        }) 
+}
+
 // Get all the classes by trainer user Id from today's date onward and count the bookings
 export function getByUserId(userId) {
     return db.query(`

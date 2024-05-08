@@ -161,50 +161,64 @@ classController.post("/upload", auth(["manager"]), async (req, res) => {
 
         // Insert the classes
         // Map over the classes 
-        const insertionPromises = classesData.map(classData => {
-            // Sanitise activity and location in puts
-            const escapedLocation = validator.escape(classData.Location)
-            const escapedActivity = validator.escape(classData.Activity)
+        const insertionPromises = classesData.map(async classData => {
 
             // Lookup location and activity asynchronously
-            const retrievedLocation = Locations.getByName(escapedLocation) 
-            const retrievedActivity = Activities.getByName(escapedActivity)
-
-            return Promise.all([retrievedLocation, retrievedActivity]).then(([location, activity]) => {
+            const [location, activity] = await Promise.all([
+                Locations.getByName(classData.Location),
+                Activities.getByName(classData.Activity)
+            ])
                 
-                if (location && activity) {
-                    // If matching location and activity objects are found, get their IDs
-                    const locationId = location[0].id
-                    const activityId = activity[0].id
+            if (location && activity) {
+                // If matching location and activity objects are found, get their IDs
+                const locationId = location[0].id
+                const activityId = activity[0].id
 
-                    const sanitisedDatetime = validator.escape(classData.Datetime)
-                    const localDatetime = addHours(new Date(sanitisedDatetime), -10)
+                // Check if there is a conflicting class in the database
+                const matchingClass = await Classes.getByLTA(locationId, classData.Datetime, activityId)
 
-                    // Convert XML object into a model object (sanitising remaining inputs)
-                    const classModel = Classes.newClass(
-                        null, 
-                        localDatetime, 
-                        locationId,
-                        activityId,
-                        validator.escape(classData.TrainerID)
-                    )
+                if (matchingClass.length > 0) {
+                    // If a matching class object is found, skip insertion
+                    return {status: "Class matched"}
+                } 
+                    
+                const sanitisedDatetime = validator.escape(classData.Datetime)
+                const localDatetime = addHours(new Date(sanitisedDatetime), -10)
 
-                    // Insert the class 
-                    return Classes.create(classModel);
-                } else {
-                    // If either location or activity is not found, return an error
-                    return Promise.reject("Invalid Location or Activity: Only existing locations or activities are acceptable")
-                }
-            })
+                // Convert XML object into a model object (sanitising remaining inputs)
+                const classModel = Classes.newClass(
+                    null, 
+                    localDatetime, 
+                    locationId,
+                    activityId,
+                    validator.escape(classData.TrainerID)
+                )
+
+                // Insert the class 
+                return Classes.create(classModel);
+            } else {
+                // If either location or activity is not found, return an error
+                return Promise.reject("Invalid Location or Activity: Only existing locations or activities are acceptable")
+            }
         })
 
         // Wait for all insertion promises to resolve
-        await Promise.all(insertionPromises)
+        const resolvedPromises = await Promise.all(insertionPromises)
 
-        return res.status(200).json({
-            status: 200,
-            message: "Classes XML Upload insert was successful"
-        })
+        // Check if there were any conflicting classes in the db
+        const hasClassMatch = resolvedPromises.some(uploadItem => uploadItem.status === "Class matched")
+
+        if (hasClassMatch) {
+            return res.status(400).json({
+                status: 400,
+                message: "Classes XML Upload Error: A existing class was found"
+            })
+        } else {
+            return res.status(200).json({
+                status: 200,
+                message: "Classes XML Upload insert was successful"
+            })
+        }   
         
     } catch (error) {
         return res.status(500).json({
