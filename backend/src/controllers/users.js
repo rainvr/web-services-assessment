@@ -348,8 +348,6 @@ userController.post("/upload", auth(["manager"]), async (req, res) => {
             // Wait for all insertion promises to resolve
             const resolvedPromises = await Promise.all(insertionPromises)
 
-            console.log(resolvedPromises)
-
             // Check if any email matches occurred
             const hasEmailMatch = resolvedPromises.some(uploadItem => uploadItem.status === 'Email matched')
 

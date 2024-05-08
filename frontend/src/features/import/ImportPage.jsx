@@ -81,9 +81,6 @@ function ImportPage({ onUploadSuccess, disabled = false }) {
                         <span className="label-text-alt">Select the XML file to upload</span>
                     </div>
                     <label className="form-control w-full max-w-xs">
-                        {/* <div className="label">
-                            <span className="label-text-alt">Select the XML file to upload</span>
-                        </div> */}
                         <input 
                             type="file" 
                             ref={uploadInputRef} 

@@ -173,7 +173,6 @@ export async function updateById(user) {
         ]
     )
     .then(([result]) => {
-        //console.log(result)
         return {user}  // return an object with the user fields plus the inserted ID as the id
     })
 }
