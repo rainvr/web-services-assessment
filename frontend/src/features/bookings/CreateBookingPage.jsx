@@ -73,8 +73,8 @@ export default function CreateBookingPage() {
     return (
         <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
             <Header />
-            <section className="flex-1 mx-auto p-4 overflow-y-scroll">
-                <form onSubmit={handleSubmit} className="card-body card w-96 bg-base-100 shadow-xl">
+            <section className="flex-1 mx-auto p-4">
+                <form onSubmit={handleSubmit} className="card-body card w-80 bg-base-100 shadow-xl">
                     <h2 className="card-title justify-center mb-4">Book a Class</h2>
                     <div className="flex flex-row justify-between w-full bg-slate-200 py-1 px-4 rounded-box ">
                         <div className="flex flex-row justify-between w-full">

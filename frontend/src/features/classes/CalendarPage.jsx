@@ -66,9 +66,9 @@ function CalendarPage() {
     }, [weekStartDate, locationId])
 
     return (
-        <main className="flex flex-col bg-slate-50 h-screen overflow-hidden">
+        <main className="flex flex-col bg-slate-50 h-screen">
             <Header />
-            <section className="flex-1 mx-auto  w-80 sm:w-96 md:w-[450px] p-4 overflow-y-auto">
+            <section className="flex-1 mx-auto w-80 sm:w-96 md:w-[450px] pb-4">
                 <h1 className="text-xl font-bold text-center">Weekly Classes</h1>
 
                 {/* ----- LOCATION SELECTOR ----- */}

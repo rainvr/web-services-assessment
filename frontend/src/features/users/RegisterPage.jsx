@@ -14,12 +14,12 @@ export default function RegisterPage() {
     const [user, login, logout, refresh] = useAuthentication()
 
     const [formData, setFormData] = useState({
+        firstname: "",
+        lastname: "",
         email: "",
         password: "",
         role: "member", 
         phone: "",
-        firstname: "",
-        lastname: "",
         address: ""
     })
 
@@ -58,22 +58,25 @@ export default function RegisterPage() {
                             onChange={(event) => setFormData(existingData => { return { ...existingData, firstname: event.target.value } } )}
                             placeholder="First Name"
                             className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
+                            pattern="^[a-zA-Z -]+$"  // Checks the first name pattern
                             required />
                         <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid name</span>
                     </label>
                     <label className="form-control w-full">
                         <input
                             type="text"
+                            name="lastName"
                             value={formData.lastname}
-                            onChange={(event) => setFormData({ ...formData, lastname: event.target.value } )}
+                            onChange={(event) => setFormData(existingData => { return { ...existingData, lastname: event.target.value } } )}
                             placeholder="Last Name"
                             className="peer input input-bordered w-full invalid:border-red-600 invalid:outline-red-600"
+                            pattern="^[a-zA-Z /-]+$"  // Checks the last name pattern
                             required />
-                        <span className="invisible ml-2 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid last name</span>
+                        <span className="invisible ml-1 mt-[2px] peer-invalid:visible label-text-alt text-red-600">Please enter a valid last name</span>
                     </label>
                     <label className="form-control w-full">
                         <input
-                            type="email"
+                            type="text"
                             value={formData.email}
                             onChange={(event) => setFormData(existingData => { return { ...existingData, email: event.target.value } } )}
                             placeholder="Email"

@@ -103,7 +103,6 @@ export async function updateById(blog) {
         ]
     )
     .then(([result]) => {
-        //console.log(result)
         return {blog}  // return an object with the blog fields plus the inserted ID as the id
     })
 }
