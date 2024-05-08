@@ -52,6 +52,18 @@ bookingController.post("/", auth(["member"]), async (req, res) => {
             })
         }
 
+        // Check if there is already a conflicting booking
+        const matchingBooking = await Bookings.getByUserClass(bookingData.userId, bookingData.classId)
+
+        console.log(matchingBooking)
+
+        if (matchingBooking) {
+            return res.status(400).json({
+                status: 400,
+                message: "A matching booking has already been made"
+            })
+        }
+
         // Convert the booking data into an booking model object (and sanitise appropriate inputs)
         const bookingObject = Bookings.newBooking(
             null,

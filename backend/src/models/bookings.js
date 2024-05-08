@@ -68,6 +68,36 @@ export function getAll(userId) {
         })
 }
 
+// Get a booking by userId, classId
+export function getByUserClass(userId, classId) {
+    return db.query(`
+        SELECT * FROM bookings
+        WHERE 
+            booking_user_id = ?
+            AND booking_class_id = ?
+        `, [ userId, classId ])    
+        .then((([queryResult]) => {
+            return queryResult.map(
+                result => newBooking(
+                    result.booking_id, 
+                    result.booking_created_datetime, 
+                    result.user_id, 
+                    result.class_id, 
+                    result.class_datetime,
+                    result.location_id,
+                    result.location_name, 
+                    result.activity_name, 
+                    result.activity_description,
+                    result.trainer_name
+                )
+            )
+        }))
+        .catch(error => {
+            console.log(`Error getting the booking: ` + error)
+        })
+}
+
+
 
 // --------- CREATE ---------- //
 
