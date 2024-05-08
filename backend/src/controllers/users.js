@@ -324,7 +324,6 @@ userController.post("/upload", auth(["manager"]), async (req, res) => {
                     validator.escape(userData.Email), 
                     // Hash the password
                     bcrypt.hashSync(userData.Password),
-                    // userData.Password, 
                     validator.escape(userData.Role), 
                     validator.escape(userData.Phone),
                     validator.escape(userData.FirstName),
@@ -337,21 +336,34 @@ userController.post("/upload", auth(["manager"]), async (req, res) => {
                 return Users.getByEmail(userModel.email).then(user => {
                     if (user) {
                         // If a matching user object is found, skip insertion
-                        return null
+                        return {status: "Email matched"}
                     } else {
                         // If no matching user object is found, insert the user
-                        return Users.create(userModel)
+                        Users.create(userModel) 
+                        return {status: "Successful insert"}
                     }
                 })
             })
 
             // Wait for all insertion promises to resolve
-            await Promise.all(insertionPromises)
+            const resolvedPromises = await Promise.all(insertionPromises)
 
-            return res.status(200).json({
-                status: 200,
-                message: "Users XML Upload insert was successful"
-            })
+            console.log(resolvedPromises)
+
+            // Check if any email matches occurred
+            const hasEmailMatch = resolvedPromises.some(uploadItem => uploadItem.status === 'Email matched')
+
+            if (hasEmailMatch) {
+                return res.status(400).json({
+                    status: 400,
+                    message: "Users XML Upload Error: A matching email was found"
+                })
+            } else {
+                return res.status(200).json({
+                    status: 200,
+                    message: "Users XML Upload insert was successful"
+                })
+            }   
         }
     } catch (error) {
         return res.status(500).json({
